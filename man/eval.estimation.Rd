@@ -27,6 +27,8 @@ is the number of "na"s appeared in the parameter estimation.
 A function to evaluate the parameter estimation function.
 }
 \details{
+Parameter Estimation Evaluation
+
 Details
 }
 \examples{

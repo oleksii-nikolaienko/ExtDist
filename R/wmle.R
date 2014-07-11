@@ -1,16 +1,17 @@
-# Weighted Maximum Likelihood Estimation ----------------------------------
+#' Weighted Maximum Likelihood Estimation 
 #' @title Weighted Maximum Likelihood Estimation.
 #' @importFrom numDeriv grad
+#' @importFrom optimx optimx
+#' @importFrom matrixcalc is.positive.definite
 #' @description A general weighted maximum likelihood estimation function.
 #' @rdname wmle
 #' @name wmle
-#' @details Details
 #' @param X observation.
 #' @param w frequency (or weights) of observation.
 #' @param distname name of distribution to be estimated.
 #' @param initial initial value of the parameters.
-#' @param lower   the lower bound of the parameters.
-#' @param upper   the upper bound of the parameters.
+#' @param lower the lower bound of the parameters.
+#' @param upper the upper bound of the parameters.
 #' @param loglik.fn function to compute (weighted) log likelihood
 #' @param score.fn  function to compute (weighted) score
 #' @param obs.info.fn function to compute observed information matrix
@@ -120,18 +121,10 @@
 #' proc.time() - pt
 #' }
 
-#' @name wmle
 #' @export wmle
 wmle <- 
   function(X, w, distname, initial, lower, upper, loglik.fn, score.fn, obs.info.fn
   ){
-    
-    if(.Platform$OS.type=="unix") {
-      sink("/dev/null")
-    } else if(.Platform$OS.type== "windows") {
-      sink("NUL")
-    }
-    
     n <- length(X)
     if(missing(w)){
       w <- rep(1,n)
@@ -139,20 +132,21 @@ wmle <-
     w <- n*w/sum(w)
     
     if(!missing(loglik.fn)){
-      ll <- function(params) {loglik.fn(X,w,params=params)}      
+      ll <- function(params) {loglik.fn(X,w,params=as.list(params))}      
     } else {
       if(missing(distname)) {
-        sink(); stop("Both distribution name and loglikelihood are missing!")
+        stop("Both distribution name and loglikelihood are missing!")
       } else{
         if(exists(paste("l",distname,sep=""), mode = "function")) {
           ldist <- get(paste("l",distname,sep=""))
-          ll <- function(params) {ldist(X,w,params=params)}
+          ll <- function(params) {ldist(X,w,params=as.list(params))}
         } else {
           ddist <- get(paste("d",distname,sep=""))
-          ll <- function(params) {sum(w*log(ddist(x=X,params=params)))}
+          ll <- function(params) {sum(w*log(ddist(x=X,params=as.list(params))))}
         }
       }
     }
+    nll <- function(par) {-ll(as.list(par))}
     
     if(!missing(score.fn)){
       gr <- TRUE
@@ -239,7 +233,7 @@ wmle <-
         body(inv.trans.fn[[k]])[[2]] <- parse(text=gsub("k",k,body(inv.trans.fn[[k]])[2],fixed=T))[[1]]
         
       } else {
-        sink(); stop("the boundary parameters are not set appropriately!")
+        stop("the boundary parameters are not set appropriately!")
       }
     }
     
@@ -296,6 +290,7 @@ wmle <-
       
     }
     
+    approx.est.par <- NULL
     ## default - use nlm
     if(gr == TRUE){
       if(hess == TRUE) {
@@ -342,18 +337,20 @@ wmle <-
         
         #         hessian <- -rst$hessian * deriv%*%t(deriv)
         nll.gr <- rst$gradient*deriv
-        nll.hessian <- diag(rst$gradient*dd) + rst$hessian * (deriv%*%t(deriv))
+        nll.hessian <- diag(rst$gradient*dd) + rst$hessian * (deriv%*%t(deriv))        
+        
         colnames(nll.hessian) <- rownames(nll.hessian) <- par.name
-        attr(est.par,"nll.hessian") <- nll.hessian
-        attr(est.par,"nll.gr") <- nll.gr
-        attr(est.par,"nll") <- rst$minimum
         
-        attr(est.par,"optim.fn") <- "nlm"
+        attributes(est.par)$nll.hessian <- nll.hessian
+        attributes(est.par)$nll.gr <- nll.gr
+        attributes(est.par)$nll <- rst$minimum
         
-        if(any(rst$code == c(1,2))) {
-          sink(); return(est.par)
+        attributes(est.par)$optim.fn <- "nlm"
+        
+        if(any(rst$code == c(1,2)) & matrixcalc::is.positive.definite(nll.hessian)) {
+          attributes(est.par)$convergence <- 0; return(est.par)
         } else {
-          temp.est.par <- est.par
+          approx.est.par[[1]] <- est.par
         }
       }
     }
@@ -368,7 +365,70 @@ wmle <-
     
     if(any(class(rst)!="try-error")){
       if( any(rst$convergence == c(0,1)) ) {
-        trans.est.par <- rst$par
+        if(!any(is.na(rst$par),is.na(rst$hessian))) {
+          trans.est.par <- rst$par
+          est.par <- NULL
+          deriv <- NULL
+          dd <- NULL
+          for(k in 1:num.par) {
+            est.par[k] <- inv.trans.fn[[k]](trans.est.par[[k]])
+            deriv[k] <- trans.fn.deriv[[k]](est.par[k])
+            dd[k] <- trans.fn.dd[[k]](est.par[k])
+          }
+          names(est.par) <- par.name
+          est.par <- as.list(est.par)
+          
+          if(exists("trans.nll.gr", mode = "function")) {
+            rst <- c(rst, list(gradient = trans.nll.gr(trans.est.par)))
+          } else {
+            rst <- c(rst, list(gradient = c(numDeriv::grad(trans.nll, trans.est.par))))
+          }
+          
+          nll.gr <- rst$gradient*deriv
+          names(nll.gr) <- par.name
+          
+          nll.hessian <- diag(rst$gradient*dd) + rst$hessian * (deriv%*%t(deriv))
+          colnames(nll.hessian) <- rownames(nll.hessian) <- par.name
+          
+          attributes(est.par)$nll.hessian <- nll.hessian
+          attributes(est.par)$nll.gr <- nll.gr
+          attributes(est.par)$nll <- rst$value
+          
+          attributes(est.par)$optim.fn <- "optim"
+          
+          if( (rst$convergence == 0) & matrixcalc::is.positive.definite(nll.hessian)) {
+            attributes(est.par)$convergence <- 0; return(est.par)
+          } else {
+            approx.est.par[[2]] <- est.par
+          }      
+        }
+      }
+    }
+    
+    ## optimx only use ll
+    rst <- try(suppressWarnings(optimx::optimx( par=unlist(trans.initial), fn=trans.nll, 
+                                                control=list(all.methods=TRUE), hessian = TRUE)))
+    
+    if(any(class(rst)!="try-error")) {
+      rst <- rst[!is.infinite(rst$value),] 
+      rst <- rst[rst$convcode==0,]
+      
+      good.rst.ind <- (rst$kkt1 & rst$kkt2)
+      good.rst.ind[is.na(good.rst.ind)] <- FALSE
+      
+      acceptable.rst.ind <- (rst$kkt1)
+      acceptable.rst.ind[is.na(acceptable.rst.ind)] <- FALSE
+      
+      if(any(sum(good.rst.ind)>0,sum(acceptable.rst.ind)>0)) {
+        if(sum(good.rst.ind)>0) {
+          good.rst <- rst[good.rst.ind,]
+          rst <- good.rst[min(which(good.rst$value == min(good.rst$value))),] # chosse the first with minimum value
+        } else if(sum(acceptable.rst.ind)>0) {
+          acceptable.rst <- rst[acceptable.rst.ind,]
+          rst <- acceptable.rst[min(which(acceptable.rst$value == min(acceptable.rst$value))),] # chosse the first with minimum value
+        }
+        
+        trans.est.par <- coef(rst)
         est.par <- NULL
         deriv <- NULL
         dd <- NULL
@@ -380,39 +440,60 @@ wmle <-
         names(est.par) <- par.name
         est.par <- as.list(est.par)
         
-        if(exists("trans.nll.gr", mode = "function")) {
-          rst <- c(rst, list(gradient = trans.nll.gr(rst$par)))
-        } else {
-          rst <- c(rst, list(gradient = c(grad(trans.nll, rst$par))))
-        }
-        
-        nll.gr <- rst$gradient*deriv
-        nll.hessian <- diag(rst$gradient*dd) + rst$hessian * (deriv%*%t(deriv))
-        colnames(nll.hessian) <- rownames(nll.hessian) <- par.name
+        trans.nll.gr <- attributes(rst)$details[[2]]
+        nll.gr <- trans.nll.gr*deriv
         names(nll.gr) <- par.name
-        attr(est.par,"nll.hessian") <- nll.hessian
-        attr(est.par,"nll.gr") <- nll.gr
-        attr(est.par,"nll") <- rst$value
         
-        attr(est.par,"optim.fn") <- "optim"
+        trans.nll.hess <- attributes(rst)$details[[3]]
+        nll.hessian <- diag(trans.nll.gr*dd) + trans.nll.hess * (deriv%*%t(deriv))
+        colnames(nll.hessian) <- rownames(nll.hessian) <- par.name
         
-        if( rst$convergence == 0 ) {
-          sink(); return(est.par)
+        attributes(est.par)$nll.hessian <- nll.hessian
+        attributes(est.par)$nll.gr <- nll.gr
+        attributes(est.par)$nll <- rst$value
+        
+        attributes(est.par)$optim.fn <- paste0("optimx-",attributes(rst)$details[[1]])
+        
+        if(all(is.finite(nll.hessian))) {
+          if(matrixcalc::is.positive.definite(nll.hessian)) {
+            attributes(est.par)$convergence <- 0; return(est.par)
+          } 
         } else {
-          temp.est.par <- est.par
-        }      
+          approx.est.par[[3]] <- est.par
+        }
       }
     }
     
-    if(!is.null(temp.est.par)){
-      est.par <- temp.est.par
-      attr(est.par, "approx.rst") <- TRUE
-      sink(); return(est.par)
+    nll.values <- NULL
+    finite.hess <- NULL
+    for(i in 1:length(approx.est.par)){
+      if(is.null(approx.est.par[[i]])) {
+        nll.values[i] <- NA
+        finite.hess[i] <- NA
+      } else {
+        nll.values[i] = attributes(approx.est.par[[i]])$nll
+        finite.hess[i] = all(is.finite(attributes(approx.est.par[[i]])$nll.hessian))
+      }
+    }
+    
+    finite.hess[is.na(finite.hess)] <- FALSE
+    
+    ind <- NULL
+    if(sum(finite.hess)>1){
+      if(any(!is.na(nll.values[finite.hess]))) {
+        ind <- which(finite.hess & (nll.values %in% min(nll.values[finite.hess])))
+      }
+    }
+    
+    if(is.integer(ind)) { 
+      est.par <- approx.est.par[[ind]]
+      attributes(est.par)$convergence <- 1
     } else {
-      est.par <- initial; for(k in 1:length(initial)) est.par[[k]] <- NA; attr(est.par,"nll.hessian") <- NA; 
-      attr(est.par,"nll.gr") <- NA; attr(est.par,"nll") <- NA; attr(est.par,"optim.fn") <- NA; 
-      sink(); return(est.par)  
-    }  
+      est.par <- initial; for(k in 1:length(initial)) est.par[[k]] <- NA; 
+      attributes(est.par)$convergence <- 20
+    }
+    
+    return(est.par)  
   }      
 
 ###############################################################################

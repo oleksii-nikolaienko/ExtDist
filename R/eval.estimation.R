@@ -1,4 +1,5 @@
-# Parameter Estimation Evaluation  ----------------------------------------
+#' Parameter Estimation Evaluation
+#'
 #' @title Parameter Estimation Evaluation.
 #' @description A function to evaluate the parameter estimation function.
 #' @rdname eval.estimation

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Normal Distribution</title>
+
+
+
+<!-- MathJax scripts -->
+<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<!--
+%\VignetteEngine{knitr}
+%\VignetteIndexEntry{Distributions-Normal}
+\usepackage{amsmath,amssymb}
+-->
+
+<h1>Normal Distribution</h1>
+
+<h2>Probability density function:</h2>
+
+<p>\[f(x) = \frac 1 {\sigma\sqrt{2\pi}} e^{-\frac{(x-\mu)^2} {2\sigma^2}}\]
+with \(\mu\) the mean of the distribution and \(\sigma\) the standard deviation</p>
+
+<pre><code>Mathematica Code: 
+1/(sigma*sqrt(2*pi))*e^(-(x-mu)^2/(2*sigma^2))
+</code></pre>
+
+<h2>Cumulative distribution function:</h2>
+
+<p>\[F(x) =\int_{-\infty}^{x}\frac 1 {\sigma\sqrt{2\pi}} e^{-\frac{(y-\mu)^2} {2\sigma^2}}dy
+       =\int_{-\infty}^{\frac {x-\mu}{\sigma}}\frac 1 {\sqrt{2\pi}} e^{-\frac{z^2} {2}}dz
+       =\frac 1 2 \left[1+\text{erf}\left(\frac {x-\mu} {\sigma\sqrt{2}} \right)\right]\]
+with \(\text{erf}\) being the error function.</p>
+
+<pre><code>Mathematica Code: 
+Integrate[1/sqrt(2*pi)*e^(-z^2/2),{z,-Infinity,(x-mu)/sigma}]
+</code></pre>
+
+<h2>Log-likelihood function:</h2>
+
+<p>\[L(\mu,\sigma;X)=\sum_i\left[-\frac 1 2 \ln(2\pi)-\ln(\sigma)-\frac{1}{2\sigma^2}(X_i-\mu)^2\right]\]</p>
+
+<pre><code>Mathematica Code: 
+log[1/(sigma sqrt(2 pi)) e^(-(x-mu)^2/(2 sigma^2))]-(x - mu)^2/(2 sigma^2) - Log[2 Pi]/2 - Log[sigma]
+</code></pre>
+
+<h2>Score function vector:</h2>
+
+<p>\[V(\mu,\sigma;X)
+ =\left( \begin{array}{c}
+        \frac{\partial L}{\partial \mu}  \\
+        \frac{\partial L}{\partial \sigma}
+        \end{array} \right)
+ =\sum_i\left( \begin{array}{c}
+              \frac {X_i-\mu}{\sigma^2} \\
+              \frac {(X_i-\mu)^2-\sigma^2}{\sigma^3} 
+              \end{array} \right)
+\]</p>
+
+<pre><code>Mathematica Code: 
+D[-(x - mu)^2/(2 sigma^2) - Log[2 Pi]/2 - Log[sigma],mu]
+D[-(x - mu)^2/(2 sigma^2) - Log[2 Pi]/2 - Log[sigma],sigma]
+</code></pre>
+
+<h2>Observed information matrix:</h2>
+
+<p>\[\mathcal J (\mu,\sigma;X)=
+   -\left( \begin{array}{cc}
+          \frac{\partial^2 L}{\partial \mu^2} & \frac{\partial^2 L}{\partial \mu \partial \sigma} \\
+          \frac{\partial^2 L}{\partial \sigma \partial \mu} & \frac{\partial^2 L}{\partial \sigma^2} \end{array} \right)
+ =\sum_i
+ \left( \begin{array}{cc}
+       \frac{1}{\sigma^2} & \frac{2(X_i-\mu)}{\sigma^3} \\
+       \frac{2(X_i-\mu)}{\sigma^3} & \frac{3(X_i-\mu)^2-\sigma^2}{\sigma^4} \end{array} \right)
+ \]</p>
+
+<pre><code>Mathematica Code: 
+-D[D[-(x-mu)^2/(2 sigma^2)-Log[2 Pi]/2-Log[sigma],mu],mu]
+-D[D[-(x-mu)^2/(2 sigma^2)-Log[2 Pi]/2-Log[sigma],mu],sigma]
+-D[D[-(x-mu)^2/(2 sigma^2)-Log[2 Pi]/2-Log[sigma],sigma],sigma]
+</code></pre>
+
+</body>
+
+</html>

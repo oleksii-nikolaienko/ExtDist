@@ -1,0 +1,12 @@
+<!--
+%\VignetteEngine{knitr}
+%\VignetteIndexEntry{Distributions-Index}
+\usepackage{amsmath,amssymb}
+-->
+
+
+Distributions in ExtDist package
+========================================================
+* [Normal Distribution](Distributions-Normal.html)
+* [Beta Distribution](Distributions-Beta.html)
+

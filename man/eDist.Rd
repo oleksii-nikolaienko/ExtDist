@@ -31,6 +31,9 @@ or not.}
 \description{
 S3 methods from manuplating eDist objects
 }
+\details{
+S3 methods from manuplating eDist objects.
+}
 \examples{
 \donttest{
 X <- rnorm(20)

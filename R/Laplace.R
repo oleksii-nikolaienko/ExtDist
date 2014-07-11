@@ -1,4 +1,5 @@
-# Laplace Distribution -----------------------------------------------------
+#' Laplace Distribution
+#' 
 #' @title The Laplace Distribution.
 #' @description Density (d), distribution (p), and quantile (q), random number generation (r), 
 #' and parameter estimation (e) functions for the Laplace distribution. Parameter estimation can 
@@ -30,7 +31,6 @@
 #' @note The estimation of the population mean is done using the median of the sample. Unweighted 
 #' samples are not yet catered for in the eLaplace() function.
 
-#' @references Chapter xx of Johnson and Kotz
 #' @author A. Jonathan R. Godfrey and Haizhen Wu
 
 #' @examples \donttest{
@@ -68,8 +68,8 @@
 #' eLaplace(X, method="numerical.MLE")
 #' 
 #' # Extracting location or scale parameters
-#' est.par[attr(est.par,"par.type")=="location"]
-#' est.par[attr(est.par,"par.type")=="scale"]
+#' est.par[attributes(est.par)$par.type=="location"]
+#' est.par[attributes(est.par)$par.type=="scale"]
 #' 
 #' # evaluate the performance of the parameter estimation function by simulation
 #' eval.estimation(rdist=rLaplace,edist=eLaplace,n=1000, rep.num=1e3, params=list(mu=1, b=2))
@@ -79,7 +79,7 @@
 #' # evaluate the precision of estimation by Hessian matrix
 #' X <- rLaplace(1000, mu, b)
 #' (est.par <- eLaplace(X))
-#' H <- attr(eLaplace(X, method="numerical.MLE"),"nll.hessian")
+#' H <- attributes(eLaplace(X, method="numerical.MLE"))$nll.hessian
 #' fisher_info <- solve(H)
 #' sqrt(diag(fisher_info))
 #' 
@@ -137,7 +137,7 @@ rLaplace <- function(n, mu=0, b=1,params=list(mu, b)){
 #' @rdname Laplace
 #' @export eLaplace
 eLaplace <-     
-  function(X,w, method ="analytical.MLE"){
+  function(X,w, method ="numerical.MLE"){
     n<-length(X)
     if(missing(w)){
       w <- rep(1,n)
@@ -158,18 +158,22 @@ eLaplace <-
                       initial=list(mu=0, b=1),
                       lower=list(mu=-Inf, b=0),
                       upper=list(mu=Inf, b=Inf))
-      est.par.se <- sqrt(diag(solve(attr(est.par,"nll.hessian"))))
+      
+      est.par.se <- try(sqrt(diag(solve(attributes(est.par)$nll.hessian))),silent=TRUE)
+      if(class(est.par.se) == "try-error") {
+        est.par.se <- rep(NA, length(est.par))
+      } 
     } 
     
-    attr(est.par,"ob") <- X
-    attr(est.par,"weights") <- w
-    attr(est.par,"distname") <- "Laplace"
+    attributes(est.par)$ob <- X
+    attributes(est.par)$weights <- w
+    attributes(est.par)$distname <- "Laplace"
     
-    attr(est.par,"method") <- method
-    attr(est.par,"par.name") <- c("mu","b")
-    attr(est.par,"par.type") <- c("location", "scale")
-    attr(est.par,"par.vals") <- c(est.par$mu, est.par$b)
-    attr(est.par,"par.s.e") <-  est.par.se  
+    attributes(est.par)$method <- method
+    attributes(est.par)$par.name <- c("mu","b")
+    attributes(est.par)$par.type <- c("location", "scale")
+    attributes(est.par)$par.vals <- c(est.par$mu, est.par$b)
+    attributes(est.par)$par.s.e <-  est.par.se  
     
     class(est.par) <- "eDist"
     

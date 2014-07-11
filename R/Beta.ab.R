@@ -1,4 +1,5 @@
-# four-Parameter beta Distribution ----------------------------------------------------
+#' four-Parameter beta Distribution
+#' 
 #' @title The four-Parameter beta Distribution.
 #' @description Density, distribution function, quantile function, random 
 #' generation function and parameter estimation function (based on weighted or 
@@ -6,37 +7,7 @@
 #' @rdname Beta.ab
 #' @name Beta.ab
 #' @aliases dBeta.ab pBeta.ab qBeta.ab rBeta.ab eBeta.ab lBeta.ab sBeta.ab
-#' @details 
-#' \itemize{
-#'  \item{Probability density function:}
-#'  \deqn{f(x) = \frac{x^{\alpha-1}(1-x)^{\beta-1}} {\mathcal{B}(\alpha,\beta)}}
-#'  with \eqn{\alpha} and \eqn{\beta} two shape parameters and \eqn{\mathcal B} beta function
-#'  \item{Cumulative distribution function:}
-#'  \deqn{F(x) = \frac{\int_{0}^{x} y^{\alpha-1}(1-y)^{\beta-1}dy} {\mathcal{B}(\alpha,\beta)}
-#'  =\mathcal{B}(x; \alpha,\beta)} with \eqn{\mathcal B (x; \alpha,\beta)} being incomplete beta function.
-#'  \item{Log-likelihood function:}
-#'  \deqn{L(\alpha,\beta;X)=\sum_i\left[ (\alpha-1)\ln(x)+(\beta-1)\ln(1-x)-\ln \mathcal{B}(\alpha,\beta) \right]}
-#'  \item{Score function vector:}
-#'  \deqn{V(\mu,\sigma;X)
-#'  =\left( \begin{array}{c}
-#'  \frac{\partial L}{\partial \alpha}  \\
-#'  \frac{\partial L}{\partial \beta}
-#'  \end{array} \right)
-#'  =\sum_i
-#'  \left( \begin{array}{c}
-#'  \psi^{(0)}(\alpha+\beta)-\psi^{(0)}(\alpha)+\ln(x) \\
-#'  \psi^{(0)}(\alpha+\beta)-\psi^{(0)}(\beta)+\ln(x) 
-#'  \end{array} \right)
-#'  }
-#'  with \eqn{\psi^{(0)}} being log-gamma function.
-#'  \item{Observed information matrix:}
-#'  \deqn{\mathcal J (\mu,\sigma;X)=
-#'  \left( \begin{array}{cc}
-#'  \psi^{(1)}(\alpha)-\psi^{(1)}(\alpha+\beta) & -\psi^{(1)}(\alpha+\beta) \\
-#'  -\psi^{(1)}(\alpha+\beta) & \psi^{(1)}(\beta)-\psi^{(1)}(\alpha+\beta) \end{array} \right)
-#'  }
-#'  with \eqn{\psi^{(1)}} being digamma function.
-#' }
+#' @details See \href{../doc/Distributions-Four-Parameter-Beta.html}{Distributions-Four-Parameter-Beta}
 #' @param params a list includes all parameters
 #' @param x,q vector of quantiles.
 #' @param w weights of sample.
@@ -89,7 +60,7 @@
 #' eBeta.ab(X) # estimated parameters of unweighted sample
 #' 
 #' # Extracting shape parameters
-#' est.par[attr(est.par,"par.type")=="shape"]
+#' est.par[attributes(est.par)$par.type=="shape"]
 #'  
 #' # evaluate the performance of the parameter estimation function by simulation
 #' eval.estimation(rdist=rBeta.ab,edist=eBeta.ab,n = 1000, rep.num = 1e3, 
@@ -98,7 +69,7 @@
 #' # evaluate the precision of estimation by Hessian matrix
 #' X <- rBeta.ab(1000, shape1, shape2, a, b)
 #' (est.par <- eBeta.ab(X))
-#' H <- attr(eBeta.ab(X, method = "numerical.MLE"),"nll.hessian")
+#' H <- attributes(eBeta.ab(X, method = "numerical.MLE"))$nll.hessian
 #' fisher_info <- solve(H)
 #' sqrt(diag(fisher_info))
 #' 
@@ -185,21 +156,25 @@ eBeta.ab <-
                   initial=list(shape1=3,shape2=3,a=min(X)-0.1*d,b=max(X)+0.1*d),
                   lower=list(shape1=0,shape2=0,a=-Inf,b=max(X)),
                   upper=list(shape1=Inf,shape2=Inf,a=min(X),b=Inf))
-  est.par.se <- sqrt(diag(solve(attr(est.par,"nll.hessian"))))
+  
+  est.par.se <- try(sqrt(diag(solve(attributes(est.par)$nll.hessian))),silent=TRUE)
+  if(class(est.par.se) == "try-error") {
+    est.par.se <- rep(NA, length(est.par))
+  } 
 } 
-    
-    attr(est.par,"ob") <- X
-    attr(est.par,"weights") <- w
-    attr(est.par,"distname") <- "Beta.ab"
-    attr(est.par,"method") <- method
-    attr(est.par,"par.name") <- c("shape1","shape2","a","b")
-    attr(est.par,"par.type") <- c("shape","shape","boundary","boundary")
-    attr(est.par,"par.vals") <- c(est.par$shape1, est.par$shape2, est.par$a, est.par$b)
-    attr(est.par,"par.s.e") <-  est.par.se  
-    
-    class(est.par) <- "eDist"
-    
-    return(est.par)
+
+attributes(est.par)$ob <- X
+attributes(est.par)$weights <- w
+attributes(est.par)$distname <- "Beta.ab"
+attributes(est.par)$method <- method
+attributes(est.par)$par.name <- c("shape1","shape2","a","b")
+attributes(est.par)$par.type <- c("shape","shape","boundary","boundary")
+attributes(est.par)$par.vals <- c(est.par$shape1, est.par$shape2, est.par$a, est.par$b)
+attributes(est.par)$par.s.e <-  est.par.se  
+
+class(est.par) <- "eDist"
+
+return(est.par)
   }
 
 #' @rdname Beta.ab
@@ -257,30 +232,3 @@ sBeta.ab <-
     return(score)
   }
 
-# #' @rdname Beta.ab
-# #' @export iBeta.ab
-# ## (weighted) (observed) information matrix
-# iBeta.ab <- 
-#   function(X, w, shape1=2, shape2 =3, a = 0, b = 1,  params = list(shape1, shape2, a, b)){
-#     if(!missing(params)){
-#       shape1 <- params$shape1
-#       shape2 <- params$shape2
-#       a <- params$a
-#       b <- params$b
-#     }
-#     
-#     n <- length(X)
-#     if(missing(w)){
-#       w <- rep(1,n)
-#     } else {
-#       w <- n*w/sum(w)
-#     }
-#     
-#     info11 <- -sum(w*(trigamma(shape1+shape2)-trigamma(shape1)))
-#     info12 <- -sum(w*trigamma(shape1+shape2))
-#     info21 <- info12
-#     info22 <- -sum(w*(trigamma(shape1+shape2)-trigamma(shape2)))
-#     info <- matrix(c(info11,info12,info21,info22), nrow=2,ncol=2)
-#     rownames(info) <- colnames(info) <- c("shape1","shape2")
-#     return(info)
-#   }

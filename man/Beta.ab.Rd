@@ -64,36 +64,9 @@ generation function and parameter estimation function (based on weighted or
 unweighted i.i.d. sample) for the 4 Parameter beta distribution
 }
 \details{
-\itemize{
- \item{Probability density function:}
- \deqn{f(x) = \frac{x^{\alpha-1}(1-x)^{\beta-1}} {\mathcal{B}(\alpha,\beta)}}
- with \eqn{\alpha} and \eqn{\beta} two shape parameters and \eqn{\mathcal B} beta function
- \item{Cumulative distribution function:}
- \deqn{F(x) = \frac{\int_{0}^{x} y^{\alpha-1}(1-y)^{\beta-1}dy} {\mathcal{B}(\alpha,\beta)}
- =\mathcal{B}(x; \alpha,\beta)} with \eqn{\mathcal B (x; \alpha,\beta)} being incomplete beta function.
- \item{Log-likelihood function:}
- \deqn{L(\alpha,\beta;X)=\sum_i\left[ (\alpha-1)\ln(x)+(\beta-1)\ln(1-x)-\ln \mathcal{B}(\alpha,\beta) \right]}
- \item{Score function vector:}
- \deqn{V(\mu,\sigma;X)
- =\left( \begin{array}{c}
- \frac{\partial L}{\partial \alpha}  \\
- \frac{\partial L}{\partial \beta}
- \end{array} \right)
- =\sum_i
- \left( \begin{array}{c}
- \psi^{(0)}(\alpha+\beta)-\psi^{(0)}(\alpha)+\ln(x) \\
- \psi^{(0)}(\alpha+\beta)-\psi^{(0)}(\beta)+\ln(x)
- \end{array} \right)
- }
- with \eqn{\psi^{(0)}} being log-gamma function.
- \item{Observed information matrix:}
- \deqn{\mathcal J (\mu,\sigma;X)=
- \left( \begin{array}{cc}
- \psi^{(1)}(\alpha)-\psi^{(1)}(\alpha+\beta) & -\psi^{(1)}(\alpha+\beta) \\
- -\psi^{(1)}(\alpha+\beta) & \psi^{(1)}(\beta)-\psi^{(1)}(\alpha+\beta) \end{array} \right)
- }
- with \eqn{\psi^{(1)}} being digamma function.
-}
+four-Parameter beta Distribution
+
+See \href{../doc/Distributions-Four-Parameter-Beta.html}{Distributions-Four-Parameter-Beta}
 }
 \examples{
 \donttest{
@@ -130,7 +103,7 @@ eBeta.ab(X,w) # estimated parameters of weighted sample
 eBeta.ab(X) # estimated parameters of unweighted sample
 
 # Extracting shape parameters
-est.par[attr(est.par,"par.type")=="shape"]
+est.par[attributes(est.par)$par.type=="shape"]
 
 # evaluate the performance of the parameter estimation function by simulation
 eval.estimation(rdist=rBeta.ab,edist=eBeta.ab,n = 1000, rep.num = 1e3,
@@ -139,7 +112,7 @@ params = list(shape1=2, shape2=5, a=0, b=1), method ="numerical.MLE")
 # evaluate the precision of estimation by Hessian matrix
 X <- rBeta.ab(1000, shape1, shape2, a, b)
 (est.par <- eBeta.ab(X))
-H <- attr(eBeta.ab(X, method = "numerical.MLE"),"nll.hessian")
+H <- attributes(eBeta.ab(X, method = "numerical.MLE"))$nll.hessian
 fisher_info <- solve(H)
 sqrt(diag(fisher_info))
 

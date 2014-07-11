@@ -1,4 +1,5 @@
-# S3 methods from manuplating eDist objects. -----------------------------------------------------
+#' S3 methods from manuplating eDist objects.
+#' 
 #' @title S3 methods from manuplating eDist objects.
 #' @description S3 methods from manuplating eDist objects
 #' @rdname eDist
@@ -32,16 +33,16 @@
 #' @rdname eDist
 #' @export logLik.eDist
 logLik.eDist <- function(object,...){
-  lFoo <- get(paste0("l", attr(object, "distname")))
-  ll <- lFoo(attr(object, "ob"), w=attr(object,"weights"), params=object)
+  lFoo <- get(paste0("l", attributes(object)$distname))
+  ll <- lFoo(attributes(object)$ob, w=attributes(object)$weights, params=object)
   return(ll)
 }
 
 #' @rdname eDist
 #' @export AIC.eDist
 AIC.eDist <- function(object,..., k = 2){
-  lFoo <- get(paste0("l", attr(object, "distname")))
-  ll <- lFoo(attr(object, "ob"), w=attr(object,"weights"), params=object)
+  lFoo <- get(paste0("l", attributes(object)$distname))
+  ll <- lFoo(attributes(object)$ob, w=attributes(object)$weights, params=object)
   AIC <- k*(-ll + length(object))
   return(AIC)
 }
@@ -49,9 +50,9 @@ AIC.eDist <- function(object,..., k = 2){
 #' @rdname eDist
 #' @export BIC.eDist
 BIC.eDist <- function(object,...){
-  lFoo <- get(paste0("l", attr(object, "distname")))
-  ll <- lFoo(attr(object, "ob"), w=attr(object,"weights"), params=object)
-  n <- length(attr(object, "ob"))
+  lFoo <- get(paste0("l", attributes(object)$distname))
+  ll <- lFoo(attributes(object)$ob, w=attributes(object)$weights, params=object)
+  n <- length(attributes(object)$ob)
   BIC <- 2*(-ll) + length(object) *log(n) 
   return(BIC)
 }
@@ -59,7 +60,7 @@ BIC.eDist <- function(object,...){
 #' @rdname eDist
 #' @export vcov.eDist
 vcov.eDist <- function(object,..., corr=FALSE){
-  vcov = solve(attr(object,"nll.hessian"))
+  vcov = solve(attributes(object)$nll.hessian)
   cor = cov2cor(vcov)
   if(corr){return(cor)} else {return(vcov)}
 }
@@ -67,12 +68,19 @@ vcov.eDist <- function(object,..., corr=FALSE){
 #' @rdname eDist
 #' @export print.eDist
 print.eDist <- function(x,...){
-  cat("\nParameters for the", attr(x,"distname"), "distribution. \n(found using the ", attr(x,"method"), "method.)\n\n")
-  print(data.frame(Parameter=attr(x,"par.name"), 
-                   Type=attr(x,"par.type"), 
-                   Estimate=attr(x,"par.vals"),
-                   S.E. = attr(x,"par.s.e") ), 
-        row.names=FALSE )
+  cat("\nParameters for the", attributes(x)$distname, "distribution. \n(found using the ", attributes(x)$method, "method.)\n\n")
+  if(any(is.na(attributes(x)$par.s.e))) {
+    print(data.frame(Parameter=attributes(x)$par.name, 
+                     Type=attributes(x)$par.type, 
+                     Estimate=attributes(x)$par.vals), 
+          row.names=FALSE )
+  } else {
+    print(data.frame(Parameter=attributes(x)$par.name, 
+                     Type=attributes(x)$par.type, 
+                     Estimate=attributes(x)$par.vals,
+                     S.E. = attributes(x)$par.s.e ), 
+          row.names=FALSE )
+  }
   cat("\n\n")
 }
 

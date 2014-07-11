@@ -31,7 +31,7 @@ weighted mle estimates.
 A general weighted maximum likelihood estimation function.
 }
 \details{
-Details
+Weighted Maximum Likelihood Estimation
 }
 \examples{
 \donttest{

@@ -1,42 +1,13 @@
-# standard Beta Distribution -----------------------------------------------------
+#' standard Beta Distribution
+#'
 #' @title The standard Beta Distribution.
 #' @description Density, distribution function, quantile function, random 
 #' generation function and parameter estimation function (based on weighted or 
 #' unweighted i.i.d. sample) for the Beta distribution 
 #' @rdname Beta
 #' @name Beta
-#' @aliases dBeta pBeta qBeta rBeta eBeta lBeta sBeta iBeta ebeta lBeta sbeta ibeta
-#' @details 
-#' \itemize{
-#'  \item{Probability density function:}
-#'  \deqn{f(x) = \frac{x^{\alpha-1}(1-x)^{\beta-1}} {\mathcal{B}(\alpha,\beta)}}
-#'  with \eqn{\alpha} and \eqn{\beta} two shape parameters and \eqn{\mathcal B} beta function
-#'  \item{Cumulative distribution function:}
-#'  \deqn{F(x) = \frac{\int_{0}^{x} y^{\alpha-1}(1-y)^{\beta-1}dy} {\mathcal{B}(\alpha,\beta)}
-#'  =\mathcal{B}(x; \alpha,\beta)} with \eqn{\mathcal B (x; \alpha,\beta)} being incomplete beta function.
-#'  \item{Log-likelihood function:}
-#'  \deqn{L(\alpha,\beta;X)=\sum_i\left[ (\alpha-1)\ln(x)+(\beta-1)\ln(1-x)-\ln \mathcal{B}(\alpha,\beta) \right]}
-#'  \item{Score function vector:}
-#'  \deqn{V(\mu,\sigma;X)
-#'  =\left( \begin{array}{c}
-#'  \frac{\partial L}{\partial \alpha}  \\
-#'  \frac{\partial L}{\partial \beta}
-#'  \end{array} \right)
-#'  =\sum_i
-#'  \left( \begin{array}{c}
-#'  \psi^{(0)}(\alpha+\beta)-\psi^{(0)}(\alpha)+\ln(x) \\
-#'  \psi^{(0)}(\alpha+\beta)-\psi^{(0)}(\beta)+\ln(x) 
-#'  \end{array} \right)
-#'  }
-#'  with \eqn{\psi^{(0)}} being log-gamma function.
-#'  \item{Observed information matrix:}
-#'  \deqn{\mathcal J (\mu,\sigma;X)=
-#'  \left( \begin{array}{cc}
-#'  \psi^{(1)}(\alpha)-\psi^{(1)}(\alpha+\beta) & -\psi^{(1)}(\alpha+\beta) \\
-#'  -\psi^{(1)}(\alpha+\beta) & \psi^{(1)}(\beta)-\psi^{(1)}(\alpha+\beta) \end{array} \right)
-#'  }
-#'  with \eqn{\psi^{(1)}} being digamma function.
-#' }
+#' @aliases dBeta pBeta qBeta rBeta eBeta lBeta sBeta iBeta
+#' @details See \href{../doc/Distributions-Beta.html}{Distributions-Beta}
 #' @param params a list includes all parameters
 #' @param x,q vector of quantiles.
 #' @param w weights of sample.
@@ -89,7 +60,7 @@
 #' (est.par <- eBeta(X, method = "numerical.MLE"))
 #' 
 #' # Extracting shape parameters
-#' est.par[attr(est.par,"par.type")=="shape"]
+#' est.par[attributes(est.par)$par.type=="shape"]
 #'  
 #' # evaluate the performance of the parameter estimation function by simulation
 #' eval.estimation(rdist=rBeta,edist=eBeta,n = 1000, rep.num = 1e3, 
@@ -100,7 +71,7 @@
 #' # evaluate the precision of estimation by Hessian matrix
 #' X <- rBeta(1000, shape1, shape2)
 #' (est.par <- eBeta(X))
-#' H <- attr(eBeta(X, method = "numerical.MLE"),"nll.hessian")
+#' H <- attributes(eBeta(X, method = "numerical.MLE"))$nll.hessian
 #' fisher_info <- solve(H)
 #' sqrt(diag(fisher_info))
 #' 
@@ -161,7 +132,7 @@ rBeta <-
 #' @rdname Beta
 #' @export eBeta
 eBeta <-     
-  function(X,w, method ="MOM"){
+  function(X,w, method ="numerical.MLE"){
     n <- length(X)
     if(missing(w)){
       w <- rep(1,n)
@@ -192,26 +163,26 @@ eBeta <-
                       initial=list(shape1 = 3, shape2 = 3),
                       lower=list(shape1 = 0, shape2 = 0),
                       upper=list(shape1 = Inf, shape2 = Inf))
-      est.par.se <- sqrt(diag(solve(attr(est.par,"nll.hessian"))))
+      
+      est.par.se <- try(sqrt(diag(solve(attributes(est.par)$nll.hessian))),silent=TRUE)
+      if(class(est.par.se) == "try-error") {
+        est.par.se <- rep(NA, length(est.par))
+      } 
     }
     
-    attr(est.par,"ob") <- X
-    attr(est.par,"weights") <- w
-    attr(est.par,"distname") <- "Beta"
-    attr(est.par,"method") <- method
-    attr(est.par,"par.name") <- c("shape1","shape2")
-    attr(est.par,"par.type") <- c("shape","shape")
-    attr(est.par,"par.vals") <- c(est.par$shape1, est.par$shape2)
-    attr(est.par,"par.s.e") <-  est.par.se  
+    attributes(est.par)$ob <- X
+    attributes(est.par)$weights <- w
+    attributes(est.par)$distname <- "Beta"
+    attributes(est.par)$method <- method
+    attributes(est.par)$par.name <- c("shape1","shape2")
+    attributes(est.par)$par.type <- c("shape","shape")
+    attributes(est.par)$par.vals <- c(est.par$shape1, est.par$shape2)
+    attributes(est.par)$par.s.e <-  est.par.se  
     
     class(est.par) <- "eDist"
     
     return(est.par)
   }
-
-#' @rdname Beta
-#' @export ebeta
-ebeta <- eBeta
 
 #' @rdname Beta
 #' @export lBeta
@@ -287,15 +258,3 @@ iBeta <-
     rownames(info) <- colnames(info) <- c("shape1","shape2")
     return(info)
   }
-
-#' @rdname Beta
-#' @export sbeta
-lbeta <- sBeta
-
-#' @rdname Beta
-#' @export sbeta
-sbeta <- sBeta
-
-#' @rdname Beta
-#' @export ibeta
-ibeta <- iBeta

@@ -1,40 +1,13 @@
-# Normal Distribution -----------------------------------------------------
+#' Normal Distribution
+#' 
 #' @title The Normal Distribution.
 #' @description Density, distribution function, quantile function, random 
 #' generation function and parameter estimation function (based on weighted or 
 #' unweighted i.i.d. sample) for the Normal distribution 
 #' @rdname Normal
 #' @name Normal
-#' @aliases dNormal pNormal qNormal rNormal eNormal lNormal sNormal iNormal enorm lnorm snorm inorm
-#' @details 
-#' \itemize{
-#'  \item{Density function:}
-#'  \deqn{f(x) = \frac 1 {\sqrt{2\pi}\sigma} e^{-((x - \mu)^2/(2 \sigma^2))}}
-#'  with \eqn{\mu} the mean of the distribution and \eqn{\sigma} the standard deviation.
-#'  \item{Log-likelihood function:}
-#'  \deqn{L(\mu,\sigma;X_i)=-\frac 1 2 \ln(2\pi)-\ln(\sigma)-\frac{1}{2\sigma^2}(X_i-\mu)^2}
-#'  \item{Score function vector:}
-#'  \deqn{V(\mu,\sigma;X_i)
-#'  =\left( \begin{array}{c}
-#'  \frac{\partial L}{\partial \mu}  \\
-#'  \frac{\partial L}{\partial \sigma}
-#'  \end{array} \right)
-#'  =\left( \begin{array}{c}
-#'  \frac {X_i-\mu}{\sigma^2} \\
-#'  \frac {(X_i-\mu)^2-\sigma^2}{\sigma^3} 
-#'  \end{array} \right)
-#'  }
-#'  \item{Observed information matrix:}
-#'  \deqn{\mathcal J (\mu,\sigma;X_i)=
-#'  -\left( \begin{array}{cc}
-#'   \frac{\partial^2 L}{\partial \mu^2} & \frac{\partial^2 L}{\partial \mu \partial \sigma} \\
-#'   \frac{\partial^2 L}{\partial \sigma \partial \mu} & \frac{\partial^2 L}{\partial \sigma^2} \end{array} \right)
-#'  =
-#'  \left( \begin{array}{cc}
-#'  \frac{1}{\sigma^2} & \frac{2(X_i-\mu)}{\sigma^3} \\
-#'  \frac{2(X_i-\mu)}{\sigma^3} & \frac{3(X_i-\mu)^2-\sigma^2}{\sigma^4} \end{array} \right)
-#'  }
-#' }
+#' @aliases dNormal pNormal qNormal rNormal eNormal lNormal sNormal iNormal
+#' @details See \href{../doc/Distributions-Normal.html}{Distributions-Normal}
 #' @param params a list includes all parameters
 #' @param x,q vector of quantiles.
 #' @param w weights of sample.
@@ -90,8 +63,8 @@
 #' mean(X); sd(X); sd(X)*sqrt((n-1)/n)
 #' 
 #' # Extracting location or scale parameters
-#' est.par[attr(est.par,"par.type")=="location"]
-#' est.par[attr(est.par,"par.type")=="scale"]
+#' est.par[attributes(est.par)$par.type=="location"]
+#' est.par[attributes(est.par)$par.type=="scale"]
 #' 
 #' # evaluate the performance of the parameter estimation function by simulation
 #' eval.estimation(rdist=rNormal,edist=eNormal,n = 1000, rep.num = 1e3, params = list(mean=1, sd=2))
@@ -101,7 +74,7 @@
 #' # evaluate the precision of estimation by Hessian matrix
 #' X <- rNormal(1000, mean, sd)
 #' (est.par <- eNormal(X))
-#' H <- attr(eNormal(X, method = "numerical.MLE"),"nll.hessian")
+#' H <- attributes(eNormal(X, method = "numerical.MLE"))$nll.hessian
 #' fisher_info <- solve(H)
 #' sqrt(diag(fisher_info))
 #' 
@@ -159,7 +132,7 @@ rNormal <-
 #' @rdname Normal
 #' @export eNormal
 eNormal <-     
-  function(X,w, method ="analytical.MLE"){
+  function(X,w, method ="numerical.MLE"){
     n <- length(X)
     if(missing(w)){
       w <- rep(1,n)
@@ -185,26 +158,26 @@ eNormal <-
                       initial=list(mean = 0, sd = 1),
                       lower=list(mean = -Inf, sd = 0),
                       upper=list(mean = Inf, sd = Inf))
-      est.par.se <- sqrt(diag(solve(attr(est.par,"nll.hessian"))))      
+      
+      est.par.se <- try(sqrt(diag(solve(attributes(est.par)$nll.hessian))),silent=TRUE)
+      if(class(est.par.se) == "try-error") {
+        est.par.se <- rep(NA, length(est.par))
+      } 
     }
     
-    attr(est.par,"ob") <- X
-    attr(est.par,"weights") <- w
-    attr(est.par,"distname") <- "Normal"
-    attr(est.par,"method") <- method
-    attr(est.par,"par.name") <- c("mean","sd")
-    attr(est.par,"par.type") <- c("location","scale")
-    attr(est.par,"par.vals") <- c(est.par$mean, est.par$sd)
-    attr(est.par,"par.s.e") <-  est.par.se  
-
+    attributes(est.par)$ob <- X
+    attributes(est.par)$weights <- w
+    attributes(est.par)$distname <- "Normal"
+    attributes(est.par)$method <- method
+    attributes(est.par)$par.name <- c("mean","sd")
+    attributes(est.par)$par.type <- c("location","scale")
+    attributes(est.par)$par.vals <- c(est.par$mean, est.par$sd)
+    attributes(est.par)$par.s.e <-  est.par.se  
+    
     class(est.par) <- "eDist"
     
     return(est.par)
   }
-
-#' @rdname Normal
-#' @export enorm
-enorm <- eNormal
 
 #' @rdname Normal
 #' @export lNormal
@@ -280,15 +253,3 @@ iNormal <-
     rownames(info) <- colnames(info) <- c("mean","sd")
     return(info)
   }
-
-#' @rdname Normal
-#' @export snorm
-lnorm <- sNormal
-
-#' @rdname Normal
-#' @export snorm
-snorm <- sNormal
-
-#' @rdname Normal
-#' @export inorm
-inorm <- iNormal

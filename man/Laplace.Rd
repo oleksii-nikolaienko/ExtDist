@@ -19,7 +19,7 @@ qLaplace(p, mu = 0, b = 1, params = list(mu, b))
 
 rLaplace(n, mu = 0, b = 1, params = list(mu, b))
 
-eLaplace(X, w, method = "analytical.MLE")
+eLaplace(X, w, method = "numerical.MLE")
 
 lLaplace(x, w = 1, mu = 0, b = 1, params = list(mu, b), logL = TRUE)
 }
@@ -58,6 +58,8 @@ and parameter estimation (e) functions for the Laplace distribution. Parameter e
 only be based on an unweighted i.i.d. sample.
 }
 \details{
+Laplace Distribution
+
 no details yet.
 }
 \note{
@@ -100,8 +102,8 @@ eLaplace(X) # estimated parameters of unweighted sample
 eLaplace(X, method="numerical.MLE")
 
 # Extracting location or scale parameters
-est.par[attr(est.par,"par.type")=="location"]
-est.par[attr(est.par,"par.type")=="scale"]
+est.par[attributes(est.par)$par.type=="location"]
+est.par[attributes(est.par)$par.type=="scale"]
 
 # evaluate the performance of the parameter estimation function by simulation
 eval.estimation(rdist=rLaplace,edist=eLaplace,n=1000, rep.num=1e3, params=list(mu=1, b=2))
@@ -111,7 +113,7 @@ method ="analytical.MLE")
 # evaluate the precision of estimation by Hessian matrix
 X <- rLaplace(1000, mu, b)
 (est.par <- eLaplace(X))
-H <- attr(eLaplace(X, method="numerical.MLE"),"nll.hessian")
+H <- attributes(eLaplace(X, method="numerical.MLE"))$nll.hessian
 fisher_info <- solve(H)
 sqrt(diag(fisher_info))
 
@@ -122,8 +124,5 @@ lLaplace(X,param=est.par, logL=FALSE)
 }
 \author{
 A. Jonathan R. Godfrey and Haizhen Wu
-}
-\references{
-Chapter xx of Johnson and Kotz
 }
 

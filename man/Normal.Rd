@@ -3,16 +3,12 @@
 \alias{Normal}
 \alias{dNormal}
 \alias{eNormal}
-\alias{enorm}
 \alias{iNormal}
-\alias{inorm}
 \alias{lNormal}
-\alias{lnorm}
 \alias{pNormal}
 \alias{qNormal}
 \alias{rNormal}
 \alias{sNormal}
-\alias{snorm}
 \title{The Normal Distribution.}
 \usage{
 dNormal(x, mean = 0, sd = 1, params = list(mean, sd))
@@ -23,21 +19,13 @@ qNormal(p, mean = 0, sd = 1, params = list(mean, sd))
 
 rNormal(n, mean = 0, sd = 1, params = list(mean, sd))
 
-eNormal(X, w, method = "analytical.MLE")
-
-enorm(X, w, method = "analytical.MLE")
+eNormal(X, w, method = "numerical.MLE")
 
 lNormal(X, w, mean = 0, sd = 1, params = list(mean, sd), logL = TRUE)
 
 sNormal(X, w, mean = 0, sd = 1, params = list(mean, sd))
 
 iNormal(X, w, mean = 0, sd = 1, params = list(mean, sd))
-
-lnorm(X, w, mean = 0, sd = 1, params = list(mean, sd))
-
-snorm(X, w, mean = 0, sd = 1, params = list(mean, sd))
-
-inorm(X, w, mean = 0, sd = 1, params = list(mean, sd))
 }
 \arguments{
 \item{params}{a list includes all parameters}
@@ -73,34 +61,9 @@ generation function and parameter estimation function (based on weighted or
 unweighted i.i.d. sample) for the Normal distribution
 }
 \details{
-\itemize{
- \item{Density function:}
- \deqn{f(x) = \frac 1 {\sqrt{2\pi}\sigma} e^{-((x - \mu)^2/(2 \sigma^2))}}
- with \eqn{\mu} the mean of the distribution and \eqn{\sigma} the standard deviation.
- \item{Log-likelihood function:}
- \deqn{L(\mu,\sigma;X_i)=-\frac 1 2 \ln(2\pi)-\ln(\sigma)-\frac{1}{2\sigma^2}(X_i-\mu)^2}
- \item{Score function vector:}
- \deqn{V(\mu,\sigma;X_i)
- =\left( \begin{array}{c}
- \frac{\partial L}{\partial \mu}  \\
- \frac{\partial L}{\partial \sigma}
- \end{array} \right)
- =\left( \begin{array}{c}
- \frac {X_i-\mu}{\sigma^2} \\
- \frac {(X_i-\mu)^2-\sigma^2}{\sigma^3}
- \end{array} \right)
- }
- \item{Observed information matrix:}
- \deqn{\mathcal J (\mu,\sigma;X_i)=
- -\left( \begin{array}{cc}
-  \frac{\partial^2 L}{\partial \mu^2} & \frac{\partial^2 L}{\partial \mu \partial \sigma} \\
-  \frac{\partial^2 L}{\partial \sigma \partial \mu} & \frac{\partial^2 L}{\partial \sigma^2} \end{array} \right)
- =
- \left( \begin{array}{cc}
- \frac{1}{\sigma^2} & \frac{2(X_i-\mu)}{\sigma^3} \\
- \frac{2(X_i-\mu)}{\sigma^3} & \frac{3(X_i-\mu)^2-\sigma^2}{\sigma^4} \end{array} \right)
- }
-}
+Normal Distribution
+
+See \href{../doc/Distributions-Normal.html}{Distributions-Normal}
 }
 \examples{
 \donttest{
@@ -140,8 +103,8 @@ eNormal(X, method = "bias.adjusted.MLE")
 mean(X); sd(X); sd(X)*sqrt((n-1)/n)
 
 # Extracting location or scale parameters
-est.par[attr(est.par,"par.type")=="location"]
-est.par[attr(est.par,"par.type")=="scale"]
+est.par[attributes(est.par)$par.type=="location"]
+est.par[attributes(est.par)$par.type=="scale"]
 
 # evaluate the performance of the parameter estimation function by simulation
 eval.estimation(rdist=rNormal,edist=eNormal,n = 1000, rep.num = 1e3, params = list(mean=1, sd=2))
@@ -151,7 +114,7 @@ method ="analytical.MLE")
 # evaluate the precision of estimation by Hessian matrix
 X <- rNormal(1000, mean, sd)
 (est.par <- eNormal(X))
-H <- attr(eNormal(X, method = "numerical.MLE"),"nll.hessian")
+H <- attributes(eNormal(X, method = "numerical.MLE"))$nll.hessian
 fisher_info <- solve(H)
 sqrt(diag(fisher_info))
 

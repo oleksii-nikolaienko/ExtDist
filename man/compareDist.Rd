@@ -8,7 +8,8 @@ compareDist(X, Dist1, Dist2 = NULL, Dist3 = NULL)
 \arguments{
 \item{X}{- the (unweighted) sample}
 
-\item{Dist1,Dist2,Dist3}{- the eDist objects or names of the distribution to be fitted.}
+\item{Dist1,Dist2,Dist3}{- the eDist objects or names of the distribution to
+be fitted.}
 }
 \description{
 A method to Compare sample and fitted distributions

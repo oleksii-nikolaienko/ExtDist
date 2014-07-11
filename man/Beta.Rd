@@ -3,16 +3,12 @@
 \alias{Beta}
 \alias{dBeta}
 \alias{eBeta}
-\alias{ebeta}
 \alias{iBeta}
-\alias{ibeta}
 \alias{lBeta}
-\alias{lbeta}
 \alias{pBeta}
 \alias{qBeta}
 \alias{rBeta}
 \alias{sBeta}
-\alias{sbeta}
 \title{The standard Beta Distribution.}
 \usage{
 dBeta(x, shape1 = 2, shape2 = 3, params = list(shape1, shape2))
@@ -23,9 +19,7 @@ qBeta(p, shape1 = 2, shape2 = 3, params = list(shape1, shape2))
 
 rBeta(n, shape1 = 2, shape2 = 3, params = list(shape1, shape2))
 
-eBeta(X, w, method = "MOM")
-
-ebeta(X, w, method = "MOM")
+eBeta(X, w, method = "numerical.MLE")
 
 lBeta(X, w, shape1 = 2, shape2 = 3, params = list(shape1, shape2),
   logL = TRUE)
@@ -33,12 +27,6 @@ lBeta(X, w, shape1 = 2, shape2 = 3, params = list(shape1, shape2),
 sBeta(X, w, shape1 = 2, shape2 = 3, params = list(shape1, shape2))
 
 iBeta(X, w, shape1 = 2, shape2 = 3, params = list(shape1, shape2))
-
-lbeta(X, w, shape1 = 2, shape2 = 3, params = list(shape1, shape2))
-
-sbeta(X, w, shape1 = 2, shape2 = 3, params = list(shape1, shape2))
-
-ibeta(X, w, shape1 = 2, shape2 = 3, params = list(shape1, shape2))
 }
 \arguments{
 \item{params}{a list includes all parameters}
@@ -72,36 +60,9 @@ generation function and parameter estimation function (based on weighted or
 unweighted i.i.d. sample) for the Beta distribution
 }
 \details{
-\itemize{
- \item{Probability density function:}
- \deqn{f(x) = \frac{x^{\alpha-1}(1-x)^{\beta-1}} {\mathcal{B}(\alpha,\beta)}}
- with \eqn{\alpha} and \eqn{\beta} two shape parameters and \eqn{\mathcal B} beta function
- \item{Cumulative distribution function:}
- \deqn{F(x) = \frac{\int_{0}^{x} y^{\alpha-1}(1-y)^{\beta-1}dy} {\mathcal{B}(\alpha,\beta)}
- =\mathcal{B}(x; \alpha,\beta)} with \eqn{\mathcal B (x; \alpha,\beta)} being incomplete beta function.
- \item{Log-likelihood function:}
- \deqn{L(\alpha,\beta;X)=\sum_i\left[ (\alpha-1)\ln(x)+(\beta-1)\ln(1-x)-\ln \mathcal{B}(\alpha,\beta) \right]}
- \item{Score function vector:}
- \deqn{V(\mu,\sigma;X)
- =\left( \begin{array}{c}
- \frac{\partial L}{\partial \alpha}  \\
- \frac{\partial L}{\partial \beta}
- \end{array} \right)
- =\sum_i
- \left( \begin{array}{c}
- \psi^{(0)}(\alpha+\beta)-\psi^{(0)}(\alpha)+\ln(x) \\
- \psi^{(0)}(\alpha+\beta)-\psi^{(0)}(\beta)+\ln(x)
- \end{array} \right)
- }
- with \eqn{\psi^{(0)}} being log-gamma function.
- \item{Observed information matrix:}
- \deqn{\mathcal J (\mu,\sigma;X)=
- \left( \begin{array}{cc}
- \psi^{(1)}(\alpha)-\psi^{(1)}(\alpha+\beta) & -\psi^{(1)}(\alpha+\beta) \\
- -\psi^{(1)}(\alpha+\beta) & \psi^{(1)}(\beta)-\psi^{(1)}(\alpha+\beta) \end{array} \right)
- }
- with \eqn{\psi^{(1)}} being digamma function.
-}
+standard Beta Distribution
+
+See \href{../doc/Distributions-Beta.html}{Distributions-Beta}
 }
 \examples{
 \donttest{
@@ -139,7 +100,7 @@ eBeta(X) # estimated parameters of unweighted sample
 (est.par <- eBeta(X, method = "numerical.MLE"))
 
 # Extracting shape parameters
-est.par[attr(est.par,"par.type")=="shape"]
+est.par[attributes(est.par)$par.type=="shape"]
 
 # evaluate the performance of the parameter estimation function by simulation
 eval.estimation(rdist=rBeta,edist=eBeta,n = 1000, rep.num = 1e3,
@@ -150,7 +111,7 @@ params = list(shape1=2, shape2=5), method ="MOM")
 # evaluate the precision of estimation by Hessian matrix
 X <- rBeta(1000, shape1, shape2)
 (est.par <- eBeta(X))
-H <- attr(eBeta(X, method = "numerical.MLE"),"nll.hessian")
+H <- attributes(eBeta(X, method = "numerical.MLE"))$nll.hessian
 fisher_info <- solve(H)
 sqrt(diag(fisher_info))
 
