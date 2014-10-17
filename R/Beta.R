@@ -161,7 +161,7 @@ eBeta <-
       
       est.par <- wmle(X=X, w=w, distname = "Beta",
                       initial=list(shape1 = 3, shape2 = 3),
-                      lower=list(shape1 = 0, shape2 = 0),
+                      lower=list(shape1 = 1, shape2 = 1),
                       upper=list(shape1 = Inf, shape2 = Inf))
       
       est.par.se <- try(sqrt(diag(solve(attributes(est.par)$nll.hessian))),silent=TRUE)

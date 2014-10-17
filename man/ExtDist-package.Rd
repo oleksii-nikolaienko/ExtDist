@@ -14,26 +14,48 @@ The package provides a consistent, unified and extensible
 \details{
 \tabular{ll}{
 Package: \tab ExtDist\cr
-Version: \tab 0.3.3\cr
+Version: \tab 0.3.7\cr
 License: \tab GPL (>= 2)\cr
 Imports: \tab 
 numDeriv,
 optimx,
-matrixcalc\cr
+VGAM,
+SuppDists,
+truncdist\cr
 Suggests: \tab 
-knitr\cr
+knitr,
+ggplot2,
+xtable,
+PerformanceAnalytics\cr
 Roxygen: \tab list(wrap = FALSE)\cr
 VignetteBuilder: \tab knitr\cr
-Built: \tab R 3.1.0; ; 2014-07-11 04:55:47 UTC; unix\cr
+Built: \tab R 3.1.1; ; 2014-10-17 03:52:27 UTC; unix\cr
 }
 
 Index:
 \preformatted{
 Beta                    The standard Beta Distribution.
-Beta.ab                 The four-Parameter beta Distribution.
+Beta_ab                 The four-Parameter beta Distribution.
+Burr                    The Burr's Distribution.
+DistSelCriteriaValues   Distribution Selection Criteria Values.
 ExtDist-package         Extended Probability Distribution Functions
+Gamma                   The Gamma Distribution.
+Gumbel                  The Gumbel Distribution.
+JohnsonSB               The Johnson SB Distribution.
+JohnsonSU               The Johnson SU Distribution.
 Laplace                 The Laplace Distribution.
+Logistic                The Logistic Distribution.
 Normal                  The Normal Distribution.
+Normal_sym_trunc_ab     The symmetric truncated normal distribution.
+Normal_trunc_ab         The truncated normal distribution.
+SRTB_ab                 The Symmetric-Reflected Truncated Beta (SRTB)
+                        Distribution.
+SSRTB                   The standard Symmetric-Reflected Truncated Beta
+                        (SRTB) Distribution.
+Triangular              The Triangular Distribution.
+Uniform                 The Uniform Distribution.
+Weibull                 The Weibull Distribution.
+bestDist                Best distribution for (weighted) sample.
 compareDist             Compare sample and fitted distributions
 eDist                   S3 methods from manuplating eDist objects.
 eval.estimation         Parameter Estimation Evaluation.
@@ -42,9 +64,10 @@ wmle                    Weighted Maximum Likelihood Estimation.
 
 Further information is available in the following vignettes:
 \tabular{ll}{
-\code{Distributions-Beta} \tab Distributions-Beta (source, pdf)\cr
-\code{Distributions-Normal} \tab Distributions-Normal (source, pdf)\cr
-\code{Distributions} \tab Distributions-Index (source, pdf)\cr
+\code{Distributions-Beta} \tab Distributions-Beta (source)\cr
+\code{Distributions-Normal} \tab Distributions-Normal (source)\cr
+\code{Distributions} \tab Distributions-Index (source)\cr
+\code{ParaEst-and-DistSel-by-ExtDist} \tab Parameter-Estimation-and-Distribution-Selection-by-ExtDist (source)\cr
 }
 }
 \author{

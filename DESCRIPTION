@@ -1,5 +1,5 @@
 Package: ExtDist
-Version: 0.3.3
+Version: 0.3.7
 License: GPL (>= 2)
 Title: Extended Probability Distribution Functions
 Description: The package provides a consistent, unified and extensible
@@ -10,10 +10,10 @@ Author: Haizhen Wu <h.wu2@massey.ac.nz>,
     A. Jonathan R. Godfrey <A.J.Godfrey@massey.ac.nz>,
     Kondaswamy Govindaraju <k.govindaraju@massey.ac.nz>
 Maintainer: Haizhen Wu <h.wu2@massey.ac.nz>
-Imports: numDeriv, optimx, matrixcalc
-Suggests: knitr
+Imports: numDeriv, optimx, VGAM, SuppDists, truncdist
+Suggests: knitr, ggplot2, xtable, PerformanceAnalytics
 VignetteBuilder: knitr
-Packaged: 2014-07-11 05:00:53 UTC; wuhaiz
+Packaged: 2014-10-17 08:10:46 UTC; Haizhen Wu
 NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2014-07-11 08:25:01
+Date/Publication: 2014-10-17 13:05:48

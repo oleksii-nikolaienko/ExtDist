@@ -4,7 +4,7 @@
 #' @description S3 methods from manuplating eDist objects
 #' @rdname eDist
 #' @name eDist
-#' @aliases logLik.eDist AIC.eDist BIC.eDist vcov.eDist print.eDist
+#' @aliases logLik.eDist AIC.eDist AICc.eDist BIC.eDist MDL.eDist vcov.eDist print.eDist
 
 #' @param object,x a eDist object, which is the output of the parameter estimation functions.
 #' @param ... other parameters
@@ -13,7 +13,9 @@
 #' or not.
 #' @method logLik eDist
 #' @method AIC eDist
+#' @method AICc eDist
 #' @method BIC eDist
+#' @method MDL eDist
 #' @method print eDist
 #' @method vcov eDist
 
@@ -24,7 +26,9 @@
 #' est.par <- eNormal(X, method ="numerical.MLE")
 #' logLik(est.par)
 #' AIC(est.par)
+#' AICc(est.par)
 #' BIC(est.par)
+#' MDL(est.par)
 #' vcov(est.par)
 #' vcov(est.par,corr=TRUE)
 #' print(est.par)
@@ -40,11 +44,28 @@ logLik.eDist <- function(object,...){
 
 #' @rdname eDist
 #' @export AIC.eDist
-AIC.eDist <- function(object,..., k = 2){
+AIC.eDist <- function(object,..., k=2){
   lFoo <- get(paste0("l", attributes(object)$distname))
   ll <- lFoo(attributes(object)$ob, w=attributes(object)$weights, params=object)
-  AIC <- k*(-ll + length(object))
+  p <- length(object)
+  AIC <- k*(-ll + p)
   return(AIC)
+}
+
+
+#' @rdname eDist
+#' @export AICc
+AICc <- function(object) UseMethod("AICc")
+
+#' @rdname eDist
+#' @export AICc.eDist
+AICc.eDist <- function(object,...){
+  lFoo <- get(paste0("l", attributes(object)$distname))
+  ll <- lFoo(attributes(object)$ob, w=attributes(object)$weights, params=object)
+  p <- length(object) #number of paramters
+  n <- length(attributes(object)$ob)
+  AICc <- 2*(-ll + p + p*(p+1)/(n-p-1))
+  return(AICc)
 }
 
 #' @rdname eDist
@@ -64,6 +85,26 @@ vcov.eDist <- function(object,..., corr=FALSE){
   cor = cov2cor(vcov)
   if(corr){return(cor)} else {return(vcov)}
 }
+
+#' @references Myung, I. (2000). The Importance of Complexity in Model Selection. 
+#' Journal of mathematical psychology, 44(1), 190-204.
+
+#' @rdname eDist
+#' @export MDL
+MDL <- function(object) UseMethod("MDL")
+
+#' @rdname eDist
+#' @export MDL.eDist
+MDL.eDist <- function(object,...){
+  lFoo <- get(paste0("l", attributes(object)$distname))
+  ll <- lFoo(attributes(object)$ob, w=attributes(object)$weights, params=object)  
+  nll.hessian <- attributes(object)$nll.hessian
+  MDL = ifelse(all(is.finite(nll.hessian)),
+               -ll + 1/2*log(abs(det(attributes(object)$nll.hessian))),
+               NA)
+  return(MDL)
+}
+
 
 #' @rdname eDist
 #' @export print.eDist

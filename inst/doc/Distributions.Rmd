@@ -1,9 +1,8 @@
 <!--
-%\VignetteEngine{knitr}
+%\VignetteEngine{knitr::rmarkdown}
 %\VignetteIndexEntry{Distributions-Index}
 \usepackage{amsmath,amssymb}
 -->
-
 
 Distributions in ExtDist package
 ========================================================

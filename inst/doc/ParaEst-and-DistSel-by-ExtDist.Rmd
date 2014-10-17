@@ -1,0 +1,151 @@
+---
+title: "Parameter estimation and distribution selection by ExtDist"
+author: "Haizhen Wu and A. Jonathan R. Godfrey"
+affiliation: "Massey University"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::pdf_document:
+    includes:
+      in_header: header.tex
+bibliography: bibliography.bib
+vignette: >
+  %\VignetteIndexEntry{Parameter-Estimation-and-Distribution-Selection-by-ExtDist}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+# Introduction
+Parameter estimation and distribution selections are common tasks in statistical analysis. For example, in the context of variables acceptance sampling [see @Wu.Govindaraju.2014 etc.], when the underlying distribution model of the quality characteristic is determined, the estimated quality of a product batch, which is measured by the proportiong nonconforming, is computed through the estimated parameter(s) of the underlying distribution based on a sample; on the other hand, if a collection of candidate distributions are considered to be eligible distributions, and when want to know which one can best describle the avaialbe data, then distribution selection functionality becomes necessary . 
+
+The \CRANpkg{ExtDist} is devoted to provide a consistent and unified framework for these tasks.
+
+```{r, message=FALSE}
+require(ExtDist)
+```
+
+# Parameter Estimation
+Suppose we have a set of data, which is deemed generated from a Weibull distributed population,
+```{r, echo=FALSE, message=FALSE}
+set.seed(1234)
+X <- rWeibull(50, shape = 2, scale = 3)
+```
+```{r}
+head(X)
+```
+It is possible we write a bunch of code to achieve a MLE estimation to the data. However, it is more convenient to use a single function to achieve this task.
+```{r}
+(est.par <- eWeibull(X))
+```
+
+The $e-$ prefix we introduced in \CRANpkg{ExtDist} is a logical extension to the $d-$, $p-$, $q-$, $r-$ prefixes of the distribution-related functions in R base package. Moreover, the output of $e-$ functions is defined as a S3 class object
+```{r}
+class(est.par)
+```
+
+The "eDist" object can be easily pluged into other $d-$, $p-$, $q-$, $r-$ functions in \CRANpkg{ExtDist} to get the density, pencitile, quantile and random variables for distribution with estimated paramters. 
+```{r}
+dWeibull(seq(0,2,0.4), params = est.par)
+pWeibull(seq(0,2,0.4), params = est.par)
+qWeibull(seq(0,1,0.2), params = est.par)
+rWeibull(10, params = est.par)
+```
+
+To compatible with the convention, these functions also accept the paramters as individual argument, hence the following code are also eligible.
+```{r, results='hold'}
+dWeibull(seq(0,2,0.4), shape = est.par$shape, scale = est.par$scale)
+pWeibull(seq(0,2,0.4), shape = est.par$shape, scale = est.par$scale)
+qWeibull(seq(0,1,0.2), shape = est.par$shape, scale = est.par$scale)
+rWeibull(10, shape = est.par$shape, scale = est.par$scale)
+```
+
+The unified framework in \CRANpkg{ExtDist} can help to construct functions/procedures with distributions becoming an argument. For example, if we want to construnct a function which can disply necessary results and plots of the parameter estimation, we can construct the follwoing function,
+```{r}
+fit_Dist <- function(X, Dist){
+  l <- min(X); u <- max(X); d <- u-l; n <- length(X)
+  
+  est.par <- get(paste0("e",Dist))(X)
+  dDist <- function(X) get(paste0("d",Dist))(X,param = est.par)
+  pDist <- function(X) get(paste0("p",Dist))(X,param = est.par)
+  qDist <- function(X) get(paste0("q",Dist))(X,param = est.par)
+
+  op <- par(mfrow=c(2,2)) 
+  PerformanceAnalytics::textplot(capture.output(print(est.par)), valign = "top")
+
+  hist(X, col="red", probability=TRUE, xlim=c(l-0.1*d,u+0.1*d))
+  curve(dDist, add=TRUE, col="blue", lwd=2)
+  
+  plot(qDist((1:n-0.5)/n), sort(X), main="Q-Q Plot", xlim = c(l,u), ylim = c(l,u), 
+       xlab="Theoretical Quantiles", ylab="Sample Quantiles")
+  abline(0,1)
+
+  plot((1:n-0.5)/n, pDist(sort(X)), main="P-P Plot", xlim = c(0,1), ylim = c(0,1),
+       xlab="Theoretical Percentile", ylab="Sample Percentile")
+  abline(0,1)
+  
+  par(op)
+}
+```
+which can be used for aribitory data and distributions.
+```{r}
+X <- rBeta(100,2,5)
+fit_Dist(X, "Beta")
+```
+
+# Distribution selection
+As a S3 class object, several S3 methods have been developed in \CRANpkg{ExtDist} to extract the distribution selection criteria and other relavent information.
+```{r}
+logLik(est.par) # log likihood
+AIC(est.par) # Akaike information criterion
+AICc(est.par) # corrected Akaike information criterion
+BIC(est.par) # Bayesian Information Criterion. 
+MDL(est.par) # minimum description length 
+vcov(est.par) # variance-covariance matrix of the parameters of the fitted distribution
+```
+
+Based on these criteria, for any sample, the best fitting distribution can be obtained from a list of candidate distributions.
+```{r}
+set.seed(1234)
+X <- rBeta(50, shape1 = 2, shape2 = 10 )
+bestDist(X, candDist = c("Beta_ab","Laplace","Normal"), criterion = "AIC")
+```
+
+When some time multiple crietia results are of interest for a list of candition distribution, a summary table can be output by using function DistSelCriteriaValues.
+```{r}
+set.seed(1234)
+X <- rBeta(50, shape1 = 2, shape2 = 10 )
+DistSelCriteriaValues(X, candDist = c("Beta_ab","Laplace","Normal"),
+                         criteria = c("logLik","AIC","AICc","BIC","MDL"))
+```
+
+# Weighted sample
+Another notable feature of the \CRANpkg{ExtDist} is that it can deal with weighted sample. In tranditional statisitical analysis, the sample are usually unweighted and the parameter estimation and distribution selection of tranditional functions do not have capibility of dealing with these problem under weighted sample situation. 
+
+The weighted sample, however, appear in many contexts, e.g.: in non-parametric and semi-parametric deconvolution [see e.g. @Hazelton.Turlach.2010 etc.] the deconvoluted distribution can be represented as a pair $(Y,w)$ where $w$ is a vector of weights with same length as $Y$; in size-biased (unequal probability) sampling, the true population is more appropriately described by the weighted (with reciprocal of the inclusion probability as weights) observations rather than the observations themselves; in Bayesian inferences, the posterior distribution can be regarded as a weighted version of the prior distribution; the weighted distributions can also play an interesting role in stochastic population dynamics.
+
+In \CRANpkg{ExtDist}, the parameter estiamtion was conducted by maximum weighted likelihood estimation, with the estimate $\hat{\boldsymbol{\theta}}$ of $\boldsymbol{\theta}$ being defined by
+\begin{align}\label{eq:1}
+\hat{\boldsymbol{\theta}}^{w}=\arg\max_{\boldsymbol{\theta}}\sum_{i=1}^n w_i\ln f(Y_i;\boldsymbol{\theta}),
+\end{align}
+where $f$ is the density function of the ditstribution to be fitted.
+
+For example, for a weighted sample with 
+```{r}
+Y <- c(0.1703, 0.4307, 0.6085, 0.0503, 0.4625, 0.479, 0.2695, 0.2744, 0.2713, 0.2177, 
+       0.2865, 0.2009, 0.2359, 0.3877, 0.5799, 0.3537, 0.2805, 0.2144, 0.2261, 0.4016)
+w <- c(0.85, 1.11, 0.88, 1.34, 1.01, 0.96, 0.86, 1.34, 0.87, 1.34, 0.84, 0.84, 0.83, 1.09, 
+       0.95, 0.77, 0.96, 1.24, 0.78, 1.12)
+```
+the parameter estiamtion and distribution selection for weighted samples can be achieved by including the extra argument $w$:
+```{r}
+eBeta(Y,w)
+
+bestDist(Y, w, candDist = c("Beta_ab","Laplace","Normal"), criterion = "AIC")
+
+DistSelCriteriaValues(Y, w, candDist = c("Beta_ab","Laplace","Normal"),
+                         criteria = c("logLik","AIC","AICc","BIC","MDL"))
+```
+
+# References
+
+
+
+

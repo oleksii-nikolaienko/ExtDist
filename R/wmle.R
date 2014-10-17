@@ -1,8 +1,8 @@
 #' Weighted Maximum Likelihood Estimation 
 #' @title Weighted Maximum Likelihood Estimation.
 #' @importFrom numDeriv grad
+#' @importFrom numDeriv hessian
 #' @importFrom optimx optimx
-#' @importFrom matrixcalc is.positive.definite
 #' @description A general weighted maximum likelihood estimation function.
 #' @rdname wmle
 #' @name wmle
@@ -130,7 +130,9 @@ wmle <-
       w <- rep(1,n)
     }
     w <- n*w/sum(w)
+    par.name <- names(initial)
     
+    # prepare log-likelihood function (ll)
     if(!missing(loglik.fn)){
       ll <- function(params) {loglik.fn(X,w,params=as.list(params))}      
     } else {
@@ -148,6 +150,7 @@ wmle <-
     }
     nll <- function(par) {-ll(as.list(par))}
     
+    # prepare gradient of log-likelihood function (ll.gr, score function)
     if(!missing(score.fn)){
       gr <- TRUE
       ll.gr <- function(params) {score.fn(X,w,params=params)}
@@ -163,6 +166,7 @@ wmle <-
       }
     } 
     
+    # prepare hessian of log-likelihood function (ll.hess, score function)
     if(!missing(obs.info.fn)){
       hess <- TRUE
       ll.hess <- function(params) {-obs.info.fn(X,w,params=params)}
@@ -178,8 +182,7 @@ wmle <-
       }
     } 
     
-    par.name <- names(initial)
-    
+    # transform parameter space
     # set rules to transform all bounded intervals to whole real line
     num.par <- max(length(lower),length(upper))
     trans.fn <- vector("list",num.par)
@@ -237,22 +240,30 @@ wmle <-
       }
     }
     
-    # trans.initial - transformed initial point
-    trans.initial <- initial
-    for(k in 1:num.par) {
-      trans.initial[[k]] <- trans.fn[[k]](as.numeric(initial[[k]]))
-      if(!is.finite(trans.initial[[k]])) trans.initial[[k]] <- 0
+    # function transform point from original parameter space to transformed space
+    do.call.list <- function(what, args,...) {do.call(what=what,args=list(args),...)}
+    trans.par.fn <- function(point){
+      out <- mapply(do.call.list, trans.fn, point)
+      names(out) <- names(unlist(point))
+      return(as.list(out))
     }
+    #     trans.par.fn(initial)
+    #     trans.par.fn(unlist(initial))
+    
+    # trans.initial - transformed initial point
+    trans.initial <- trans.par.fn(initial)
+    
+    # function transform point from transformed parameter space to original space
+    inv.trans.par.fn <- function(point){
+      out <- mapply(do.call.list, inv.trans.fn, point)
+      names(out) <- names(unlist(point))
+      return(as.list(out))
+    }
+    #     inv.trans.par.fn(trans.initial)
+    #     inv.trans.par.fn(unlist(trans.initial))
     
     # log-likelihood function for transformed parameters    
-    trans.ll <- function(trans.arg) { 
-      inv.trans.arg <- vector("list",length = num.par)
-      for(k in 1:num.par){
-        inv.trans.arg[[k]] <- as.numeric(inv.trans.fn[[k]](trans.arg[[k]]))
-      }
-      names(inv.trans.arg) <- names(initial)
-      return(ll(params = as.list(inv.trans.arg)))
-    }
+    trans.ll <- function(trans.arg) { return(ll(inv.trans.par.fn(trans.arg)))}
     trans.nll <- function(trans.arg) {-trans.ll(trans.arg)}
     
     
@@ -290,208 +301,86 @@ wmle <-
       
     }
     
-    approx.est.par <- NULL
-    ## default - use nlm
-    if(gr == TRUE){
-      if(hess == TRUE) {
-        f <- function(trans.arg) {
-          res <- trans.nll(trans.arg)
-          attr(res, "gradient") <- trans.nll.gr(trans.arg)
-          attr(res, "hessian") <- trans.nll.hess(trans.arg)
-          return(res)
-        } 
-        #         rst <- nlm(f, p=unlist(trans.initial), hessian=TRUE)
-        rst <- try(suppressWarnings(nlm(f, p=unlist(trans.initial), hessian=TRUE)))
-      } else {
-        f <- function(trans.arg) {
-          res <- trans.nll(trans.arg)
-          attr(res, "gradient") <- trans.nll.gr(trans.arg)
-          return(res)
-        } 
-        rst <- try(suppressWarnings(nlm(f, p=unlist(trans.initial), hessian=TRUE)))
-      }
-    } else {
-      f <- function(trans.arg) {
-        res <- trans.nll(trans.arg)
-        return(res)
-      } 
-      rst <- try(suppressWarnings(nlm(f, p=unlist(trans.initial), hessian=TRUE)))
-    }
+    ## maximize ll (minimize nll)
+    available.methods <- c("BFGS", "CG", "Nelder-Mead", "L-BFGS-B", "nlm", "nlminb")
     
-    if(any(class(rst)!="try-error")){      
-      if(any(rst$code == c(1,2,3))) {
-        trans.est.par <- rst$estimate
-        est.par <- NULL
-        deriv <- NULL
-        dd <- NULL
-        for(k in 1:num.par) {
-          est.par[k] <- inv.trans.fn[[k]](trans.est.par[[k]])
-          deriv[k] <- trans.fn.deriv[[k]](est.par[k])
-          dd[k] <- trans.fn.dd[[k]](est.par[k])
-        }
-        names(est.par) <- par.name
-        est.par <- as.list(est.par)
-        
-        # rst$gradient == trans.nll.gr(trans.est.par)
-        # rst$hessian == trans.nll.hess(trans.est.par)
-        
-        #         hessian <- -rst$hessian * deriv%*%t(deriv)
-        nll.gr <- rst$gradient*deriv
-        nll.hessian <- diag(rst$gradient*dd) + rst$hessian * (deriv%*%t(deriv))        
-        
-        colnames(nll.hessian) <- rownames(nll.hessian) <- par.name
-        
-        attributes(est.par)$nll.hessian <- nll.hessian
-        attributes(est.par)$nll.gr <- nll.gr
-        attributes(est.par)$nll <- rst$minimum
-        
-        attributes(est.par)$optim.fn <- "nlm"
-        
-        if(any(rst$code == c(1,2)) & matrixcalc::is.positive.definite(nll.hessian)) {
-          attributes(est.par)$convergence <- 0; return(est.par)
+    convergence <- FALSE
+    approx.rst.list <- NULL
+    for(method in available.methods) {
+      if(gr == TRUE){
+        if(hess == TRUE) {
+          rst <- try(suppressWarnings(optimx::optimx( par=unlist(trans.initial), fn=trans.nll, 
+                                                      gr=trans.nll.gr, hess=trans.nll.hess,
+                                                      method = method, hessian = TRUE)))
         } else {
-          approx.est.par[[1]] <- est.par
+          rst <- try(suppressWarnings(optimx::optimx( par=unlist(trans.initial), fn=trans.nll, 
+                                                      gr=trans.nll.gr, 
+                                                      method = method, hessian = TRUE)))
         }
-      }
-    }
-    
-    ## optim
-    hess <- FALSE
-    if(gr == TRUE){
-      rst <- try(suppressWarnings(optim( par=unlist(trans.initial), fn=trans.nll, gr=trans.nll.gr, hessian = TRUE)))
-    } else {
-      rst <- try(suppressWarnings(optim( par=unlist(trans.initial), fn=trans.nll, hessian = TRUE)))
-    }
-    
-    if(any(class(rst)!="try-error")){
-      if( any(rst$convergence == c(0,1)) ) {
-        if(!any(is.na(rst$par),is.na(rst$hessian))) {
-          trans.est.par <- rst$par
-          est.par <- NULL
-          deriv <- NULL
-          dd <- NULL
-          for(k in 1:num.par) {
-            est.par[k] <- inv.trans.fn[[k]](trans.est.par[[k]])
-            deriv[k] <- trans.fn.deriv[[k]](est.par[k])
-            dd[k] <- trans.fn.dd[[k]](est.par[k])
-          }
-          names(est.par) <- par.name
-          est.par <- as.list(est.par)
-          
-          if(exists("trans.nll.gr", mode = "function")) {
-            rst <- c(rst, list(gradient = trans.nll.gr(trans.est.par)))
-          } else {
-            rst <- c(rst, list(gradient = c(numDeriv::grad(trans.nll, trans.est.par))))
-          }
-          
-          nll.gr <- rst$gradient*deriv
-          names(nll.gr) <- par.name
-          
-          nll.hessian <- diag(rst$gradient*dd) + rst$hessian * (deriv%*%t(deriv))
-          colnames(nll.hessian) <- rownames(nll.hessian) <- par.name
-          
-          attributes(est.par)$nll.hessian <- nll.hessian
-          attributes(est.par)$nll.gr <- nll.gr
-          attributes(est.par)$nll <- rst$value
-          
-          attributes(est.par)$optim.fn <- "optim"
-          
-          if( (rst$convergence == 0) & matrixcalc::is.positive.definite(nll.hessian)) {
-            attributes(est.par)$convergence <- 0; return(est.par)
-          } else {
-            approx.est.par[[2]] <- est.par
-          }      
-        }
-      }
-    }
-    
-    ## optimx only use ll
-    rst <- try(suppressWarnings(optimx::optimx( par=unlist(trans.initial), fn=trans.nll, 
-                                                control=list(all.methods=TRUE), hessian = TRUE)))
-    
-    if(any(class(rst)!="try-error")) {
-      rst <- rst[!is.infinite(rst$value),] 
-      rst <- rst[rst$convcode==0,]
-      
-      good.rst.ind <- (rst$kkt1 & rst$kkt2)
-      good.rst.ind[is.na(good.rst.ind)] <- FALSE
-      
-      acceptable.rst.ind <- (rst$kkt1)
-      acceptable.rst.ind[is.na(acceptable.rst.ind)] <- FALSE
-      
-      if(any(sum(good.rst.ind)>0,sum(acceptable.rst.ind)>0)) {
-        if(sum(good.rst.ind)>0) {
-          good.rst <- rst[good.rst.ind,]
-          rst <- good.rst[min(which(good.rst$value == min(good.rst$value))),] # chosse the first with minimum value
-        } else if(sum(acceptable.rst.ind)>0) {
-          acceptable.rst <- rst[acceptable.rst.ind,]
-          rst <- acceptable.rst[min(which(acceptable.rst$value == min(acceptable.rst$value))),] # chosse the first with minimum value
-        }
-        
-        trans.est.par <- coef(rst)
-        est.par <- NULL
-        deriv <- NULL
-        dd <- NULL
-        for(k in 1:num.par) {
-          est.par[k] <- inv.trans.fn[[k]](trans.est.par[[k]])
-          deriv[k] <- trans.fn.deriv[[k]](est.par[k])
-          dd[k] <- trans.fn.dd[[k]](est.par[k])
-        }
-        names(est.par) <- par.name
-        est.par <- as.list(est.par)
-        
-        trans.nll.gr <- attributes(rst)$details[[2]]
-        nll.gr <- trans.nll.gr*deriv
-        names(nll.gr) <- par.name
-        
-        trans.nll.hess <- attributes(rst)$details[[3]]
-        nll.hessian <- diag(trans.nll.gr*dd) + trans.nll.hess * (deriv%*%t(deriv))
-        colnames(nll.hessian) <- rownames(nll.hessian) <- par.name
-        
-        attributes(est.par)$nll.hessian <- nll.hessian
-        attributes(est.par)$nll.gr <- nll.gr
-        attributes(est.par)$nll <- rst$value
-        
-        attributes(est.par)$optim.fn <- paste0("optimx-",attributes(rst)$details[[1]])
-        
-        if(all(is.finite(nll.hessian))) {
-          if(matrixcalc::is.positive.definite(nll.hessian)) {
-            attributes(est.par)$convergence <- 0; return(est.par)
-          } 
-        } else {
-          approx.est.par[[3]] <- est.par
-        }
-      }
-    }
-    
-    nll.values <- NULL
-    finite.hess <- NULL
-    for(i in 1:length(approx.est.par)){
-      if(is.null(approx.est.par[[i]])) {
-        nll.values[i] <- NA
-        finite.hess[i] <- NA
       } else {
-        nll.values[i] = attributes(approx.est.par[[i]])$nll
-        finite.hess[i] = all(is.finite(attributes(approx.est.par[[i]])$nll.hessian))
+        rst <- try(suppressWarnings(optimx::optimx( par=unlist(trans.initial), fn=trans.nll, 
+                                                    method = method, hessian = TRUE)))
+      }
+      
+      if(any(class(rst)=="try-error")) next
+      
+      if(with(rst,convcode!=0)) {approx.rst.list <- rbind(approx.rst.list, rst);next}
+      
+      trans.est.par <- coef(rst)
+      est.par <- as.vector(by(1:num.par, 1:num.par,FUN= function(k){inv.trans.fn[[k]](trans.est.par[[k]])}))
+      names(est.par) <- par.name
+      
+      if(!all(is.finite(est.par))) next
+      
+      if(with(rst, any(!is.na(c(kkt1,kkt2))) & all(kkt1,kkt2,na.rm=TRUE))) {
+        convergence <- TRUE
+        break
+      } else {
+        approx.rst.list <- rbind(approx.rst.list, rst)
       }
     }
     
-    finite.hess[is.na(finite.hess)] <- FALSE
-    
-    ind <- NULL
-    if(sum(finite.hess)>1){
-      if(any(!is.na(nll.values[finite.hess]))) {
-        ind <- which(finite.hess & (nll.values %in% min(nll.values[finite.hess])))
-      }
+    if(!convergence) {
+      rst <- approx.rst.list[with(approx.rst.list, value==min(value)),]
+      
+      trans.est.par <- coef(rst)
+      est.par <- as.vector(by(1:num.par, 1:num.par,FUN= function(k){inv.trans.fn[[k]](trans.est.par[[k]])}))
+      names(est.par) <- par.name
     }
     
-    if(is.integer(ind)) { 
-      est.par <- approx.est.par[[ind]]
-      attributes(est.par)$convergence <- 1
+    est.par <- as.list(est.par)
+    
+    if(gr & is.numeric(attributes(rst)$details[[2]])){
+      deriv <- as.vector(by(1:num.par, 1:num.par,FUN= function(k){trans.fn.deriv[[k]](est.par[[k]])}))
+      
+      trans.nll.gr <- attributes(rst)$details[[2]]
+      nll.gr <- trans.nll.gr*deriv
+      names(nll.gr) <- par.name
     } else {
-      est.par <- initial; for(k in 1:length(initial)) est.par[[k]] <- NA; 
-      attributes(est.par)$convergence <- 20
+      nll.gr <- try(suppressWarnings(grad(nll, unlist(est.par))),silent=TRUE)
+      if(any(class(nll.gr)=="try-error")) {nll.gr <- rep(NA, num.par)}
+      names(nll.gr) <- par.name
     }
+    
+    
+    if(hess) {
+      deriv <- as.vector(by(1:num.par, 1:num.par,FUN= function(k){trans.fn.deriv[[k]](est.par[[k]])}))
+      dd <- as.vector(by(1:num.par, 1:num.par,FUN= function(k){trans.fn.dd[[k]](est.par[[k]])}))
+      
+      trans.nll.hess <- attributes(rst)$details[[3]]
+      nll.hessian <- diag(trans.nll.gr*dd) + trans.nll.hess * (deriv%*%t(deriv))
+      colnames(nll.hessian) <- rownames(nll.hessian) <- par.name
+    } else{
+      nll.hessian <- hessian(nll,unlist(est.par))
+      colnames(nll.hessian) <- rownames(nll.hessian) <- par.name
+    }
+    
+    
+    attributes(est.par)$nll.hessian <- nll.hessian
+    attributes(est.par)$nll.gr <- nll.gr
+    attributes(est.par)$nll <- rst$value
+    
+    attributes(est.par)$optim.fn <- paste0("optimx-",attributes(rst)$details[[1]])
     
     return(est.par)  
   }      
