@@ -6,120 +6,20 @@
 #' @description A general weighted maximum likelihood estimation function.
 #' @rdname wmle
 #' @name wmle
-#' @param X observation.
-#' @param w frequency (or weights) of observation.
-#' @param distname name of distribution to be estimated.
-#' @param initial initial value of the parameters.
-#' @param lower the lower bound of the parameters.
-#' @param upper the upper bound of the parameters.
-#' @param loglik.fn function to compute (weighted) log likelihood
-#' @param score.fn  function to compute (weighted) score
-#' @param obs.info.fn function to compute observed information matrix
+#' @param X Sample observations.
+#' @param w Frequency (or weights) of observation.
+#' @param distname Name of distribution to be estimated.
+#' @param initial Initial value of the parameters.
+#' @param lower The lower bound of the parameters.
+#' @param upper The upper bound of the parameters.
+#' @param loglik.fn Function to compute (weighted) log likelihood.
+#' @param score.fn  Function to compute (weighted) score.
+#' @param obs.info.fn Function to compute observed information matrix.
 
 #' @return weighted mle estimates.
 
 #' @author Haizhen Wu and A. Jonathan R. Godfrey
 
-#' @examples \donttest{
-#' 
-#' #if only density function available
-#' n <- 200
-#' X <- rnorm(n)
-#' dFoo <- function(x, params = list(mean=0, sd=1)){
-#'   mean <- params$mean
-#'   sd <- params$sd
-#'   return(dnorm(x, mean = mean, sd = sd))
-#' }
-#' wmle(X, w=rep(1,n), distname = "Foo",
-#'      initial=list(mean = 0, sd = 1),
-#'      lower=list(mean = -Inf, sd = 0),
-#'      upper=list(mean = Inf, sd = Inf))
-#' 
-#' #if log likehood function available
-#' lFoo2 <- function(X,w, params = list(mean=0, sd=1)){
-#'   mean <- params$mean
-#'   sd <- params$sd
-#'   return(sum(w*log(dnorm(X, mean = mean, sd = sd))))
-#' }
-#' wmle(X, w=rep(1,n), loglik.fn = lFoo2,
-#'      initial=list(mean = 0, sd = 1),
-#'      lower=list(mean = -Inf, sd = 0),
-#'      upper=list(mean = Inf, sd = Inf))
-#' 
-#' #if score function available
-#' sFoo <- function(X,w, params = list(mean=0, sd=1)){
-#'   mean <- params$mean
-#'   sd <- params$sd
-#'   score1 <- sum(w*(X-mean)/sd^2)
-#'   score2 <- sum(w*((X-mean)^2-sd^2)/sd^3)  
-#'   score <- c(score1,score2)
-#'   return(score)
-#' }
-#' lFoo <- lFoo2
-#' wmle(X, w=rep(1,n), loglik.fn = lFoo, score.fn= sFoo,
-#'      initial=list(mean = 0, sd = 1),
-#'      lower=list(mean = -Inf, sd = 0),
-#'      upper=list(mean = Inf, sd = Inf))
-#' 
-#' # if score function & observed information matrix available
-#' iFoo <- function(X,w, params = list(mean=0, sd=1)){
-#'   mean <- params$mean
-#'   sd <- params$sd
-#'   
-#'   n <- length(X)
-#'   if(missing(w)){
-#'     w <- rep(1,n)
-#'   } else {
-#'     w <- n*w/sum(w)
-#'   }
-#'   
-#'   info11 <- sum(w*rep(1/sd^2,n))
-#'   info12 <- sum(w*2*(X-mean)/sd^3)
-#'   info21 <- info12
-#'   info22 <- sum(w*(3*(X-mean)^2-sd^2)/sd^4)
-#'   info <- matrix(c(info11,info12,info21,info22), nrow=2,ncol=2)
-#'   rownames(info) <- colnames(info) <- c("mean","sd")
-#'   return(info)
-#' }
-#' wmle(X, w=rep(1,n), loglik.fn = lFoo, score.fn= sFoo, obs.info.fn=iFoo,
-#'      initial=list(mean = 0, sd = 1),
-#'      lower=list(mean = -Inf, sd = 0),
-#'      upper=list(mean = Inf, sd = Inf))
-#' 
-#' # Speed comparison 
-#' N <- 1000
-#' if(exists("sFoo2")) rm(sFoo2)
-#' if(exists("iFoo2")) rm(iFoo2)
-#' pt <- proc.time()
-#' for(i in 1:N){
-#'   wmle(X, w=rep(1,n), loglik.fn = lFoo2,
-#'        initial=list(mean = 0, sd = 1),
-#'        lower=list(mean = -Inf, sd = 0),
-#'        upper=list(mean = Inf, sd = Inf))  
-#' }
-#' proc.time() - pt
-#' 
-#' sFoo2 <- sFoo
-#' if(exists("iFoo2")) rm(iFoo2)
-#' pt <- proc.time()
-#' for(i in 1:N){
-#'   wmle(X, w=rep(1,n), loglik.fn = lFoo2, score.fn= sFoo2,
-#'        initial=list(mean = 0, sd = 1),
-#'        lower=list(mean = -Inf, sd = 0),
-#'        upper=list(mean = Inf, sd = Inf))  
-#' }
-#' proc.time() - pt
-#' 
-#' sFoo2 <- sFoo; iFoo2 <- iFoo
-#' pt <- proc.time()
-#' for(i in 1:N){
-#'   wmle(X, w=rep(1,n), loglik.fn = lFoo2, score.fn= sFoo2, obs.info.fn=iFoo2,
-#'        initial=list(mean = 0, sd = 1),
-#'        lower=list(mean = -Inf, sd = 0),
-#'        upper=list(mean = Inf, sd = Inf))  
-#' }
-#' proc.time() - pt
-#' }
 
 #' @export wmle
 wmle <- 
@@ -341,7 +241,7 @@ wmle <-
     }
     
     if(!convergence) {
-      rst <- approx.rst.list[with(approx.rst.list, value==min(value)),]
+      rst <- approx.rst.list[with(approx.rst.list, value==min(value, NA.rm=T)),]
       
       trans.est.par <- coef(rst)
       est.par <- as.vector(by(1:num.par, 1:num.par,FUN= function(k){inv.trans.fn[[k]](trans.est.par[[k]])}))

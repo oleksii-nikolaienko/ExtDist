@@ -1,87 +1,62 @@
-#' Standard Symmetric-Reflected Truncated Beta (SRTB) Distribution 
-#'
-#' @title The standard Symmetric-Reflected Truncated Beta (SRTB) Distribution.
-#' @description Density, distribution function, quantile function, random 
-#' generation function and parameter estimation function (based on weighted or 
-#' unweighted i.i.d. sample) for the SSRTB distribution 
+#' @title The standard symmetric-reflected truncated beta (SSRTB) distribution.
+#' @description Density, distribution, quantile, random number 
+#' generation and parameter estimation functions for the SSRTB distribution. Parameter estimation can be
+#' based on a weighted or unweighted i.i.d sample and can be carried out numerically. 
+#' 
 #' @rdname SSRTB
 #' @name SSRTB
-#' @aliases dSSRTB pSSRTB qSSRTB rSSRTB eSSRTB lSSRTB sSSRTB iSSRTB
-#' @details See \href{../doc/Distributions-SSRTB.html}{Distributions-SSRTB}
-#' @param params a list includes all parameters
-#' @param x,q vector of quantiles.
-#' @param w weights of sample.
-#' @param p vector of probabilities.
-#' @param n number of observations.
-#' @param X sample observations.
-#' @param shape1,shape2 shape parameters.
-#' @param method parameter estimation method.
-#' @param logL logical; if TRUE, lSSRTB gives log likelihood.
-#' @param ... other parameters
-
-#' @return dSSRTB gives the density; pSSRTB gives the distribution function;
-#' qSSRTB gives the quantile function; rSSRTB generates random variables; 
-#' eSSRTB estimate the parameters; sSSRTB gives observed scorn function 
-
-#' @author Haizhen Wu and A. Jonathan R. Godfrey
-
-#' @examples \donttest{
-#' # Parameter estimation
-#' n <- 500
-#' shape1 <- 2
-#' shape2 <- 10
-#' X <- rSSRTB(n, shape1, shape2)
-#' (est.par <- eSSRTB(X))
 #' 
-#' # Histogram and fitted density
+#' @aliases dSSRTB
+#' @aliases pSSRTB
+#' @aliases qSSRTB
+#' @aliases rSSRTB 
+#' @aliases eSSRTB
+#' @aliases lSSRTB 
+#' 
+#' @details No details as of yet.
+#' 
+#' @param params A list that includes all named parameters.
+#' @param x,q A vector of quantiles.
+#' @param w An optional vector of sample weights.
+#' @param p A vector of probabilities.
+#' @param n Number of observations.
+#' @param X Sample observations.
+#' @param shape1,shape2 Shape parameters.
+#' @param method Parameter estimation method.
+#' @param logL logical; if TRUE, lSSRTB gives the log-likelihood, otherwise the likelihood is given.
+#' @param ... Additional parameters.
+#' 
+#' @return dSSRTB gives the density, pSSRTB the distribution function,
+#' qSSRTB the quantile function, rSSRTB generates random variables, 
+#' eSSRTB estimates the parameters and lSSRTB provides the log-likelihood.
+#'
+#' @seealso \pkg{\link{ExtDist}} for other standard distributions.
+#' @author Haizhen Wu.
+#'
+#' @examples
+#' # Parameter estimation for a distribution with known shape parameters
+#' X <- rSSRTB(n=500, shape1=2, shape2=10)
+#' est.par <- eSSRTB(X); est.par
+#' plot(est.par)
+#' 
+#' #  Fitted density curve and histogram
 #' den.x <- seq(min(X),max(X),length=100)
 #' den.y <- dSSRTB(den.x,shape1=est.par$shape1,shape2=est.par$shape2)
-#' hist(X, breaks=10, col="red", probability=TRUE, ylim = c(0,1.1*max(den.y)))
-#' lines(den.x, den.y, col="blue", lwd=2)
-#' 
-#' # Q-Q plot and P-P plot
-#' plot(qSSRTB((1:n-0.5)/n, params=est.par), sort(X), main="Q-Q Plot", xlab="Theoretical Quantiles", 
-#' ylab="Sample Quantiles", xlim = c(0,1), ylim = c(0,1))
-#' abline(0,1)
-#' 
-#' plot((1:n-0.5)/n, pSSRTB(sort(X), params=est.par), main="P-P Plot", xlab="Theoretical Percentile", 
-#' ylab="Sample Percentile", xlim = c(0,1), ylim = c(0,1))
-#' abline(0,1)
-#' 
-#' # A weighted parameter estimation example
-#' n <- 10
-#' par <- list(shape1=1, shape2=2)
-#' X <- rSSRTB(n, params=par)
-#' w <- c(0.13, 0.06, 0.16, 0.07, 0.2, 0.01, 0.06, 0.09, 0.1, 0.12)
-#' eSSRTB(X,w) # estimated parameters of weighted sample
-#' eSSRTB(X) # estimated parameters of unweighted sample
-#' 
-#' # Alternative parameter estimation methods
-#' (est.par <- eSSRTB(X, method = "numerical.MLE"))
+#' hist(X, breaks=10, probability=TRUE, ylim = c(0,1.2*max(den.y)))
+#' lines(den.x, den.y, col="blue")
+#' lines(density(X), lty=2)
 #' 
 #' # Extracting shape parameters
 #' est.par[attributes(est.par)$par.type=="shape"]
-#'  
-#' # evaluate the performance of the parameter estimation function by simulation
-#' eval.estimation(rdist=rSSRTB,edist=eSSRTB,n = 1000, rep.num = 1e3, 
-#' params = list(shape1=2, shape2=5), method ="numerical.MLE")
 #' 
-#' # evaluate the precision of estimation by Hessian matrix
-#' X <- rSSRTB(1000, shape1, shape2)
-#' (est.par <- eSSRTB(X))
-#' H <- attributes(eSSRTB(X, method = "numerical.MLE"))$nll.hessian
-#' fisher_info <- solve(H)
-#' sqrt(diag(fisher_info))
-#' 
-#' # log-likelihood, score vector and observed information matrix 
+#' # log-likelihood function
 #' lSSRTB(X,param = est.par)
-#' lSSRTB(X,param = est.par, logL=FALSE)
-#' }
+
 
 #' @rdname SSRTB
 #' @export dSSRTB
 dSSRTB <-
-  function(x, shape1=2, shape2 =3, params = list(shape1, shape2)){
+  function(x, shape1=2, shape2 =3, params = list(shape1, shape2),...){
     if(!missing(params)){
       shape1 <- params$shape1
       shape2 <- params$shape2
@@ -96,7 +71,7 @@ dSSRTB <-
 #' @rdname SSRTB
 #' @export pSSRTB
 pSSRTB <- 
-  function(q, shape1=2, shape2 =3, params = list(shape1, shape2)){
+  function(q, shape1=2, shape2 =3, params = list(shape1, shape2),...){
     if(!missing(params)){
       shape1 <- params$shape1
       shape2 <- params$shape2
@@ -112,7 +87,7 @@ pSSRTB <-
 #' @rdname SSRTB
 #' @export qSSRTB
 qSSRTB <- 
-  function(p, shape1=2, shape2 =3, params = list(shape1, shape2)){
+  function(p, shape1=2, shape2 =3, params = list(shape1, shape2),...){
     if(!missing(params)){
       shape1 <- params$shape1
       shape2 <- params$shape2
@@ -126,7 +101,7 @@ qSSRTB <-
 #' @rdname SSRTB
 #' @export rSSRTB
 rSSRTB <- 
-  function(n, shape1=2, shape2 =3, params = list(shape1, shape2)){
+  function(n, shape1=2, shape2 =3, params = list(shape1, shape2),...){
     if(!missing(params)){
       shape1 <- params$shape1
       shape2 <- params$shape2
@@ -137,7 +112,7 @@ rSSRTB <-
 #' @rdname SSRTB
 #' @export eSSRTB
 eSSRTB <-     
-  function(X,w, method ="numerical.MLE"){
+  function(X,w, method ="numerical.MLE",...){
     n <- length(X)
     if(missing(w)){
       w <- rep(1,n)
@@ -178,7 +153,7 @@ eSSRTB <-
 #' @export lSSRTB
 ## (weighted) (log) likelihood function
 lSSRTB <- 
-  function(X, w, shape1=2, shape2 =3, params = list(shape1, shape2), logL = TRUE){
+  function(X, w, shape1=2, shape2 =3, params = list(shape1, shape2), logL = TRUE,...){
     if(!missing(params)){
       shape1 <- params$shape1
       shape2 <- params$shape2

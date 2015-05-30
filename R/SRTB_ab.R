@@ -1,87 +1,56 @@
-# Symmetric-Reflected Truncated Beta (SRTB)  Distribution -----------------------------------------------------
-#' @title The Symmetric-Reflected Truncated Beta (SRTB)  Distribution.
-#' @description Density, distribution function, quantile function, random 
-#' generation function and parameter estimation function (based on weighted or 
-#' unweighted i.i.d. sample) for the Symmetric-Reflected Truncated Beta (SRTB). 
+#' @title The symmetric-reflected truncated beta (SRTB) distribution.
+#' @description Density, distribution, quantile, random number 
+#' generation and parameter estimation functions for the SRTB distribution.  
+#' Parameter estimation can be based on a weighted or unweighted i.i.d. sample and can be carried out numerically.
+#' 
 #' @rdname SRTB_ab
 #' @name SRTB_ab
-#' @aliases dSRTB_ab pSRTB_ab qSRTB_ab rSRTB_ab eSRTB_ab lSRTB_ab sSRTB_ab
-#' @details See \href{../doc/Distributions-Four-Parameter-Beta.html}{Distributions-Four-Parameter-Beta}
-#' @param params a list includes all parameters
-#' @param x,q vector of quantiles.
-#' @param w weights of sample.
-#' @param p vector of probabilities.
-#' @param n number of observations.
-#' @param X sample observations.
-#' @param shape1,shape2 shape parameters.
-#' @param a,b boundary parameters.
-#' @param method parameter estimation method.
-#' @param logL logical; if TRUE, lSRTB_ab gives log likelihood.
-#' @param ... other parameters
-
-#' @return dSRTB_ab gives the density; pSRTB_ab gives the distribution function;
-#' qSRTB_ab gives the quantile function; rSRTB_ab generates random variables; 
-#' eSRTB_ab estimate the parameters; sSRTB_ab gives observed scorn function 
-
-#' @author Haizhen Wu and A. Jonathan R. Godfrey
-
-#' @examples \donttest{
-#' # Parameter estimation
-#' n <- 500
-#' a <- 1
-#' b <- 2
-#' shape1 <- 2
-#' shape2 <- 10
-#' X <- rSRTB_ab(n, shape1, shape2, a, b)
-#' (est.par <- eSRTB_ab(X))
 #' 
-#' # Histogram and fitted density
-#' den.x <- seq(min(X),max(X),length=100)
-#' den.y <- dSRTB_ab(den.x,params = est.par)
-#' hist(X, breaks=10, col="red", probability=TRUE, ylim = c(0,1.1*max(den.y)))
-#' lines(den.x, den.y, col="blue", lwd=2)
+#' @aliases dSRTB_ab
+#' @aliases pSRTB_ab
+#' @aliases qSRTB_ab
+#' @aliases rSRTB_ab
+#' @aliases eSRTB_ab
+#' @aliases lSRTB_ab 
+#' @aliases sSRTB_ab
 #' 
-#' # Q-Q plot and P-P plot
-#' plot(qSRTB_ab((1:n-0.5)/n, params=est.par), sort(X), main="Q-Q Plot", 
-#' xlab="Theoretical Quantiles", ylab="Sample Quantiles", xlim = c(a,b), ylim = c(a,b))
-#' abline(0,1)
+#' @details No details as of yet.
 #' 
-#' plot((1:n-0.5)/n, pSRTB_ab(sort(X), params=est.par), main="P-P Plot", 
-#' xlab="Theoretical Percentile", ylab="Sample Percentile", xlim = c(0,1), ylim = c(0,1))
-#' abline(0,1)
-#' 
-#' # A weighted parameter estimation example
-#' n <- 10
-#' par <- list(shape1=2, shape2=10, a= 1, b=2)
-#' X <- rSRTB_ab(n, params=par)
-#' w <- c(0.13, 0.06, 0.16, 0.07, 0.2, 0.01, 0.06, 0.09, 0.1, 0.12)
-#' eSRTB_ab(X,w) # estimated parameters of weighted sample
-#' eSRTB_ab(X) # estimated parameters of unweighted sample
+#' @param params A list that includes all named parameters.
+#' @param x,q A vector of quantiles.
+#' @param w An optional vector of sample weights.
+#' @param p A vector of probabilities.
+#' @param n Number of observations.
+#' @param X Sample observations.
+#' @param shape1,shape2 Shape parameters.
+#' @param a,b Boundary parameters.
+#' @param method Parameter estimation method.
+#' @param logL logical; if TRUE, lSRTB_ab gives the log-likelihood, otherwise the likelihood is given.
+#' @param ... Additional parameters.
+#'
+#' @return dSRTB_ab gives the density, pSRTB_ab the distribution function,
+#' qSRTB_ab gives the quantile function, rSRTB_ab generates random variables, and
+#' eSRTB_ab estimates the parameters. lSRTB_ab provides the log-likelihood function and sSRTB_ab the score function. 
+#' @seealso \pkg{\link{ExtDist}} for other standard distributions.
+#' @author Haizhen Wu.
+#'
+#' @examples 
+#' # Parameter estimation for a distribution with known shape parameters
+#' X <- rSRTB_ab(n=500, shape1=2, shape2=10, a=1, b=2)
+#' est.par <- eSRTB_ab(X)
+#' plot(est.par) 
 #' 
 #' # Extracting boundary and shape parameters
 #' est.par[attributes(est.par)$par.type=="boundary"]
 #' est.par[attributes(est.par)$par.type=="shape"]
-#'  
-#' # evaluate the performance of the parameter estimation function by simulation
-#' eval.estimation(rdist=rSRTB_ab,edist=eSRTB_ab,n = 1000, rep.num = 1e3, 
-#' params = list(shape1=2, shape2=10, a=0, b=1), method ="numerical.MLE")
 #' 
-#' # evaluate the precision of estimation by Hessian matrix
-#' X <- rSRTB_ab(1000, shape1, shape2, a, b)
-#' (est.par <- eSRTB_ab(X))
-#' H <- attributes(eSRTB_ab(X, method = "numerical.MLE"))$nll.hessian
-#' fisher_info <- solve(H)
-#' sqrt(diag(fisher_info))
-#' 
-#' # log-likelihood, score vector and observed information matrix 
+#' # log-likelihood function
 #' lSRTB_ab(X,param = est.par)
-#' lSRTB_ab(X,param = est.par, logL=FALSE)
-#' }
+
 
 #' @rdname SRTB_ab
 #' @export dSRTB_ab
-dSRTB_ab <-
-  function(x, shape1=2, shape2=3, a = 0, b=1, params = list(shape1, shape2, a, b)){
+dSRTB_ab <-function(x, shape1=2, shape2=3, a = 0, b=1, params = list(shape1, shape2, a, b),...){
     if(!missing(params)){
       shape1 <- params$shape1
       shape2 <- params$shape2
@@ -95,7 +64,7 @@ dSRTB_ab <-
 #' @rdname SRTB_ab
 #' @export pSRTB_ab
 pSRTB_ab <- 
-  function(q, shape1=2, shape2=3, a = 0, b=1, params = list(shape1=2, shape2 = 5, a = 0, b = 1)){
+  function(q, shape1=2, shape2=3, a = 0, b=1, params = list(shape1=2, shape2 = 5, a = 0, b = 1),...){
     if(!missing(params)){
       shape1 <- params$shape1
       shape2 <- params$shape2
@@ -109,7 +78,7 @@ pSRTB_ab <-
 #' @rdname SRTB_ab
 #' @export qSRTB_ab
 qSRTB_ab <- 
-  function(p, shape1=2, shape2=3, a = 0, b=1, params = list(shape1=2, shape2 = 5, a = 0, b = 1)){
+  function(p, shape1=2, shape2=3, a = 0, b=1, params = list(shape1=2, shape2 = 5, a = 0, b = 1),...){
     if(!missing(params)){
       shape1 <- params$shape1
       shape2 <- params$shape2
@@ -123,7 +92,7 @@ qSRTB_ab <-
 #' @rdname SRTB_ab
 #' @export rSRTB_ab
 rSRTB_ab <- 
-  function(n, shape1=2, shape2=3, a = 0, b = 1, params = list(shape1, shape2, a, b)){
+  function(n, shape1=2, shape2=3, a = 0, b = 1, params = list(shape1, shape2, a, b),...){
     if(!missing(params)){
       shape1 <- params$shape1
       shape2 <- params$shape2
@@ -138,7 +107,7 @@ rSRTB_ab <-
 #' @rdname SRTB_ab
 #' @export eSRTB_ab
 eSRTB_ab <-     
-  function(X,w, method ="numerical.MLE"){
+  function(X,w, method ="numerical.MLE",...){
     n <- length(X)
     if(missing(w)){
       w <- rep(1,n)
@@ -180,7 +149,7 @@ return(est.par)
 #' @export lSRTB_ab
 ## (weighted) (log) likelihood function
 lSRTB_ab <- 
-  function(X, w, shape1=2, shape2 =3, a = 0, b = 1,  params = list(shape1, shape2, a, b), logL = TRUE){
+  function(X, w, shape1=2, shape2 =3, a = 0, b = 1,  params = list(shape1, shape2, a, b), logL = TRUE,...){
     if(!missing(params)){
       shape1 <- params$shape1
       shape2 <- params$shape2

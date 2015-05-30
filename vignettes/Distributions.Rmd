@@ -4,8 +4,25 @@
 \usepackage{amsmath,amssymb}
 -->
 
-Distributions in ExtDist package
+Distributions included in the ExtDist package
 ========================================================
-* [Normal Distribution](Distributions-Normal.html)
-* [Beta Distribution](Distributions-Beta.html)
+* [The standard beta distribution](Distributions-Beta.html)
+* The four-parameter beta distribution.
+* The Burr's distribution.
+* The gamma distribution.
+* The Gumbel Distribution.
+* The Johnson SB distribution.
+* The Johnson SU distribution.
+* The Laplace distribution.
+* The Logistic distribution.
+* [The normal distribution](Distributions-Normal.html)
+* The symmetric truncated normal distribution.
+* The truncated normal distribution.
+* The symmetric-reflected truncated beta (SRTB) distribution.
+* The standard symmetric-reflected truncated beta (SRTB) distribution.
+* The triangular distribution.
+* The uniform distribution.
+* The Weibull  distribution. 
+
+
 

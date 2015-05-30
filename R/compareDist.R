@@ -1,20 +1,15 @@
-#' Compare sample and fitted distributions
-#' 
-#' A method to Compare sample and fitted distributions
+#' @title Compare a sample to one or more fitted distributions
 #'
-#' @param X - the (unweighted) sample
-#' @param Dist1,Dist2,Dist3 - the eDist objects or names of the distribution to
+#' @param X An unweighted sample
+#' @param Dist1,Dist2,Dist3 The fitted distribution, specified as either the  objects of class eDist or names of the distribution to
 #' be fitted.
-#' @author Haizhen Wu and A. Jonathan R. Godfrey
+#' @author Haizhen Wu and A. Jonathan R. Godfrey.
+#'  
+#' @return compareDist returns an object of class histogram comparing the sample distribution to the specified fitted distribution(s).
 #' @examples
-#' 
-#' \donttest{
-#' n <- 100
-#' par <- list(shape1=1, shape2=2)
-#' X <- rBeta(n, params=par)
-#' compareDist(X, "Beta", "Normal")
-#' compareDist(X, "Beta", eNormal(X))
-#' }
+#' X <- rBeta(n=100, params=list(shape1=1, shape2=2))
+#' compareDist(X, "Beta", "Normal", eNormal(X))
+
 
 #' @export compareDist
 compareDist <- function(X, Dist1, Dist2=NULL, Dist3=NULL){

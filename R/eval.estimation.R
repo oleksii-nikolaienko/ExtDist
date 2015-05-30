@@ -1,32 +1,28 @@
-#' Parameter Estimation Evaluation
-#'
 #' @title Parameter Estimation Evaluation.
 #' @description A function to evaluate the parameter estimation function.
+#' 
 #' @rdname eval.estimation
 #' @name eval.estimation
-#' @details Details
-#' @param rdist random variable generating function.
-#' @param edist parameter estimation function.
-#' @param n sample size
-#' @param rep.num number of replacates 
-#' @param params true parameters of the distribution.
-#' @param method esimation method
-
-#' @return a list containing the mean, sd of the estimated parameters. na.cont 
-#' is the number of "na"s appeared in the parameter estimation.
-
-#' @author Haizhen Wu and A. Jonathan R. Godfrey
-
-#' @examples \donttest{
-#' eval.estimation(rdist=rNormal,edist=eNormal,n = 10, rep.num = 1e3, 
+#' 
+#' @param rdist Random variable generating function.
+#' @param edist Parameter estimation function.
+#' @param n Sample size.
+#' @param rep.num Number of replicates. 
+#' @param params True parameters of the distribution.
+#' @param method Estimation method.
+#'
+#' @return A list containing the mean and sd of the estimated parameters.\cr
+#' \cr
+#'  na.cont returns the number of "na"s that appeared in the parameter estimation.
+#'
+#' @author Haizhen Wu and A. Jonathan R. Godfrey.
+#'
+#' @examples
+#' eval.estimation(rdist=rNormal,edist=eNormal,n = 100, rep.num = 50, 
 #' params = list(mean = 1,sd = 5))
-#' eval.estimation(rdist=rNormal,edist=eNormal,n = 1000, rep.num = 1e3, 
-#' params = list(mean = 1,sd = 5))
-#' }
 
 #' @export eval.estimation
-eval.estimation <- 
-  function(rdist, edist, n = 20, rep.num = 1e3, params, method = "numerical.MLE"){
+eval.estimation <- function(rdist, edist, n = 20, rep.num = 1e3, params, method = "numerical.MLE"){
     k <- length(params)
     
     est.par <- array(NA, dim = c(rep.num,k))

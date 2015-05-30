@@ -1,92 +1,60 @@
-#' Triangular Distribution
-#' 
 #' @title The Triangular Distribution.
-#' @importFrom VGAM dtriangle
-#' @importFrom VGAM rtriangle
-#' @importFrom VGAM ptriangle
-#' @importFrom VGAM qtriangle
-#' @description Density, distribution function, quantile function, random 
-#' generation function and parameter estimation function (based on weighted or 
-#' unweighted i.i.d. sample) for the Triangular distribution 
+#' 
+#' @description  Density, distribution, quantile, random number 
+#' generation and parameter estimation functions for the triangular distribution with support \eqn{[a,b]} 
+#' and \code{shape} parameter \eqn{\theta}. Parameter estimation can be based on a weighted or unweighted i.i.d. sample
+#' and can be performed numerically. 
+#' 
 #' @rdname Triangular
 #' @name Triangular
-#' @aliases dTriangular pTriangular qTriangular rTriangular eTriangular lTriangular
-#' @details See \href{../doc/Distributions-Four-Parameter-Beta.html}{Distributions-Four-Parameter-Beta}
-#' @param params a list includes all parameters
-#' @param x,q vector of quantiles.
-#' @param w weights of sample.
-#' @param p vector of probabilities.
-#' @param n number of observations.
-#' @param X sample observations.
-#' @param theta shape parameters.
-#' @param a,b boundary parameters.
-#' @param method parameter estimation method.
-#' @param logL logical; if TRUE, lTriangular gives log likelihood.
-#' @param ... other parameters
-
-#' @return dTriangular gives the density; pTriangular gives the distribution function;
-#' qTriangular gives the quantile function; rTriangular generates random variables; 
-#' eTriangular estimate the parameters
-
-#' @author Haizhen Wu and A. Jonathan R. Godfrey
-
-#' @examples \donttest{
-#' # Parameter estimation
-#' n <- 500
-#' a <- 1
-#' b <- 2
-#' theta <- 0.5
-#' X <- rTriangular(n, a, b, theta)
-#' (est.par <- eTriangular(X))
 #' 
-#' # Histogram and fitted density
-#' den.x <- seq(min(X),max(X),length=100)
-#' den.y <- dTriangular(den.x,params = est.par)
-#' hist(X, breaks=10, col="red", probability=TRUE, ylim = c(0,1.1*max(den.y)))
-#' lines(den.x, den.y, col="blue", lwd=2)
+#' @aliases dTriangular
+#' @aliases pTriangular
+#' @aliases qTriangular
+#' @aliases rTriangular
+#' @aliases eTriangular
+#' @aliases lTriangular
+#'
+#' @details If \code{a}, \code{b} or \code{theta} are not specified they assume the default values of 0, 1 and 0.5 respectively.\cr
+#' \cr
+#' The \code{dTriangle()}, \code{pTriangle()}, \code{qTriangle()},and \code{rTriangle()} functions serve as wrappers of the
+#' \code{\link[VGAM]{dtriangle}}, \code{\link[VGAM]{ptriangle}}, \code{\link[VGAM]{qtriangle}}, and 
+#' \code{\link[VGAM]{rtriangle}} functions in the \pkg{{VGAM}} package. They allow for the parameters to be declared not only as 
+#' individual numerical values, but also as a list so parameter estimation can be carried out. \cr  
+#' \cr
+#' The triangular distribution has a probability density function, defined in Forbes et.al (2010), that consists of two lines joined at \eqn{theta}, 
+#' where \eqn{theta} is the location of the mode.
 #' 
-#' # Q-Q plot and P-P plot
-#' plot(qTriangular((1:n-0.5)/n, params=est.par), sort(X), main="Q-Q Plot", 
-#' xlab="Theoretical Quantiles", ylab="Sample Quantiles", xlim = c(a,b), ylim = c(a,b))
-#' abline(0,1)
+#' @param params A list that includes all named parameters.
+#' @param x,q A vector of quantiles.
+#' @param w An optional vector of sample weights.
+#' @param p A vector of probabilities.
+#' @param n Number of observations.
+#' @param X Sample observations.
+#' @param theta Shape parameters.
+#' @param a,b Boundary parameters.
+#' @param method Parameter estimation method.
+#' @param logL logical, it is assumed that the log-likelihood is desired. Set to FALSE if the likelihood is wanted.
+#' @param ... Additional parameters.
+#'
+#' @return dTriangular gives the density, pTriangular the distribution function,
+#' qTriangular the quantile function, rTriangular generates random variables, and 
+#' eTriangular estimates the parameters. lTriangular provides the log-likelihood function.
+#' @seealso \pkg{\link{ExtDist}} for other standard distributions.
+#' @author Haizhen Wu and A. Jonathan R. Godfrey. \cr
+#' Updates and bug fixes by Sarah Pirikahu.
+#'
+#' @references Kotz, S. and van Dorp, J. R. (2004). Beyond Beta: Other Continuous
+#' Families of Distributions with Bounded Support and Applications. Chapter 1.
+#' World Scientific: Singapore.\cr
+#' \cr
+#' Forbes, C., Evans, M., Hastings, N. and Peacock, B. (2010) Triangular Distribution, 
+#' in Statistical Distributions, Fourth Edition, John Wiley & Sons, Inc., Hoboken, NJ, USA. 
 #' 
-#' plot((1:n-0.5)/n, pTriangular(sort(X), params=est.par), main="P-P Plot", 
-#' xlab="Theoretical Percentile", ylab="Sample Percentile", xlim = c(0,1), ylim = c(0,1))
-#' abline(0,1)
-#' 
-#' # A weighted parameter estimation example
-#' n <- 10
-#' par <- list(a=0, b=1, theta=0.5)
-#' X <- rTriangular(n, params=par)
-#' w <- c(0.13, 0.06, 0.16, 0.07, 0.2, 0.01, 0.06, 0.09, 0.1, 0.12)
-#' eTriangular(X,w) # estimated parameters of weighted sample
-#' eTriangular(X) # estimated parameters of unweighted sample
-#' 
-#' # Extracting boundary and shape parameters
-#' est.par[attributes(est.par)$par.type=="boundary"]
-#' est.par[attributes(est.par)$par.type=="shape"]
-#'  
-#' # evaluate the performance of the parameter estimation function by simulation
-#' eval.estimation(rdist=rTriangular,edist=eTriangular,n = 1000, rep.num = 1e3, 
-#' params = list(a=0, b=1, theta=0.5), method ="numerical.MLE")
-#' 
-#' # evaluate the precision of estimation by Hessian matrix
-#' X <- rTriangular(1000, a, b, theta)
-#' (est.par <- eTriangular(X))
-#' H <- attributes(eTriangular(X, method = "numerical.MLE"))$nll.hessian
-#' fisher_info <- solve(H)
-#' sqrt(diag(fisher_info))
-#' 
-#' # log-likelihood, score vector and observed information matrix 
-#' lTriangular(X,param = est.par)
-#' lTriangular(X,param = est.par, logL=FALSE)
-#' sTriangular(X,param = est.par)
-#' }
 
 #' @rdname Triangular
 #' @export dTriangular
-dTriangular <-
-  function(x, a=0, b=1, theta=0.5, params = list(a, b, theta)){
+dTriangular <-function(x, a=0, b=1, theta=0.5, params = list(a, b, theta),...){
     if(!missing(params)){
       a <- params$a; b <- params$b; theta = params$theta  
     }
@@ -96,8 +64,7 @@ dTriangular <-
 
 #' @rdname Triangular
 #' @export pTriangular
-pTriangular <- 
-  function(q, a=0, b=1, theta=0.5, params = list(a, b, theta)){
+pTriangular <-function(q, a=0, b=1, theta=0.5, params = list(a, b, theta),...){
     if(!missing(params)){
       a <- params$a; b <- params$b; theta = params$theta  
     }
@@ -107,8 +74,7 @@ pTriangular <-
 
 #' @rdname Triangular
 #' @export qTriangular
-qTriangular <- 
-  function(p, a=0, b=1, theta=0.5, params = list(a, b, theta)){
+qTriangular <-function(p, a=0, b=1, theta=0.5, params = list(a, b, theta),...){
     if(!missing(params)){
       a <- params$a; b <- params$b; theta = params$theta  
     }
@@ -120,8 +86,7 @@ qTriangular <-
 
 #' @rdname Triangular
 #' @export rTriangular
-rTriangular <- 
-  function(n, a=0, b=1, theta=0.5, params = list(a, b, theta)){
+rTriangular <-function(n, a=0, b=1, theta=0.5, params = list(a, b, theta),...){
     if(!missing(params)){
       a <- params$a; b <- params$b; theta = params$theta  
     }
@@ -131,8 +96,7 @@ rTriangular <-
 
 #' @rdname Triangular
 #' @export eTriangular
-eTriangular <-     
-  function(X,w, method ="numerical.MLE"){
+eTriangular <-function(X,w, method ="numerical.MLE",...){
     n <- length(X)
     if(missing(w)){
       w <- rep(1,n)
@@ -173,8 +137,7 @@ return(est.par)
 #' @rdname Triangular
 #' @export lTriangular
 ## (weighted) (log) likelihood function
-lTriangular <- 
-  function(X, w, a=0, b=1, theta=0.5,  params = list(a, b, theta), logL = TRUE){
+lTriangular <-function(X, w, a=0, b=1, theta=0.5,  params = list(a, b, theta), logL = TRUE,...){
     if(!missing(params)){
       a <- params$a; b <- params$b; theta = params$theta  
     }

@@ -14,7 +14,7 @@ The package provides a consistent, unified and extensible
 \details{
 \tabular{ll}{
 Package: \tab ExtDist\cr
-Version: \tab 0.3.7\cr
+Version: \tab 0.6\cr
 License: \tab GPL (>= 2)\cr
 Imports: \tab 
 numDeriv,
@@ -29,7 +29,7 @@ xtable,
 PerformanceAnalytics\cr
 Roxygen: \tab list(wrap = FALSE)\cr
 VignetteBuilder: \tab knitr\cr
-Built: \tab R 3.1.1; ; 2014-10-17 03:52:27 UTC; unix\cr
+Built: \tab R 3.1.1; ; 2015-03-31 03:52:27 UTC; unix\cr
 }
 
 Index:
@@ -57,7 +57,7 @@ Uniform                 The Uniform Distribution.
 Weibull                 The Weibull Distribution.
 bestDist                Best distribution for (weighted) sample.
 compareDist             Compare sample and fitted distributions
-eDist                   S3 methods from manuplating eDist objects.
+eDist                   S3 methods for manipulating eDist objects.
 eval.estimation         Parameter Estimation Evaluation.
 wmle                    Weighted Maximum Likelihood Estimation.
 }
@@ -73,7 +73,8 @@ Further information is available in the following vignettes:
 \author{
 Haizhen Wu <h.wu2@massey.ac.nz>,
     A. Jonathan R. Godfrey <A.J.Godfrey@massey.ac.nz>,
-    Kondaswamy Govindaraju <k.govindaraju@massey.ac.nz>
+    Kondaswamy Govindaraju <k.govindaraju@massey.ac.nz>,
+    Sarah Pirikahu <s.pirikahu@massey.ac.nz>
 
-Maintainer: Haizhen Wu <h.wu2@massey.ac.nz>
+Maintainer: Jonathan Godfrey <a.j.godfrey@massey.ac.nz>
 }

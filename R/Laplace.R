@@ -1,119 +1,131 @@
-#' Laplace Distribution
-#' 
 #' @title The Laplace Distribution.
-#' @description Density (d), distribution (p), and quantile (q), random number generation (r), 
-#' and parameter estimation (e) functions for the Laplace distribution. Parameter estimation can 
-#' only be based on an unweighted i.i.d. sample.
-
+#' @description Density, distribution, quantile, random number generation 
+#' and parameter estimation functions for the Laplace distribution with \code{location} parameter \eqn{\mu} and 
+#' \code{scale} parameter \eqn{b}. Parameter estimation can for the Laplace distribution can be carried out numerically
+#' or analytically but may only be based on an unweighted i.i.d. sample.
+#'
 #' @rdname Laplace
 #' @name Laplace
-#' @aliases dLaplace pLaplace qLaplace rLaplace eLaplace lLaplace sLaplace iLaplace
-
-#' @details no details yet.
-
-#' @param params a list that includes all named parameters
-#' @param x,q vector of quantiles.
-#' @param w weights of sample.
-#' @param p vector of probabilities.
-#' @param n number of observations.
-#' @param X sample observations.
-#' @param mu location parameter.
-#' @param b scale parameter.
-#' @param method parameter estimation method.
-#' @param logL logical, it is assumed that the log likelihood is desired. Set to FALSE if the 
-#' likelihood is wanted.
-#' @param ... other parameters
-
-#' @return dLaplace gives the density; pLaplace gives the distribution function, qLaplace gives the 
-#' quantile function, rLaplace generates random variables and eLaplace estimates the parameters. 
-#' lLaplace will provide the log-likelihood.
-
+#' @aliases dLaplace 
+#' @aliases pLaplace
+#' @aliases qLaplace 
+#' @aliases rLaplace 
+#' @aliases eLaplace 
+#' @aliases lLaplace
+#' @aliases sLaplace 
+#' @aliases iLaplace
+#'
+#' @details The \code{dLaplace()}, \code{pLaplace()}, \code{qLaplace()},and \code{rLaplace()} functions allow for the parameters to be declared not only as 
+#' individual numerical values, but also as a list so parameter estimation can be carried out. \cr
+#' \cr
+#' The Laplace distribution with parameters \code{location} = \eqn{\mu} and \code{scale}=\eqn{b} has probability density 
+#' function 
+#' \deqn{f(x) = (1/2b) exp(-|x-\mu|/b)}
+#' where \eqn{-\infty < x < \infty} and \eqn{b > 0}. The cumulative distribution function for \code{pLaplace} is defined 
+#' by Johnson et.al (p.166). \cr
+#' \cr
+#' Parameter estimation can be carried out analytically via maximum likelihood estimation, see Johnson et.al (p.172). Where the population 
+#' mean, \eqn{\mu}, is estimated using the sample median and \eqn{b} by the mean of \eqn{|x-b|}.\cr
+#' \cr 
+#' Johnson et.al (p.172) also provides the log-likelihood function for the Laplace distribution 
+#' \deqn{l(\mu, b | x) = -n ln(2b) - b^{-1} \sum |xi-\mu|.} 
+#' 
+#'  
+#' @param params A list that includes all named parameters
+#' @param x,q A vector of quantiles.
+#' @param w Optional vector of sample weights.
+#' @param p A vector of probabilities.
+#' @param n Number of observations.
+#' @param X Sample observations.
+#' @param mu Location parameter.
+#' @param b Scale parameter.
+#' @param method Parameter estimation method.
+#' @param logL logical; if TRUE, lLaplace gives the log-likelihood, otherwise the likelihood is given.
+#' @param ... Additional parameters. 
+#'
+#' @return dLaplace gives the density, pLaplace the distribution function,
+#' qLaplace the quantile function, rLaplace generates random deviates, and 
+#' eLaplace estimates the distribution parameters. lLaplace provides the log-likelihood function, sLaplace the score function, 
+#' and iLaplace the observed information matrix. 
+#'
 #' @note The estimation of the population mean is done using the median of the sample. Unweighted 
 #' samples are not yet catered for in the eLaplace() function.
-
-#' @author A. Jonathan R. Godfrey and Haizhen Wu
-
-#' @examples \donttest{
-#' # Parameter estimation
-#' n <- 500
-#' mu <- 1
-#' b <- 2
-#' X <- rLaplace(n, mu, b)
-#' (est.par <- eLaplace(X))
+#'
+#' @author A. Jonathan R. Godfrey and Haizhen Wu. \cr
+#' Updates and bug fixes by Sarah Pirikahu
 #' 
-#' # Histogram and fitted density
+#' @references  Johnson, N. L., Kotz, S. and Balakrishnan, N. (1995) Continuous Univariate Distributions,
+#'  volume 2, chapter 24, Wiley, New York.\cr
+#'  \cr
+#'  Best, D.J., Rayner, J.C.W. and Thas O. (2008) Comparison of some tests of fit for the Laplace distribution, 
+#'  Computational Statistics and Data Analysis, Vol. 52, pp.5338-5343.\cr 
+#'  \cr
+#'  Gumbel, E.J., Mustafi, C.K., 1967. Some analytical properties of bivariate extremal distributions.
+#'  J. Am. Stat. Assoc. 62, 569-588
+#'  
+#' @seealso \pkg{\link{ExtDist}} for other standard distributions.
+#' 
+#' @examples
+#' # Parameter estimation for a distribution with known shape parameters
+#' X <- rLaplace(n=500, mu=1, b=2)
+#' est.par <- eLaplace(X, method="analytic.MLE"); est.par
+#' plot(est.par)
+#' 
+#' #  Fitted density curve and histogram
 #' den.x <- seq(min(X),max(X),length=100)
-#' den.y <- dLaplace(den.x,mu=est.par$mu,b=est.par$b)
-#' hist(X, breaks=10, col="red", probability=TRUE, ylim=c(0,1.1*max(den.y)))
-#' lines(den.x, den.y, col="blue", lwd=2)
-#' 
-#' # Q-Q plot and P-P plot
-#' plot(qLaplace((1:n-0.5)/n, params=est.par), sort(X), main="Q-Q Plot", 
-#' xlab="Theoretical Quantiles", ylab="Sample Quantiles", xlim=c(-5,5), ylim=c(-5,5))
-#' abline(0,1)
-#' 
-#' plot((1:n-0.5)/n, pLaplace(sort(X), params=est.par), main="P-P Plot", 
-#' xlab="Theoretical Percentile", ylab="Sample Percentile", xlim=c(0,1), ylim=c(0,1))
-#' abline(0,1)
-#' 
-#' # A weighted parameter estimation example
-#' n <- 10
-#' par <- list(mu=1, b=2)
-#' X <- rLaplace(n, params=par)
-#' w <- c(0.13, 0.06, 0.16, 0.07, 0.2, 0.01, 0.06, 0.09, 0.1, 0.12)
-#' eLaplace(X,w) # estimated parameters of weighted sample
-#' eLaplace(X) # estimated parameters of unweighted sample
-#' 
-#' # Alternative parameter estimation methods
-#' eLaplace(X, method="numerical.MLE")
+#' den.y <- dLaplace(den.x, location = est.par$location, scale= est.par$scale)
+#' hist(X, breaks=10, probability=TRUE, ylim = c(0,1.1*max(den.y)))
+#' lines(den.x, den.y, col="blue")
+#' lines(density(X), lty=2)
 #' 
 #' # Extracting location or scale parameters
 #' est.par[attributes(est.par)$par.type=="location"]
 #' est.par[attributes(est.par)$par.type=="scale"]
 #' 
-#' # evaluate the performance of the parameter estimation function by simulation
-#' eval.estimation(rdist=rLaplace,edist=eLaplace,n=1000, rep.num=1e3, params=list(mu=1, b=2))
-#' eval.estimation(rdist=rLaplace,edist=eLaplace,n=1000, rep.num=1e3, params=list(mu=1, b=2), 
-#' method ="analytical.MLE")
+#' # Parameter estimation for a distribution with unknown shape parameters
+#' # Example from Best et.al (2008). Original source of flood data from Gumbel & Mustafi.
+#' # Parameter estimates as given by Best et.al mu=10.13 and  b=3.36
+#' flood <- c(1.96, 1.96, 3.60, 3.80, 4.79, 5.66, 5.76, 5.78, 6.27, 6.30, 6.76, 7.65, 7.84, 7.99,
+#'            8.51, 9.18, 10.13, 10.24, 10.25, 10.43, 11.45, 11.48, 11.75, 11.81, 12.34, 12.78, 13.06, 
+#'            13.29, 13.98, 14.18, 14.40, 16.22, 17.06)
+#' est.par <- eLaplace(flood, method="numerical.MLE"); est.par
+#' plot(est.par) 
 #' 
-#' # evaluate the precision of estimation by Hessian matrix
-#' X <- rLaplace(1000, mu, b)
-#' (est.par <- eLaplace(X))
-#' H <- attributes(eLaplace(X, method="numerical.MLE"))$nll.hessian
-#' fisher_info <- solve(H)
-#' sqrt(diag(fisher_info))
+#' #log-likelihood function
+#' lLaplace(flood,param=est.par)
 #' 
-#' # log-likelihood, score vector and observed information matrix
-#' lLaplace(X,param=est.par)
-#' lLaplace(X,param=est.par, logL=FALSE)
-#' }
+#' # Evaluating the precision by the Hessian matrix
+#' H <- attributes(est.par)$nll.hessian
+#' var <- solve(H)
+#' se <- sqrt(diag(var));se
+
 
 #' @rdname Laplace
 #' @export dLaplace
-dLaplace <- function(x, mu=0, b=1, params=list(mu, b)){
+dLaplace <- function(x, mu=0, b=1, params=list(mu, b),...){
   if(!missing(params)){
     mu <- params$mu
     b <- params$b
   }
-  
+  # pdf Laplace dist Johnson et.al, Vol 2, chapter 24, p.164.
   d <- exp(-abs(x-mu)/b) / (2*b)
 }
 
 #' @rdname Laplace
 #' @export pLaplace
-pLaplace <- function(q, mu=0, b=1,params=list(mu, b)){
+pLaplace <- function(q, mu=0, b=1,params=list(mu, b),...){
   if(!missing(params)){
     mu <- params$mu
     b <- params$b
   }
-  
+  # simplification of the Laplace dist cdf Johnson et.al, Vol 2, chapter 24, p.166
   x <- q-mu
   0.5 + 0.5*sign(x)*(1-exp(-abs(x)/b))
 }
 
 #' @rdname Laplace
 #' @export qLaplace
-qLaplace <- function(p, mu=0, b=1,params=list(mu, b)){
+qLaplace <- function(p, mu=0, b=1,params=list(mu, b),...){
   if(!missing(params)){
     mu <- params$mu
     b <- params$b
@@ -125,7 +137,7 @@ qLaplace <- function(p, mu=0, b=1,params=list(mu, b)){
 
 #' @rdname Laplace
 #' @export rLaplace
-rLaplace <- function(n, mu=0, b=1,params=list(mu, b)){
+rLaplace <- function(n, mu=0, b=1,params=list(mu, b),...){
   if(!missing(params)){
     mu <- params$mu
     b <- params$b}
@@ -136,8 +148,7 @@ rLaplace <- function(n, mu=0, b=1,params=list(mu, b)){
 
 #' @rdname Laplace
 #' @export eLaplace
-eLaplace <-     
-  function(X,w, method ="numerical.MLE"){
+eLaplace <-function(X,w, method =c("analytic.MLE","numerical.MLE"),...){
     n<-length(X)
     if(missing(w)){
       w <- rep(1,n)
@@ -145,14 +156,14 @@ eLaplace <-
       w <- n*w/sum(w)
     }
     
-    if(method == "analytical.MLE") {
+    if(method == "analytic.MLE") {
+      
       mu <- median(X, na.rm=T)
       b <- mean(abs(X-mu))
       est.par <- list(mu=mu, b=b) 
       est.par.se <- rep(NA, length(est.par))
     } else{
-      if(method != "numerical.MLE") warning(paste("method ", method, " is not avaliable, use numerial.MLE instead."))  
-      method = "numerical.MLE"  
+      method == "numerical.MLE"  
       
       est.par <- wmle(X=X, w=w, distname="Laplace",
                       initial=list(mu=0, b=1),
@@ -183,11 +194,11 @@ eLaplace <-
 #' @rdname Laplace
 #' @export lLaplace
 ## (weighted) (log) likelihood function
-lLaplace <- function(x, w=1, mu=0, b=1, params=list(mu, b), logL=TRUE){
+lLaplace <- function(x, w=1, mu=0, b=1, params=list(mu, b), logL=TRUE,...){
   if(!missing(params)){
     mu <- params$mu
     b <- params$b}
-  
+  # log-likelihood as given by Johnson et.al (p.172) 
   ll <- sum((-abs(x-mu)/b) - log(2*b))
   if(logL){return(ll)} else{return(exp(ll))}
 }

@@ -1,27 +1,34 @@
-#' S3 methods from manuplating eDist objects.
-#' 
-#' @title S3 methods from manuplating eDist objects.
-#' @description S3 methods from manuplating eDist objects
+#' @title S3 methods for manipulating eDist objects.
+#' @description S3 methods for manipulating eDist objects
 #' @rdname eDist
 #' @name eDist
-#' @aliases logLik.eDist AIC.eDist AICc.eDist BIC.eDist MDL.eDist vcov.eDist print.eDist
-
-#' @param object,x a eDist object, which is the output of the parameter estimation functions.
-#' @param ... other parameters
-#' @param k numeric, the penalty per parameter to be used; the default k = 2 is the classical AIC.
-#' @param corr logic, if the vcov return correlation matrix (instead of variance-covariance matrix) 
-#' or not.
+#' @aliases logLik.eDist
+#' @aliases AIC.eDist
+#' @aliases AICc.eDist
+#' @aliases MDL.eDist 
+#' @aliases vcov.eDist
+#' @aliases print.eDist
+#' @aliases plot.eDist
+#'
+#' @note The MDL only works for parameter estimation by numerical maximum likelihood.
+#'
+#' @param object, x An object of class eDist, usually the output of a parameter estimation function.
+#' @param x, A list to be returned as class eDist.
+#' @param ... Additional parameters
+#' @param k numeric, The penalty per parameter to be used; the default k = 2 is the classical AIC.
+#' @param corr logical; should vcov() return correlation matrix (instead of variance-covariance matrix).
+#' @param plot logical; if TRUE histogram, P-P and Q-Q plot of the distribution returned else only parameter estimation is returned.
 #' @method logLik eDist
 #' @method AIC eDist
 #' @method AICc eDist
-#' @method BIC eDist
 #' @method MDL eDist
 #' @method print eDist
 #' @method vcov eDist
-
-#' @author A. Jonathan R. Godfrey and Haizhen Wu
-
-#' @examples \donttest{
+#' @method plot eDist
+#'
+#' @author A. Jonathan R. Godfrey, Sarah Pirikahu, and Haizhen Wu.
+#'
+#' @examples
 #' X <- rnorm(20)
 #' est.par <- eNormal(X, method ="numerical.MLE")
 #' logLik(est.par)
@@ -32,10 +39,10 @@
 #' vcov(est.par)
 #' vcov(est.par,corr=TRUE)
 #' print(est.par)
-#' }
+#' plot(est.par)
 
 #' @rdname eDist
-#' @export logLik.eDist
+#' @export
 logLik.eDist <- function(object,...){
   lFoo <- get(paste0("l", attributes(object)$distname))
   ll <- lFoo(attributes(object)$ob, w=attributes(object)$weights, params=object)
@@ -43,22 +50,22 @@ logLik.eDist <- function(object,...){
 }
 
 #' @rdname eDist
-#' @export AIC.eDist
+#' @export
 AIC.eDist <- function(object,..., k=2){
   lFoo <- get(paste0("l", attributes(object)$distname))
   ll <- lFoo(attributes(object)$ob, w=attributes(object)$weights, params=object)
   p <- length(object)
+  n <- length(attributes(object)$ob)
   AIC <- k*(-ll + p)
-  return(AIC)
 }
 
 
 #' @rdname eDist
-#' @export AICc
+#' @export
 AICc <- function(object) UseMethod("AICc")
 
 #' @rdname eDist
-#' @export AICc.eDist
+#' @export
 AICc.eDist <- function(object,...){
   lFoo <- get(paste0("l", attributes(object)$distname))
   ll <- lFoo(attributes(object)$ob, w=attributes(object)$weights, params=object)
@@ -69,7 +76,19 @@ AICc.eDist <- function(object,...){
 }
 
 #' @rdname eDist
-#' @export BIC.eDist
+#' @export
+vcov.eDist <- function(object,..., corr=FALSE){
+  vcov = solve(attributes(object)$nll.hessian)
+  cor = cov2cor(vcov)
+  if(corr){return(cor)} else {return(vcov)}
+}
+
+#' @rdname eDist
+#' @export
+BIC <- function(object) UseMethod("BIC")
+
+#' @rdname eDist
+#' @export 
 BIC.eDist <- function(object,...){
   lFoo <- get(paste0("l", attributes(object)$distname))
   ll <- lFoo(attributes(object)$ob, w=attributes(object)$weights, params=object)
@@ -78,23 +97,15 @@ BIC.eDist <- function(object,...){
   return(BIC)
 }
 
-#' @rdname eDist
-#' @export vcov.eDist
-vcov.eDist <- function(object,..., corr=FALSE){
-  vcov = solve(attributes(object)$nll.hessian)
-  cor = cov2cor(vcov)
-  if(corr){return(cor)} else {return(vcov)}
-}
-
 #' @references Myung, I. (2000). The Importance of Complexity in Model Selection. 
 #' Journal of mathematical psychology, 44(1), 190-204.
 
 #' @rdname eDist
-#' @export MDL
+#' @export
 MDL <- function(object) UseMethod("MDL")
 
 #' @rdname eDist
-#' @export MDL.eDist
+#' @export
 MDL.eDist <- function(object,...){
   lFoo <- get(paste0("l", attributes(object)$distname))
   ll <- lFoo(attributes(object)$ob, w=attributes(object)$weights, params=object)  
@@ -107,7 +118,7 @@ MDL.eDist <- function(object,...){
 
 
 #' @rdname eDist
-#' @export print.eDist
+#' @export
 print.eDist <- function(x,...){
   cat("\nParameters for the", attributes(x)$distname, "distribution. \n(found using the ", attributes(x)$method, "method.)\n\n")
   if(any(is.na(attributes(x)$par.s.e))) {
@@ -123,5 +134,37 @@ print.eDist <- function(x,...){
           row.names=FALSE )
   }
   cat("\n\n")
+}
+
+
+#' @rdname eDist
+#' @export
+plot.eDist <- function(x,...){
+  data <- attr(x, "ob")
+  Dist <- attr(x, "dist")
+  est.par <- x
+  l <- min(data)
+  u <- max(data)
+  d <- u-l
+  n <- length(data)
+  dDist <- function(x) get(paste0("d",Dist))(x,param = est.par)
+  pDist <- function(data) get(paste0("p",Dist))(data,param = est.par)
+  qDist <- function(data) get(paste0("q",Dist))(data,param = est.par)
+    
+    op <- par(mfrow=c(2,2)) 
+    PerformanceAnalytics::textplot(capture.output(print(x)), valign = "top")
+    
+    hist(data, probability=TRUE)
+    curve(dDist, from=l, to=u, add=TRUE, col="blue")
+    
+    plot(qDist((1:n-0.5)/n), sort(data), main="Q-Q Plot", xlim = c(l,u), ylim = c(l,u), 
+         xlab="Theoretical Quantiles", ylab="Sample Quantiles")
+    abline(0,1)
+    
+    plot((1:n-0.5)/n, pDist(sort(data)), main="P-P Plot", xlim = c(0,1), ylim = c(0,1),
+         xlab="Theoretical Percentile", ylab="Sample Percentile")
+    abline(0,1)
+    
+    par(op)
 }
 

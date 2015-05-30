@@ -1,48 +1,33 @@
-# Best distribution for (weighted) sample ---------------------------------
-#' @title Best distribution for (weighted) sample.
-#' @description A function to choose the best fitted distibution based on 
-#' specified criteria.
+#' @title Finding the best distribution for a (weighted) sample.
+#' @description This function chooses the best fitted distribution, based on 
+#' a specified criterion.
 #' @rdname bestDist
 #' @name bestDist
-#' @details Details
-
-#' @param X obersevations.
-#' @param w weights of sample.
-#' @param candDist a vector of names of candidate distributions.
-#' @param criterion the criterion based on which the best fitted distribution is
-#'  choosen.
-
-#' @return the name of best fitted distribution and the parameter estimates.
+#' @details When comparing models fitted by maximum likelihood to the same data, the smaller the AIC, BIC or MDL, the better the fit.
+#' When comparing models using the log-likelihood criterion, the larger the log-likelihood the better the fit.
+#' @note The MDL criterion only works for parameter estimation by numerical maximum likelihood.
+#' @param X Sample observations.
+#' @param w An optional vector of sample weights.
+#' @param candDist A vector of candidate distributions.
+#' @param criterion The basis on which the best fitted distribution is chosen.
+#' 
+#' @author Haizhen Wu and A. Jonathan R. Godfrey.
+#' 
+#' @return An object of class character containing the name of the best distribution and its corresponding parameter estimates.
 #' @export bestDist
-
-#' @examples \donttest{
-#' X <- rBeta_ab(30, a = 0, b = 1, shape1 = 2, shape2 = 10 )
-#' bestDist(X, candDist = c("Beta_ab","Laplace","Normal"), criterion = "logLik")
-#' bestDist(X, candDist = c("Beta_ab","Laplace","Normal"), criterion = "AIC")
-#' bestDist(X, candDist = c("Beta_ab","Laplace","Normal"), criterion = "AICc")
-#' bestDist(X, candDist = c("Beta_ab","Laplace","Normal"), criterion = "BIC")
-#' bestDist(X, candDist = c("Beta_ab","Laplace","Normal"), criterion = "MDL")
+#'
+#' @examples
+#' X <- rBeta_ab(30, a = 0, b = 1, shape1 = 2, shape2 = 10)
 #' 
-#' w <- c(0.32, 1.77, 1.22, 0.64, 0.38, 0.93, 1.63, 1.34, 0.57, 1.73, 1.67, 0.67, 
-#' 0.09, 1, 1.55, 0.53, 0.76, 1.06, 1.13, 1.31, 1.18, 1.64, 0.07, 1.41, 1.18, 
-#' 0.69, 0.28, 1.27, 0.9, 1.08)
-#' bestDist(X, w, candDist = c("Beta_ab","Laplace","Normal"), criterion = "logLik")
-#' bestDist(X, w, candDist = c("Beta_ab","Laplace","Normal"), criterion = "AIC")
-#' bestDist(X, w, candDist = c("Beta_ab","Laplace","Normal"), criterion = "AICc")
-#' bestDist(X, w, candDist = c("Beta_ab","Laplace","Normal"), criterion = "BIC")
-#' bestDist(X, w, candDist = c("Beta_ab","Laplace","Normal"), criterion = "MDL")
+#' # Determining the best distribution from the list of candidate distributions for the data X
+#' Best.Dist <- bestDist(X, candDist = c("Laplace","Normal","Beta_ab"), criterion = "logLik")
 #' 
-#' # parameter for best distribution
-#' best_dist <- bestDist(X, candDist = c("Beta_ab","Laplace","Normal"), criterion = "logLik")
-#' attributes(best_dist)$best.dist.par
-#' }
+#' # Printing the parameter estimates of the best distribution
+#' attributes(Best.Dist)$best.dist.par
 
-bestDist <- 
-  function(X,
-           w = rep(1,length(X))/length(X),
-           candDist = c("Beta_ab","Laplace","Normal"),
-           criterion = "AICc"
-  ){
+bestDist <- function(X, w = rep(1,length(X))/length(X), candDist = c("Beta_ab","Laplace","Normal"), criterion = c("AICc", "logLik",
+                      "AIC", "BIC", "MDL")){
+  
     if(!(criterion %in% c("logLik","AIC","AICc","BIC","MDL"))) {return("criterion unknown")}
     
     w <- w/sum(w)*length(X)
@@ -53,10 +38,14 @@ bestDist <-
     names(criterion.value) <- candDist
     
     if(criterion %in% c("logLik")){
+      # When comparing models fitted by maximum likelihood to the same data,
+      # the larger the log-likelihood the better the fit. 
       new.order <- order(criterion.value,decreasing=T)
       best <- candDist[new.order][1]
       est.par <- est.pars[new.order][[1]]
     } else {
+      # When comparing models fitted by maximum likelihood to the same data,
+      # the smaller the AIC, BIC or MDL the better the fit.
       new.order <- order(criterion.value,decreasing=F)
       best <- candDist[new.order][1]
       est.par <- est.pars[new.order][[1]]

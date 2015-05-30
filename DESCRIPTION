@@ -1,19 +1,20 @@
 Package: ExtDist
-Version: 0.3.7
+Version: 0.6-3
 License: GPL (>= 2)
-Title: Extended Probability Distribution Functions
-Description: The package provides a consistent, unified and extensible
-    framework for parameter estimation of probability distributions; it extends
-    parameter estimation procedures to allow for weighted samples; moreover, it
-    extends the gallery of available distributions.
+Title: Extending the Range of Functions for Probability Distributions
+Description: A consistent, unified and extensible
+    framework for estimation of parameters for probability distributions, including 
+    parameter estimation procedures that allow for weighted samples; the current set of distributions included are: the standard beta, The four-parameter beta, Burr, gamma, Gumbel, Johnson SB and SU, Laplace, logistic, normal, symmetric truncated normal, truncated normal, symmetric-reflected truncated beta, standard symmetric-reflected truncated beta, triangular, uniform, and Weibull distributions; decision criteria and selections based on these decision criteria.
+Repository: CRAN
 Author: Haizhen Wu <h.wu2@massey.ac.nz>,
     A. Jonathan R. Godfrey <A.J.Godfrey@massey.ac.nz>,
-    Kondaswamy Govindaraju <k.govindaraju@massey.ac.nz>
-Maintainer: Haizhen Wu <h.wu2@massey.ac.nz>
-Imports: numDeriv, optimx, VGAM, SuppDists, truncdist
-Suggests: knitr, ggplot2, xtable, PerformanceAnalytics
+    Kondaswamy Govindaraju <k.govindaraju@massey.ac.nz>,
+    Sarah Pirikahu <s.pirikahu@massey.ac.nz>
+Maintainer: A. Jonathan R. Godfrey <a.j.godfrey@massey.ac.nz>
+Imports: numDeriv, optimx
+Suggests: ggplot2, knitr, PerformanceAnalytics, stats, SuppDists,
+        truncdist, VGAM, xtable
 VignetteBuilder: knitr
-Packaged: 2014-10-17 08:10:46 UTC; Haizhen Wu
 NeedsCompilation: no
-Repository: CRAN
-Date/Publication: 2014-10-17 13:05:48
+Packaged: 2015-05-30 07:55:38 UTC; ajgodfre
+Date/Publication: 2015-05-30 11:42:04
