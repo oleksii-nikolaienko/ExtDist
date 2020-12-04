@@ -157,11 +157,11 @@ plot.eDist <- function(x,...){
     graphics::hist(data, probability=TRUE)
     graphics::curve(dDist, from=l, to=u, add=TRUE, col="blue")
 
-    plot(qDist((1:n-0.5)/n), sort(data), main="Q-Q Plot", xlim = c(l,u), ylim = c(l,u),
+    graphics::plot(qDist((1:n-0.5)/n), sort(data), main="Q-Q Plot", xlim = c(l,u), ylim = c(l,u),
          xlab="Theoretical Quantiles", ylab="Sample Quantiles")
     graphics::abline(0,1)
 
-    plot((1:n-0.5)/n, pDist(sort(data)), main="P-P Plot", xlim = c(0,1), ylim = c(0,1),
+    graphics::plot((1:n-0.5)/n, pDist(sort(data)), main="P-P Plot", xlim = c(0,1), ylim = c(0,1),
          xlab="Theoretical Percentile", ylab="Sample Percentile")
     graphics::abline(0,1)
 
