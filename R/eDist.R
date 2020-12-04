@@ -5,7 +5,7 @@
 #' @aliases logLik.eDist
 #' @aliases AIC.eDist
 #' @aliases AICc.eDist
-#' @aliases MDL.eDist 
+#' @aliases MDL.eDist
 #' @aliases vcov.eDist
 #' @aliases print.eDist
 #' @aliases plot.eDist
@@ -79,7 +79,7 @@ AICc.eDist <- function(object,...){
 #' @export
 vcov.eDist <- function(object,..., corr=FALSE){
   vcov = solve(attributes(object)$nll.hessian)
-  cor = cov2cor(vcov)
+  cor = stats::cov2cor(vcov)
   if(corr){return(cor)} else {return(vcov)}
 }
 
@@ -88,16 +88,16 @@ vcov.eDist <- function(object,..., corr=FALSE){
 BIC <- function(object) UseMethod("BIC")
 
 #' @rdname eDist
-#' @export 
+#' @export
 BIC.eDist <- function(object,...){
   lFoo <- get(paste0("l", attributes(object)$distname))
   ll <- lFoo(attributes(object)$ob, w=attributes(object)$weights, params=object)
   n <- length(attributes(object)$ob)
-  BIC <- 2*(-ll) + length(object) *log(n) 
+  BIC <- 2*(-ll) + length(object) *log(n)
   return(BIC)
 }
 
-#' @references Myung, I. (2000). The Importance of Complexity in Model Selection. 
+#' @references Myung, I. (2000). The Importance of Complexity in Model Selection.
 #' Journal of mathematical psychology, 44(1), 190-204.
 
 #' @rdname eDist
@@ -108,7 +108,7 @@ MDL <- function(object) UseMethod("MDL")
 #' @export
 MDL.eDist <- function(object,...){
   lFoo <- get(paste0("l", attributes(object)$distname))
-  ll <- lFoo(attributes(object)$ob, w=attributes(object)$weights, params=object)  
+  ll <- lFoo(attributes(object)$ob, w=attributes(object)$weights, params=object)
   nll.hessian <- attributes(object)$nll.hessian
   MDL = ifelse(all(is.finite(nll.hessian)),
                -ll + 1/2*log(abs(det(attributes(object)$nll.hessian))),
@@ -122,15 +122,15 @@ MDL.eDist <- function(object,...){
 print.eDist <- function(x,...){
   cat("\nParameters for the", attributes(x)$distname, "distribution. \n(found using the ", attributes(x)$method, "method.)\n\n")
   if(any(is.na(attributes(x)$par.s.e))) {
-    print(data.frame(Parameter=attributes(x)$par.name, 
-                     Type=attributes(x)$par.type, 
-                     Estimate=attributes(x)$par.vals), 
+    print(data.frame(Parameter=attributes(x)$par.name,
+                     Type=attributes(x)$par.type,
+                     Estimate=attributes(x)$par.vals),
           row.names=FALSE )
   } else {
-    print(data.frame(Parameter=attributes(x)$par.name, 
-                     Type=attributes(x)$par.type, 
+    print(data.frame(Parameter=attributes(x)$par.name,
+                     Type=attributes(x)$par.type,
                      Estimate=attributes(x)$par.vals,
-                     S.E. = attributes(x)$par.s.e ), 
+                     S.E. = attributes(x)$par.s.e ),
           row.names=FALSE )
   }
   cat("\n\n")
@@ -150,21 +150,21 @@ plot.eDist <- function(x,...){
   dDist <- function(x) get(paste0("d",Dist))(x,param = est.par)
   pDist <- function(data) get(paste0("p",Dist))(data,param = est.par)
   qDist <- function(data) get(paste0("q",Dist))(data,param = est.par)
-    
-    op <- par(mfrow=c(2,2)) 
-    PerformanceAnalytics::textplot(capture.output(print(x)), valign = "top")
-    
-    hist(data, probability=TRUE)
-    curve(dDist, from=l, to=u, add=TRUE, col="blue")
-    
-    plot(qDist((1:n-0.5)/n), sort(data), main="Q-Q Plot", xlim = c(l,u), ylim = c(l,u), 
+
+    op <- graphics::par(mfrow=c(2,2))
+    PerformanceAnalytics::textplot(utils::capture.output(print(x)), valign = "top")
+
+    graphics::hist(data, probability=TRUE)
+    graphics::curve(dDist, from=l, to=u, add=TRUE, col="blue")
+
+    plot(qDist((1:n-0.5)/n), sort(data), main="Q-Q Plot", xlim = c(l,u), ylim = c(l,u),
          xlab="Theoretical Quantiles", ylab="Sample Quantiles")
-    abline(0,1)
-    
+    graphics::abline(0,1)
+
     plot((1:n-0.5)/n, pDist(sort(data)), main="P-P Plot", xlim = c(0,1), ylim = c(0,1),
          xlab="Theoretical Percentile", ylab="Sample Percentile")
-    abline(0,1)
-    
-    par(op)
+    graphics::abline(0,1)
+
+    graphics::par(op)
 }
 

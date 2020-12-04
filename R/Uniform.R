@@ -87,7 +87,7 @@ dUniform <-
       a <- params$a
       b <- params$b
     }
-    out <- dunif(x, min = a, max = b)
+    out <- stats::dunif(x, min = a, max = b)
     return(out)
   }
 
@@ -100,7 +100,7 @@ pUniform <-
       a <- params$a
       b <- params$b
     }
-    out <- punif(q, min = a, max = b)
+    out <- stats::punif(q, min = a, max = b)
     return(out)
   }
 
@@ -112,7 +112,7 @@ qUniform <-
       a <- params$a
       b <- params$b
     }
-    out <- qunif(p, min = a, max = b)
+    out <- stats::qunif(p, min = a, max = b)
     return(out)
   }
 
@@ -124,7 +124,7 @@ rUniform <-
       a <- params$a
       b <- params$b
     }
-    out <- runif(n, min = a, max = b)
+    out <- stats::runif(n, min = a, max = b)
     return(out)
   }
 
@@ -150,8 +150,8 @@ eUniform <-
     }
     else if(method == "moments"){
       # Parameter estimates using the method of moments estimates as given by Forbes et.al (2011), chapeter 40, p.179
-      a <- mean(X)-sqrt(3)*sd(X)
-      b <- mean(X)+sqrt(3)*sd(X)
+      a <- mean(X)-sqrt(3)*stats::sd(X)
+      b <- mean(X)+sqrt(3)*stats::sd(X)
 
       est.par <- list(a = a, b = b)
       est.par.se <- rep(NA, length(est.par))

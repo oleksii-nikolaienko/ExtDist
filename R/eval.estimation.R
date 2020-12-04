@@ -34,7 +34,7 @@ eval.estimation <- function(rdist, edist, n = 20, rep.num = 1e3, params, method 
     }
     return(list(method = method,
                 est.mean = apply(est.par,2, mean, na.rm =T),
-                est.sd = apply(est.par,2, sd, na.rm =T),
+                est.sd = apply(est.par,2, stats::sd, na.rm =T),
                 time = proc.time() - start.time,
                 na.cont = sum(is.na(est.par[,1])))
     )

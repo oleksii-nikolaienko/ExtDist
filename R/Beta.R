@@ -102,7 +102,7 @@ dBeta <-function(x, shape1=2, shape2 =3, params = list(shape1, shape2),...){
       shape1 <- params$shape1
       shape2 <- params$shape2
     }
-    out <- dbeta(x, shape1, shape2)
+    out <- stats::dbeta(x, shape1, shape2)
     return(out)
   }
 
@@ -113,7 +113,7 @@ pBeta <- function(q, shape1=2, shape2 =3, params = list(shape1, shape2),...){
       shape1 <- params$shape1
       shape2 <- params$shape2
     }
-    out <- pbeta(q, shape1, shape2)
+    out <- stats::pbeta(q, shape1, shape2)
     return(out)
   }
 
@@ -124,7 +124,7 @@ qBeta <- function(p, shape1=2, shape2 =3, params = list(shape1, shape2),...){
       shape1 <- params$shape1
       shape2 <- params$shape2
     }
-    qbeta(p, shape1 = shape1, shape2 = shape2)
+    stats::qbeta(p, shape1 = shape1, shape2 = shape2)
   }
 
 #' @rdname Beta
@@ -134,7 +134,7 @@ rBeta <- function(n, shape1=2, shape2 =3, params = list(shape1, shape2),...){
       shape1 <- params$shape1
       shape2 <- params$shape2
     }
-    rbeta(n, shape1 = shape1, shape2 = shape2)
+    stats::rbeta(n, shape1 = shape1, shape2 = shape2)
   }
 
 #' @rdname Beta

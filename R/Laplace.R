@@ -142,7 +142,7 @@ rLaplace <- function(n, mu=0, b=1,params=list(mu, b),...){
     mu <- params$mu
     b <- params$b}
 
-  u<-runif(n)-0.5
+  u<-stats::runif(n)-0.5
   x<-mu-b*sign(u)*log(1-2*abs(u))
 }
 
@@ -159,7 +159,7 @@ eLaplace <-function(X,w, method =c("analytic.MLE","numerical.MLE"),...){
 
   if(method == "analytic.MLE") {
 
-    mu <- median(X, na.rm=T)
+    mu <- stats::median(X, na.rm=T)
     b <- mean(abs(X-mu))
     est.par <- list(mu=mu, b=b)
     est.par.se <- rep(NA, length(est.par))
