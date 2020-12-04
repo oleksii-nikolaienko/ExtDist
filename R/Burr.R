@@ -1,8 +1,8 @@
 #' @title The Burr Distribution.
-#' @description Density, distribution, quantile, random number 
-#' generation, and parameter estimation functions for the Burr distribution with parameters \code{location}, 
+#' @description Density, distribution, quantile, random number
+#' generation, and parameter estimation functions for the Burr distribution with parameters \code{location},
 #' \code{scale} and \code{inequality}. Parameter estimation can be based on a weighted or unweighted i.i.d sample
-#'  and can be performed numerically. 
+#'  and can be performed numerically.
 #' @rdname Burr
 #' @name Burr
 #' @aliases dBurr
@@ -11,16 +11,16 @@
 #' @aliases rBurr
 #' @aliases eBurr
 #' @aliases lBurr
-#' 
-#' @details The Burr distribution is a special case of the Pareto(IV) distribution 
-#' where the \code{location} parameter is equal \eqn{0} and \code{inequality} parameter is equal to \eqn{1/g}, Brazauskas (2003). \cr 
+#'
+#' @details The Burr distribution is a special case of the Pareto(IV) distribution
+#' where the \code{location} parameter is equal \eqn{0} and \code{inequality} parameter is equal to \eqn{1/g}, Brazauskas (2003). \cr
 #' \cr
 #' The \code{dBurr()}, \code{pBurr()}, \code{qBurr()},and \code{rBurr()} functions serve as wrappers of the
-#' \code{\link[VGAM]{dparetoIV}}, \code{\link[VGAM]{pparetoIV}}, \code{\link[VGAM]{qparetoIV}}, and 
-#' \code{\link[VGAM]{rparetoIV}} functions in the \pkg{{VGAM}} package. They allow for the parameters to be declared not only as 
-#' individual numerical values, but also as a list so parameter estimation can be carried out. \cr  
+#' \code{\link[VGAM]{dparetoIV}}, \code{\link[VGAM]{pparetoIV}}, \code{\link[VGAM]{qparetoIV}}, and
+#' \code{\link[VGAM]{rparetoIV}} functions in the \pkg{{VGAM}} package. They allow for the parameters to be declared not only as
+#' individual numerical values, but also as a list so parameter estimation can be carried out. \cr
 #' \cr
-#' The Burr distribution is most simply defined in terms of its cumulative distribution function (Johnson et.al p.576) 
+#' The Burr distribution is most simply defined in terms of its cumulative distribution function (Johnson et.al p.576)
 #' \deqn{F(x) = [1 + (x/b)^g]^{-s}}
 #' where \eqn{b}, \eqn{g} and \eqn{s} \eqn{> 0}. Parameter estimation can only be implemented numerically.\cr
 #' \cr
@@ -35,47 +35,47 @@
 #' @param b Scale parameters.
 #' @param g,s Shape parameters.
 #' @param method Parameter estimation method.
-#' @param logL logical; if TRUE, lBurr gives the log-likelihood, otherwise the likelihood is given. 
+#' @param logL logical; if TRUE, lBurr gives the log-likelihood, otherwise the likelihood is given.
 #' @param ... Additional parameters.
 #'
 #' @return dBurr gives the density, pBurr the distribution function,
-#' qBurr the quantile function, rBurr generates random deviates, and 
-#' eBurr estimate the distribution parameters. lBurr provides the log-likelihood function. 
+#' qBurr the quantile function, rBurr generates random deviates, and
+#' eBurr estimate the distribution parameters. lBurr provides the log-likelihood function.
 #'
 #' @references Johnson, N. L., Kotz, S. and Balakrishnan, N. (1994) Continuous Univariate Distributions,
 #'  volume 1, chapter 20, Wiley, New York.\cr
-#'  \cr 
+#'  \cr
 #' Brazauskas, V. (2003) Information matrix for Pareto(IV), Burr, and related distributions. Comm. Statist.
 #' Theory and Methods 32, 315-325.\cr
 #' \cr
 #' Watkins A.J. (1999) An algorithm for maximum likelihood estimation in the three parameter Burr XII distribution,
 #' Computational Statistics & Data Analysis, 32, 19-27.\cr
 #' \cr
-#' \href{http://au.mathworks.com/help/stats/burr-type-xii-distribution.html}{Mathworks: Matlab documentation for Burr Type XII distribution}
+#' \href{https://au.mathworks.com/help/stats/burr-type-xii-distribution.html}{Mathworks: Matlab documentation for Burr Type XII distribution}
 #' @seealso \pkg{\link{ExtDist}} for other standard distributions.
 #' @author Haizhen Wu and A. Jonathan R. Godfrey. \cr
 #' Updates and bug fixes by Sarah Pirikahu.
-#' 
+#'
 #' @examples
 #' # Parameter estimation for a distribution of known shape parameters
 #' X <- rBurr(n=500, b = 1, g = 2, s = 2)
 #' est.par <- eBurr(X); est.par
 #' plot(est.par)
-#' 
+#'
 #' # Fitted density curve and histogram
 #' den.x <- seq(min(X),max(X),length=100)
 #' den.y <- dBurr(den.x, b=est.par$b, g=est.par$g, s=est.par$s)
 #' hist(X, breaks=10, probability=TRUE, ylim = c(0,1.1*max(den.y)))
 #' lines(den.x, den.y, col="blue")
 #' lines(density(X), lty=2)
-#' 
+#'
 #' # Extracting shape or scale parameters
 #' est.par[attributes(est.par)$par.type=="scale"]
 #' est.par[attributes(est.par)$par.type=="shape"]
-#' 
+#'
 #' # Parameter Estimation for a distribution with unknown shape parameters
-#' # Example from: Matlab Statistical Toolbox package 
-#' # (See: http://au.mathworks.com/help/stats/burr-type-xii-distribution.html)
+#' # Example from: Matlab Statistical Toolbox package
+#' # (See: https://au.mathworks.com/help/stats/burr-type-xii-distribution.html)
 #' # Parameter estimates given are: b = 80.4515, g = 18.9251 and s = 0.4492.
 #' QRS.duration <- c(91,81,138,100,88,100,77,78,84,89,102,77,78,91,77,75,82,70,91,82,83,90,71,75,82,
 #'                  109,94,95,90,96,85,71,75,78,82,69,103,85,80,94,80,79,92,84,86,73,75,73,78,80,81,
@@ -97,10 +97,10 @@
 #'                  77,87,88,94,88,74,85,88,81,91,81,80,100,108,93,79)
 #' est.par <- eBurr(QRS.duration); est.par
 #' plot(est.par)
-#' 
+#'
 #' # log-likelihood function
 #' lBurr(QRS.duration,param = est.par)
-#' 
+#'
 #' # Evaluation of the precision of the parameter estimates by the Hessian matrix
 #' H <- attributes(est.par)$nll.hessian
 #' var <- solve(H)
@@ -124,7 +124,7 @@ pBurr <- function(q, b = 1, g = 2, s = 2, params = list(b = 1, g = 2, s = 2),...
     out = q
     c = (q/b)^g
     d = s*c
-    out[q == Inf] =1  
+    out[q == Inf] =1
     out[c>1e10 & q!=Inf] = 1- (q[c>1e10 & q!=Inf]/b)^(-g*s)
     out[c<1e-10 & q!=Inf] = 1- exp(-d[c<1e-10 & q!=Inf])
     out[c<=1e10 & c>=1e-10 & q!=Inf] = VGAM::pparetoIV(q[c<=1e10 & c>=1e-10 & q!=Inf], location = 0, scale = b, inequality = 1/g, shape = s)
@@ -140,14 +140,14 @@ qBurr <- function(p, b = 1, g = 2, s = 2, params = list(b = 1, g = 2, s = 2),...
     out = p
     c= (1/(1-p))^(1/s)
     d = -log(1-p)/s
-    
+
     out[p== 0] =0
-    
+
     c= (1/(1-p))^(1/s)
     out[c>1e10 & p!=0] = (1/(1-p[c>1e10 & p!=0]))^(1/(s*g))*b
-    
+
     d = -log(1-p)/s
-    out[d<1e-10 & p!=0] = b*(d[d<1e-10 & p!=0])^(1/g) 
+    out[d<1e-10 & p!=0] = b*(d[d<1e-10 & p!=0])^(1/g)
     out[c<=1e10 & d>=(1e-10) & p!=0] = VGAM::qparetoIV(p[c<=1e10 & d>=(1e-10) & p!=0], location = 0, scale = b, inequality = 1/g, shape = s)
     return(out)
   }
@@ -170,19 +170,19 @@ eBurr <- function(X,w, method ="numerical.MLE",...){
     } else {
       w <- n*w/sum(w)
     }
-    
-{ if(method != "numerical.MLE") stop(paste("method ", method, " is not avaliable, use numerial.MLE instead."))  
-  method = "numerical.MLE"  
-  
+
+{ if(method != "numerical.MLE") stop(paste("method ", method, " is not avaliable, use numerial.MLE instead."))
+  method = "numerical.MLE"
+
   est.par <- wmle(X=X, w=w, distname = "Burr",
                   initial=list(b=2, g=2, s =2),
                   lower=list(b=0, g=0, s =0),
                   upper=list(b=Inf, g=Inf, s =Inf))
-  
+
   est.par.se <- try(sqrt(diag(solve(attributes(est.par)$nll.hessian))),silent=TRUE)
   if(class(est.par.se) == "try-error") {
     est.par.se <- rep(NA, length(est.par))
-  } 
+  }
 }
 
 attributes(est.par)$ob <- X
@@ -192,7 +192,7 @@ attributes(est.par)$method <- method
 attributes(est.par)$par.name <- c("b","g","s")
 attributes(est.par)$par.type <- c("scale","shape","shape")
 attributes(est.par)$par.vals <- c(est.par$b, est.par$g, est.par$s)
-attributes(est.par)$par.s.e <-  est.par.se  
+attributes(est.par)$par.s.e <-  est.par.se
 
 class(est.par) <- "eDist"
 
@@ -206,16 +206,16 @@ lBurr <- function(X, w, b = 1, g = 2, s = 2, params = list(b = 1, g = 2, s = 2),
     if(!missing(params)){
       b = params$b; g = params$g; s = params$s
     }
-    
+
     n <- length(X)
     if(missing(w)){
       w <- rep(1,n)
     } else {
       w <- n*w/sum(w)
     }
-    
+
     ll <- sum(w*log(dBurr(x=X,params = params)))
     l <- exp(ll)
-    
+
     if(logL) {return(ll)} else{return(l)}
   }

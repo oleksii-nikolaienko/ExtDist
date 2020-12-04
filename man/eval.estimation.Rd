@@ -29,8 +29,8 @@ A list containing the mean and sd of the estimated parameters.\cr
 A function to evaluate the parameter estimation function.
 }
 \examples{
-eval.estimation(rdist=rNormal,edist=eNormal,n = 100, rep.num = 50,
-params = list(mean = 1,sd = 5))
+eval.estimation(rdist = rBeta, edist = eBeta, n = 100, rep.num = 50,
+params = list(shape1 = 1, shape2 = 5))
 }
 \author{
 Haizhen Wu and A. Jonathan R. Godfrey.
