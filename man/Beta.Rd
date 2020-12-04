@@ -72,7 +72,7 @@ The beta distribution with parameters \code{shape1}=\eqn{\alpha} and \code{shape
 where \eqn{0 \le x \le 1}, \eqn{\alpha>0}, \eqn{\beta>0}, and \eqn{B} is the \link[base]{beta} function. \cr
 \cr
 Analytical parameter estimation is conducted using the method of moments. The parameter
-estimates for \eqn{\alpha} and \eqn{\beta} are as given in the \href{http://www.itl.nist.gov/div898/handbook/eda/section3/eda366h.htm}{Engineering Statistics Handbook}.\cr
+estimates for \eqn{\alpha} and \eqn{\beta} are as given in the \href{https://www.itl.nist.gov/div898/handbook/eda/section3/eda366h.htm}{Engineering Statistics Handbook}.\cr
 \cr
 The log-likelihood function of the beta distribution is given by
 \deqn{l(\alpha, \beta | x) = (\alpha-1)\sum_{i} ln(x_i) + (\beta-1)\sum_{i}
@@ -121,7 +121,7 @@ Updates and bug fixes by Sarah Pirikahu.
 Johnson, N. L., Kotz, S. and Balakrishnan, N. (1995) Continuous Univariate Distributions,
  volume 2, chapter 25, Wiley, New York.\cr
  \cr
- \href{http://www.itl.nist.gov/div898/handbook/eda/section3/eda366h.htm}{Engineering Statistics Handbook}\cr
+ \href{https://www.itl.nist.gov/div898/handbook/eda/section3/eda366h.htm}{Engineering Statistics Handbook}\cr
  \cr
  Bury, K. (1999) Statistical Distributions in Engineering, Chapter 14, pp.253-255,
  Cambridge University Press.\cr

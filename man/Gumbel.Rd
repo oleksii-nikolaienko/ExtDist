@@ -72,7 +72,7 @@ The Gumbel distribution is a special case of the generalised extreme value (GEV)
 has probability density function,
 \deqn{f(x) = exp{(-exp{-(x-\mu)/\sigma)}}}
 where \eqn{\mu} = \code{location} and \eqn{\sigma} = \code{scale} which has the constraint \eqn{\sigma > 0}.
-The analytical parameter estimations are as given by the \href{http://www.itl.nist.gov/div898/handbook/eda/section3/eda366g.htm}{Engineering Statistics Handbook}
+The analytical parameter estimations are as given by the \href{https://www.itl.nist.gov/div898/handbook/eda/section3/eda366g.htm}{Engineering Statistics Handbook}
 with corresponding standard errors given by Bury (p.273).\cr
 \cr
 The log-likelihood function of the Gumbel distribution is given by
@@ -118,7 +118,7 @@ Haizhen Wu and A. Jonathan R. Godfrey. \cr Updates and bug fixes by Sarah Pirika
 Johnson, N. L., Kotz, S. and Balakrishnan, N. (1995) Continuous Univariate Distributions,
  volume 2, chapter 22, Wiley, New York.\cr
  \cr
- \href{http://www.itl.nist.gov/div898/handbook/eda/section3/eda366g.htm}{Engineering Statistics Handbook}.\cr
+ \href{https://www.itl.nist.gov/div898/handbook/eda/section3/eda366g.htm}{Engineering Statistics Handbook}.\cr
  \cr
  Bury, K. (1999) Statistical Distributions in Engineering, Chapter 15, pp.283-284,
  Cambridge University Press.\cr

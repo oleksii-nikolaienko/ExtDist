@@ -92,7 +92,7 @@ est.par[attributes(est.par)$par.type=="shape"]
 
 # Parameter Estimation for a distribution with unknown shape parameters
 # Example from: Matlab Statistical Toolbox package
-# (See: http://au.mathworks.com/help/stats/burr-type-xii-distribution.html)
+# (See: https://au.mathworks.com/help/stats/burr-type-xii-distribution.html)
 # Parameter estimates given are: b = 80.4515, g = 18.9251 and s = 0.4492.
 QRS.duration <- c(91,81,138,100,88,100,77,78,84,89,102,77,78,91,77,75,82,70,91,82,83,90,71,75,82,
                  109,94,95,90,96,85,71,75,78,82,69,103,85,80,94,80,79,92,84,86,73,75,73,78,80,81,
@@ -137,7 +137,7 @@ Theory and Methods 32, 315-325.\cr
 Watkins A.J. (1999) An algorithm for maximum likelihood estimation in the three parameter Burr XII distribution,
 Computational Statistics & Data Analysis, 32, 19-27.\cr
 \cr
-\href{http://au.mathworks.com/help/stats/burr-type-xii-distribution.html}{Mathworks: Matlab documentation for Burr Type XII distribution}
+\href{https://au.mathworks.com/help/stats/burr-type-xii-distribution.html}{Mathworks: Matlab documentation for Burr Type XII distribution}
 }
 \seealso{
 \pkg{\link{ExtDist}} for other standard distributions.

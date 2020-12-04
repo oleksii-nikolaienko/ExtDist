@@ -66,7 +66,7 @@ individual numerical values, but also as a list so parameter estimation can be c
 The uniform distribution has probability density function
 \deqn{p_x(x) = 1/(b-a)}
 for \eqn{a \le x \le b}. The analytic maximum likelihood parameter estimates are as given by
-\href{http://www.itl.nist.gov/div898/handbook/eda/section3/eda3662.htm}{Engineering Statistics Handbook}.
+\href{https://www.itl.nist.gov/div898/handbook/eda/section3/eda3662.htm}{Engineering Statistics Handbook}.
 The method of moments parameter estimation option is also avaliable and the estimates are as given by Forbes et.al (2011), p.179.\cr
 \cr
 The log-likelihood function for the uniform distribution is given by
@@ -107,7 +107,7 @@ Updates and bugfixes by Sarah Pirikahu.
 Johnson, N. L., Kotz, S. and Balakrishnan, N. (1995) Continuous Univariate Distributions,
  volume 2, chapter 26, Wiley, New York.\cr
  \cr
- \href{http://www.itl.nist.gov/div898/handbook/eda/section3/eda3662.htm}{Engineering Statistics Handbook}\cr
+ \href{https://www.itl.nist.gov/div898/handbook/eda/section3/eda3662.htm}{Engineering Statistics Handbook}\cr
  \cr
  Forbes, C. Evans, M. Hastings, N. & Peacock, B. (2011) Statistical Distributions, 4th Ed, chapter 40, Wiley, New Jersey.\cr
 }
