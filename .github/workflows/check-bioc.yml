@@ -234,6 +234,7 @@ jobs:
           BiocGenerics:::testPackage()
         shell: Rscript {0}
 
+      ## no need for BiocCheck
       # - name: Run BiocCheck
       #   run: |
       #     BiocCheck::BiocCheck(
