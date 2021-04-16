@@ -137,6 +137,9 @@ jobs:
 
           ## For installing usethis's dependency gert
           brew install libgit2
+          
+          ## pdflatex
+          brew install --cask mactex
 
       - name: Install Windows system dependencies
         if: runner.os == 'Windows'
@@ -237,7 +240,8 @@ jobs:
               dir('check', 'tar.gz$', full.names = TRUE),
               `quit-with-status` = TRUE,
               `no-check-R-ver` = TRUE,
-              `no-check-bioc-help` = TRUE
+              `no-check-bioc-help` = TRUE,
+              `no-check-CRAN` = TRUE
           )
         shell: Rscript {0}
 
