@@ -11,6 +11,7 @@ bibliography: bibliography.bib
 vignette: >
   %\VignetteIndexEntry{Parameter-Estimation-and-Distribution-Selection-by-ExtDist}
   %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ## Introduction
