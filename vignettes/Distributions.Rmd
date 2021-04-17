@@ -13,7 +13,7 @@ vignette: >
 \usepackage{amsmath,amssymb}
 -->
 
-Distributions included in the ExtDist package
+<!--Distributions included in the ExtDist package-->
 ========================================================
 * [The standard beta distribution](Distributions-Beta.html)
 * The four-parameter beta distribution.

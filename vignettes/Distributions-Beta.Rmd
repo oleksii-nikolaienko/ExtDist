@@ -14,7 +14,7 @@ vignette: >
 -->
 
 
-Beta distribution
+<!--Beta distribution-->
 ========================================================
 
 Probability density function:
