@@ -74,13 +74,13 @@
 
       
 
-      </header><script src="ParaEst-and-DistSel-by-ExtDist_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
+      </header><script src="ParaEst-and-DistSel-by-ExtDist_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Parameter estimation and distribution selection by ExtDist</h1>
                         <h4 data-toc-skip class="author">Haizhen Wu, A. Jonathan R. Godfrey and Sarah Pirikahu</h4>
             
-            <h4 data-toc-skip class="date">2021-04-17</h4>
+            <h4 data-toc-skip class="date">2021-05-14</h4>
       
       
       <div class="hidden name"><code>ParaEst-and-DistSel-by-ExtDist.Rmd</code></div>
@@ -91,7 +91,7 @@
     
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h2>
+<a href="#introduction" class="anchor" aria-hidden="true"></a>Introduction</h2>
 <p>Parameter estimation and distribution selections are common tasks in statistical analysis. In the context of variables acceptance sampling <span class="citation">(see Wu and Govindaraju 2014 etc.)</span>, when the underlying distribution model of the quality characteristic is determined, the estimated quality of a product batch measured by the proportion nonconforming, is computed through the estimated parameter(s) of the underlying distribution based on a sample. Conversely, if a collection of candidate distributions are considered to be eligible, then selection of a distribution that best describes the data becomes necessary.</p>
 <p>The  package is devoted to provide a consistent and unified framework for these tasks.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -99,7 +99,7 @@
 </div>
 <div id="parameter-estimation" class="section level2">
 <h2 class="hasAnchor">
-<a href="#parameter-estimation" class="anchor"></a>Parameter Estimation</h2>
+<a href="#parameter-estimation" class="anchor" aria-hidden="true"></a>Parameter Estimation</h2>
 <p>Suppose we have a set of data, which has been randomly generated from a Weibull distributed population,</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span>
@@ -127,7 +127,7 @@
 </div>
 <div id="distribution-selection" class="section level2">
 <h2 class="hasAnchor">
-<a href="#distribution-selection" class="anchor"></a>Distribution selection</h2>
+<a href="#distribution-selection" class="anchor" aria-hidden="true"></a>Distribution selection</h2>
 <p>As a S3 class object, several S3 methods have been developed in  to extract the distribution selection criteria and other relevant information.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span> <span class="co"># log likelihood</span></code></pre></div>
@@ -189,7 +189,7 @@ BIC    1092.697  1092.582  1148.805  1104.606 </code></pre>
 </div>
 <div id="weighted-sample" class="section level2">
 <h2 class="hasAnchor">
-<a href="#weighted-sample" class="anchor"></a>Weighted sample</h2>
+<a href="#weighted-sample" class="anchor" aria-hidden="true"></a>Weighted sample</h2>
 <p>Another notable feature of the  package is that it can deal with weighted samples. Weighted samples appear in many contexts, e.g.: in non-parametric and semi-parametric deconvolution <span class="citation">(see e.g. Hazelton and Turlach 2010 etc.)</span> the deconvoluted distribution can be represented as a pair <span class="math inline">\((Y,w)\)</span> where <span class="math inline">\(w\)</span> is a vector of weights with same length as <span class="math inline">\(Y\)</span>. In size-biased (unequal probability) sampling, the true population is more appropriately described by the weighted (with reciprocal of the inclusion probability as weights) observations rather than the observations themselves. In Bayesian inference, the posterior distribution can be regarded as a weighted version of the prior distribution. Weighted distributions can also play an interesting role in stochastic population dynamics.</p>
 <p>In , the parameter estimation was conducted by maximum weighted likelihood estimation, with the estimate <span class="math inline">\(\hat{\boldsymbol{\theta}}\)</span> of <span class="math inline">\(\boldsymbol{\theta}\)</span> being defined by <span class="math display">\[\begin{align}\label{eq:1}
 \hat{\boldsymbol{\theta}}^{w}=\arg\max_{\boldsymbol{\theta}}\sum_{i=1}^n w_i\ln f(Y_i;\boldsymbol{\theta}),
@@ -237,7 +237,7 @@ BIC    -10.78682 -15.68344 -16.11751</code></pre>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h2>
+<a href="#references" class="anchor" aria-hidden="true"></a>References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Hazelton-Turlach-2010" class="csl-entry">
 Hazelton, Martin L., and Berwin A. Turlach. 2010. <span>“<span>Semiparametric Density Deconvolution</span>.”</span> <em>Scandinavian Journal of Statistics</em> 37 (1): 91–108.

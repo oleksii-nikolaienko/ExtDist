@@ -60,8 +60,6 @@ Parameter estimation can be based on a weighted or unweighted i.i.d. sample and 
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -142,7 +140,7 @@ generation, and parameter estimation functions for the Johnson SB (bounded suppo
 Parameter estimation can be based on a weighted or unweighted i.i.d. sample and can be performed numerically.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dJohnsonSB</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>dJohnsonSB</span><span class='op'>(</span>
   <span class='va'>x</span>,
   gamma <span class='op'>=</span> <span class='op'>-</span><span class='fl'>0.5</span>,
   delta <span class='op'>=</span> <span class='fl'>2</span>,
@@ -204,7 +202,7 @@ Parameter estimation can be based on a weighted or unweighted i.i.d. sample and 
   params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>gamma <span class='op'>=</span> <span class='op'>-</span><span class='fl'>0.5</span>, delta <span class='op'>=</span> <span class='fl'>2</span>, xi <span class='op'>=</span> <span class='op'>-</span><span class='fl'>0.5</span>, lambda <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>,
   logL <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>...</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -296,68 +294,76 @@ Z. A. Karian and E. J. Dudewicz (2011) Handbook of Fitting Statistical Distribut
 Updates and bug fixes by Sarah Pirikahu.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Parameter estimation for a distribution with known shape parameters</span>
-<span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'>rJohnsonSB</span><span class='op'>(</span>n<span class='op'>=</span><span class='fl'>500</span>, gamma<span class='op'>=</span><span class='op'>-</span><span class='fl'>0.5</span>, delta<span class='op'>=</span><span class='fl'>2</span>, xi<span class='op'>=</span><span class='op'>-</span><span class='fl'>0.5</span>, lambda<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>
-<span class='va'>est.par</span> <span class='op'>&lt;-</span> <span class='fu'>eJohnsonSB</span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>; <span class='va'>est.par</span>
-</div><div class='output co'>#&gt; 
-#&gt; Parameters for the JohnsonSB distribution. 
-#&gt; (found using the  numerical.MLE method.)
-#&gt; 
-#&gt;  Parameter     Type   Estimate      S.E.
-#&gt;      gamma    shape -0.3360367 0.2041393
-#&gt;      delta    shape  1.5500047 0.2805100
-#&gt;         xi location -0.2305467 0.2324524
-#&gt;     lambda    scale  1.5651028 0.0958046
-#&gt; 
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span>
-</div><div class='img'><img src='JohnsonSB-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'>#  Fitted density curve and histogram</span>
-<span class='va'>den.x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>,<span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>,length<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span>
-<span class='va'>den.y</span> <span class='op'>&lt;-</span> <span class='fu'>dJohnsonSB</span><span class='op'>(</span><span class='va'>den.x</span>,params <span class='op'>=</span> <span class='va'>est.par</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/hist.html'>hist</a></span><span class='op'>(</span><span class='va'>X</span>, breaks<span class='op'>=</span><span class='fl'>10</span>, probability<span class='op'>=</span><span class='cn'>TRUE</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1.2</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>den.y</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>den.x</span>, <span class='va'>den.y</span>, col<span class='op'>=</span><span class='st'>"blue"</span><span class='op'>)</span>
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/density.html'>density</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='JohnsonSB-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># Extracting location, scale and shape parameters</span>
-<span class='va'>est.par</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span><span class='op'>$</span><span class='va'>par.type</span><span class='op'>==</span><span class='st'>"location"</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; $xi
-#&gt; [1] -0.2305467
-#&gt; </div><div class='input'><span class='va'>est.par</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span><span class='op'>$</span><span class='va'>par.type</span><span class='op'>==</span><span class='st'>"scale"</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; $lambda
-#&gt; [1] 1.565103
-#&gt; </div><div class='input'><span class='va'>est.par</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span><span class='op'>$</span><span class='va'>par.type</span><span class='op'>==</span><span class='st'>"shape"</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; $gamma
-#&gt; [1] -0.3360367
-#&gt; 
-#&gt; $delta
-#&gt; [1] 1.550005
-#&gt; </div><div class='input'>
-<span class='co'># Parameter Estimation for a distribution with unknown shape parameters</span>
-<span class='co'># Example from Karian, Z.A and Dudewicz, E.J. (2011) p.647.</span>
-<span class='co'># Original source of brain scan data Dudewich, E.J et.al (1989).</span>
-<span class='co'># Parameter estimates as given by Karian &amp; Dudewicz using moments are:</span>
-<span class='co'># gamma =-0.2081, delta=0.9167, xi = 95.1280 and lambda = 21.4607 with log-likelihood = -67.03579</span>
-<span class='va'>brain</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>108.7</span>, <span class='fl'>107.0</span>, <span class='fl'>110.3</span>, <span class='fl'>110.0</span>, <span class='fl'>113.6</span>, <span class='fl'>99.2</span>, <span class='fl'>109.8</span>, <span class='fl'>104.5</span>, <span class='fl'>108.1</span>, <span class='fl'>107.2</span>, <span class='fl'>112.0</span>, <span class='fl'>115.5</span>, <span class='fl'>108.4</span>,
-           <span class='fl'>107.4</span>, <span class='fl'>113.4</span>, <span class='fl'>101.2</span>, <span class='fl'>98.4</span>, <span class='fl'>100.9</span>, <span class='fl'>100.0</span>, <span class='fl'>107.1</span>, <span class='fl'>108.7</span>, <span class='fl'>102.5</span>, <span class='fl'>103.3</span><span class='op'>)</span>
-<span class='va'>est.par</span> <span class='op'>&lt;-</span> <span class='fu'>eJohnsonSB</span><span class='op'>(</span><span class='va'>brain</span><span class='op'>)</span>; <span class='va'>est.par</span>
-</div><div class='output co'>#&gt; 
-#&gt; Parameters for the JohnsonSB distribution. 
-#&gt; (found using the  numerical.MLE method.)
-#&gt; 
-#&gt;  Parameter     Type   Estimate
-#&gt;      gamma    shape  0.0491309
-#&gt;      delta    shape  0.6547437
-#&gt;         xi location 97.9208050
-#&gt;     lambda    scale 18.0843462
-#&gt; 
-#&gt; </div><div class='input'>
-<span class='co'># Estimates calculated by eJohnsonSB differ from those given by Karian &amp; Dudewicz (2011).</span>
-<span class='co'># However, eJohnsonSB's parameter estimates appear to be an improvement, due to a larger</span>
-<span class='co'># log-likelihood of -66.35496 (as given by lJohnsonSB below).</span>
-
-<span class='co'># log-likelihood function</span>
-<span class='fu'>lJohnsonSB</span><span class='op'>(</span><span class='va'>brain</span>, param <span class='op'>=</span> <span class='va'>est.par</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] -66.35496</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='co'># Parameter estimation for a distribution with known shape parameters</span></span>
+<span class='r-in'><span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'>rJohnsonSB</span><span class='op'>(</span>n<span class='op'>=</span><span class='fl'>500</span>, gamma<span class='op'>=</span><span class='op'>-</span><span class='fl'>0.5</span>, delta<span class='op'>=</span><span class='fl'>2</span>, xi<span class='op'>=</span><span class='op'>-</span><span class='fl'>0.5</span>, lambda<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>est.par</span> <span class='op'>&lt;-</span> <span class='fu'>eJohnsonSB</span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>; <span class='va'>est.par</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Parameters for the JohnsonSB distribution. </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (found using the  numerical.MLE method.)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Parameter     Type   Estimate      S.E.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      gamma    shape -0.3360367 0.2041393</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      delta    shape  1.5500047 0.2805100</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         xi location -0.2305467 0.2324524</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     lambda    scale  1.5651028 0.0958046</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span></span>
+<span class='r-plt'><img src='JohnsonSB-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>#  Fitted density curve and histogram</span></span>
+<span class='r-in'><span class='va'>den.x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>,<span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>,length<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>den.y</span> <span class='op'>&lt;-</span> <span class='fu'>dJohnsonSB</span><span class='op'>(</span><span class='va'>den.x</span>,params <span class='op'>=</span> <span class='va'>est.par</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/hist.html'>hist</a></span><span class='op'>(</span><span class='va'>X</span>, breaks<span class='op'>=</span><span class='fl'>10</span>, probability<span class='op'>=</span><span class='cn'>TRUE</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1.2</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>den.y</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>den.x</span>, <span class='va'>den.y</span>, col<span class='op'>=</span><span class='st'>"blue"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/density.html'>density</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-plt'><img src='JohnsonSB-2.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Extracting location, scale and shape parameters</span></span>
+<span class='r-in'><span class='va'>est.par</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span><span class='op'>$</span><span class='va'>par.type</span><span class='op'>==</span><span class='st'>"location"</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $xi</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] -0.2305467</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='va'>est.par</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span><span class='op'>$</span><span class='va'>par.type</span><span class='op'>==</span><span class='st'>"scale"</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $lambda</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.565103</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='va'>est.par</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span><span class='op'>$</span><span class='va'>par.type</span><span class='op'>==</span><span class='st'>"shape"</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $gamma</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] -0.3360367</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $delta</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.550005</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Parameter Estimation for a distribution with unknown shape parameters</span></span>
+<span class='r-in'><span class='co'># Example from Karian, Z.A and Dudewicz, E.J. (2011) p.647.</span></span>
+<span class='r-in'><span class='co'># Original source of brain scan data Dudewich, E.J et.al (1989).</span></span>
+<span class='r-in'><span class='co'># Parameter estimates as given by Karian &amp; Dudewicz using moments are:</span></span>
+<span class='r-in'><span class='co'># gamma =-0.2081, delta=0.9167, xi = 95.1280 and lambda = 21.4607 with log-likelihood = -67.03579</span></span>
+<span class='r-in'><span class='va'>brain</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>108.7</span>, <span class='fl'>107.0</span>, <span class='fl'>110.3</span>, <span class='fl'>110.0</span>, <span class='fl'>113.6</span>, <span class='fl'>99.2</span>, <span class='fl'>109.8</span>, <span class='fl'>104.5</span>, <span class='fl'>108.1</span>, <span class='fl'>107.2</span>, <span class='fl'>112.0</span>, <span class='fl'>115.5</span>, <span class='fl'>108.4</span>,</span>
+<span class='r-in'>           <span class='fl'>107.4</span>, <span class='fl'>113.4</span>, <span class='fl'>101.2</span>, <span class='fl'>98.4</span>, <span class='fl'>100.9</span>, <span class='fl'>100.0</span>, <span class='fl'>107.1</span>, <span class='fl'>108.7</span>, <span class='fl'>102.5</span>, <span class='fl'>103.3</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>est.par</span> <span class='op'>&lt;-</span> <span class='fu'>eJohnsonSB</span><span class='op'>(</span><span class='va'>brain</span><span class='op'>)</span>; <span class='va'>est.par</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Parameters for the JohnsonSB distribution. </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (found using the  numerical.MLE method.)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Parameter     Type   Estimate</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      gamma    shape  0.0491309</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      delta    shape  0.6547437</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         xi location 97.9208050</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     lambda    scale 18.0843462</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Estimates calculated by eJohnsonSB differ from those given by Karian &amp; Dudewicz (2011).</span></span>
+<span class='r-in'><span class='co'># However, eJohnsonSB's parameter estimates appear to be an improvement, due to a larger</span></span>
+<span class='r-in'><span class='co'># log-likelihood of -66.35496 (as given by lJohnsonSB below).</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># log-likelihood function</span></span>
+<span class='r-in'><span class='fu'>lJohnsonSB</span><span class='op'>(</span><span class='va'>brain</span>, param <span class='op'>=</span> <span class='va'>est.par</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] -66.35496</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

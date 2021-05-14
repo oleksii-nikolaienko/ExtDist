@@ -59,8 +59,6 @@ for a list of candidate fits." />
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -140,12 +138,12 @@ for a list of candidate fits." />
 for a list of candidate fits.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>DistSelCriteria</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>DistSelCriteria</span><span class='op'>(</span>
   <span class='va'>X</span>,
   w <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span><span class='op'>)</span><span class='op'>/</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>,
   candDist <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Beta_ab"</span>, <span class='st'>"Laplace"</span>, <span class='st'>"Normal"</span><span class='op'>)</span>,
   criteria <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"logLik"</span>, <span class='st'>"AIC"</span>, <span class='st'>"AICc"</span>, <span class='st'>"BIC"</span>, <span class='st'>"MDL"</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -183,15 +181,16 @@ When comparing models using the log-likelihood criterion, the larger the log-lik
     <p>Haizhen Wu and A. Jonathan R. Godfrey.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>Ozone</span> <span class='op'>&lt;-</span> <span class='va'>airquality</span><span class='op'>$</span><span class='va'>Ozone</span>
-<span class='va'>Ozone</span> <span class='op'>&lt;-</span> <span class='va'>Ozone</span><span class='op'>[</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>Ozone</span><span class='op'>)</span><span class='op'>]</span> <span class='co'># Removing the NA's from Ozone data</span>
-<span class='fu'>DistSelCriteria</span><span class='op'>(</span><span class='va'>Ozone</span>, candDist <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Gamma"</span>, <span class='st'>"Weibull"</span>, <span class='st'>"Normal"</span>, <span class='st'>"Exp"</span><span class='op'>)</span>,
-criteria <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"logLik"</span>,<span class='st'>"AIC"</span>,<span class='st'>"AICc"</span>, <span class='st'>"BIC"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;        Gamma     Weibull   Normal    Exp      
-#&gt; logLik -541.5947 -541.5376 -569.6492 -549.9263
-#&gt; AIC    1087.189  1087.075  1143.298  1101.853 
-#&gt; AICc   1087.296  1087.181  1143.404  1101.888 
-#&gt; BIC    1092.697  1092.582  1148.805  1104.606 </div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>Ozone</span> <span class='op'>&lt;-</span> <span class='va'>airquality</span><span class='op'>$</span><span class='va'>Ozone</span></span>
+<span class='r-in'><span class='va'>Ozone</span> <span class='op'>&lt;-</span> <span class='va'>Ozone</span><span class='op'>[</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>Ozone</span><span class='op'>)</span><span class='op'>]</span> <span class='co'># Removing the NA's from Ozone data</span></span>
+<span class='r-in'><span class='fu'>DistSelCriteria</span><span class='op'>(</span><span class='va'>Ozone</span>, candDist <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Gamma"</span>, <span class='st'>"Weibull"</span>, <span class='st'>"Normal"</span>, <span class='st'>"Exp"</span><span class='op'>)</span>,</span>
+<span class='r-in'>criteria <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"logLik"</span>,<span class='st'>"AIC"</span>,<span class='st'>"AICc"</span>, <span class='st'>"BIC"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        Gamma     Weibull   Normal    Exp      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> logLik -541.5947 -541.5376 -569.6492 -549.9263</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AIC    1087.189  1087.075  1143.298  1101.853 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> AICc   1087.296  1087.181  1143.404  1101.888 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> BIC    1092.697  1092.582  1148.805  1104.606 </span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

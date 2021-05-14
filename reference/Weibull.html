@@ -61,8 +61,6 @@ or numerically." />
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -144,7 +142,7 @@ generation, and parameter estimation functions for the Weibull distribution with
 or numerically.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dWeibull</span><span class='op'>(</span><span class='va'>x</span>, shape <span class='op'>=</span> <span class='fl'>2</span>, scale <span class='op'>=</span> <span class='fl'>2</span>, params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>shape <span class='op'>=</span> <span class='fl'>2</span>, scale <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>dWeibull</span><span class='op'>(</span><span class='va'>x</span>, shape <span class='op'>=</span> <span class='fl'>2</span>, scale <span class='op'>=</span> <span class='fl'>2</span>, params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>shape <span class='op'>=</span> <span class='fl'>2</span>, scale <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='fu'>pWeibull</span><span class='op'>(</span><span class='va'>q</span>, shape <span class='op'>=</span> <span class='fl'>2</span>, scale <span class='op'>=</span> <span class='fl'>2</span>, params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>shape <span class='op'>=</span> <span class='fl'>2</span>, scale <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 
@@ -161,7 +159,7 @@ or numerically.</p>
   scale <span class='op'>=</span> <span class='fl'>2</span>,
   params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>shape <span class='op'>=</span> <span class='fl'>2</span>, scale <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>,
   logL <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -250,63 +248,72 @@ The score function and information matrix are as given by Rinne (p.412).</p>
 Updates and bug fixes by Sarah Pirikahu.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Parameter estimation for a distribution with known shape parameters</span>
-<span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'>rWeibull</span><span class='op'>(</span>n<span class='op'>=</span><span class='fl'>1000</span>, params<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>shape<span class='op'>=</span><span class='fl'>1.5</span>, scale<span class='op'>=</span><span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>est.par</span> <span class='op'>&lt;-</span> <span class='fu'>eWeibull</span><span class='op'>(</span>X<span class='op'>=</span><span class='va'>X</span>, method<span class='op'>=</span><span class='st'>"numerical.MLE"</span><span class='op'>)</span>; <span class='va'>est.par</span>
-</div><div class='output co'>#&gt; 
-#&gt; Parameters for the Weibull distribution. 
-#&gt; (found using the  numerical.MLE method.)
-#&gt; 
-#&gt;  Parameter  Type  Estimate       S.E.
-#&gt;      shape shape 1.4601303 0.05932514
-#&gt;      scale scale 0.4803252 0.02321352
-#&gt; 
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span>
-</div><div class='img'><img src='Weibull-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'>#  Fitted density curve and histogram</span>
-<span class='va'>den.x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>,<span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>,length<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span>
-<span class='va'>den.y</span> <span class='op'>&lt;-</span> <span class='fu'>dWeibull</span><span class='op'>(</span><span class='va'>den.x</span>,shape<span class='op'>=</span><span class='va'>est.par</span><span class='op'>$</span><span class='va'>shape</span>,scale<span class='op'>=</span><span class='va'>est.par</span><span class='op'>$</span><span class='va'>scale</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/hist.html'>hist</a></span><span class='op'>(</span><span class='va'>X</span>, breaks<span class='op'>=</span><span class='fl'>10</span>, col<span class='op'>=</span><span class='st'>"red"</span>, probability<span class='op'>=</span><span class='cn'>TRUE</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1.1</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>den.y</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>den.x</span>, <span class='va'>den.y</span>, col<span class='op'>=</span><span class='st'>"blue"</span>, lwd<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>   <span class='co'># Original data</span>
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/density.html'>density</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>, lty<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>                 <span class='co'># Fitted curve</span>
-</div><div class='img'><img src='Weibull-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># Extracting shape and scale parameters</span>
-<span class='va'>est.par</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span><span class='op'>$</span><span class='va'>par.type</span><span class='op'>==</span><span class='st'>"shape"</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; $shape
-#&gt; [1] 1.46013
-#&gt; </div><div class='input'><span class='va'>est.par</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span><span class='op'>$</span><span class='va'>par.type</span><span class='op'>==</span><span class='st'>"scale"</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; $scale
-#&gt; [1] 0.4803252
-#&gt; </div><div class='input'>
-<span class='co'># Parameter Estimation for a distribution with unknown shape parameters</span>
-<span class='co'># Example from: Rinne (2009) Dataset p.338 and example pp.418-419</span>
-<span class='co'># Parameter estimates are given as shape = 99.2079 and scale = 2.5957. The log-likelihood</span>
-<span class='co'># for this data and Rinne's parameter estimates is -1163.278.</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>35</span>,<span class='fl'>38</span>,<span class='fl'>42</span>,<span class='fl'>56</span>,<span class='fl'>58</span>,<span class='fl'>61</span>,<span class='fl'>63</span>,<span class='fl'>76</span>,<span class='fl'>81</span>,<span class='fl'>83</span>,<span class='fl'>86</span>,<span class='fl'>90</span>,<span class='fl'>99</span>,<span class='fl'>104</span>,<span class='fl'>113</span>,<span class='fl'>114</span>,<span class='fl'>117</span>,<span class='fl'>119</span>,<span class='fl'>141</span>,<span class='fl'>183</span><span class='op'>)</span>
-<span class='va'>est.par</span> <span class='op'>&lt;-</span> <span class='fu'>eWeibull</span><span class='op'>(</span>X<span class='op'>=</span><span class='va'>data</span>, method<span class='op'>=</span><span class='st'>"numerical.MLE"</span><span class='op'>)</span>; <span class='va'>est.par</span>
-</div><div class='output co'>#&gt; 
-#&gt; Parameters for the Weibull distribution. 
-#&gt; (found using the  numerical.MLE method.)
-#&gt; 
-#&gt;  Parameter  Type   Estimate       S.E.
-#&gt;      shape shape 5.82976007 1.79326460
-#&gt;      scale scale 0.06628166 0.02129258
-#&gt; 
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span>
-</div><div class='img'><img src='Weibull-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># Estimates calculated by eWeibull differ from those given by Rinne(2009).</span>
-<span class='co'># However, eWeibull's parameter estimates appear to be an improvement, due to a larger</span>
-<span class='co'># log-likelihood of -99.09037 (as given by lWeibull below).</span>
-
- <span class='co'># log-likelihood function</span>
-<span class='fu'>lWeibull</span><span class='op'>(</span><span class='va'>data</span>, param <span class='op'>=</span> <span class='va'>est.par</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] -99.09037</div><div class='input'>
-<span class='co'># evaluate the precision of estimation by Hessian matrix</span>
-<span class='va'>H</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span><span class='op'>$</span><span class='va'>nll.hessian</span>
-<span class='va'>var</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/solve.html'>solve</a></span><span class='op'>(</span><span class='va'>H</span><span class='op'>)</span>
-<span class='va'>se</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span><span class='op'>(</span><span class='va'>var</span><span class='op'>)</span><span class='op'>)</span>;<span class='va'>se</span>
-</div><div class='output co'>#&gt;      shape      scale 
-#&gt; 1.79326460 0.02129258 </div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='co'># Parameter estimation for a distribution with known shape parameters</span></span>
+<span class='r-in'><span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'>rWeibull</span><span class='op'>(</span>n<span class='op'>=</span><span class='fl'>1000</span>, params<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>shape<span class='op'>=</span><span class='fl'>1.5</span>, scale<span class='op'>=</span><span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>est.par</span> <span class='op'>&lt;-</span> <span class='fu'>eWeibull</span><span class='op'>(</span>X<span class='op'>=</span><span class='va'>X</span>, method<span class='op'>=</span><span class='st'>"numerical.MLE"</span><span class='op'>)</span>; <span class='va'>est.par</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Parameters for the Weibull distribution. </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (found using the  numerical.MLE method.)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Parameter  Type  Estimate       S.E.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      shape shape 1.4601303 0.05932514</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      scale scale 0.4803252 0.02321352</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span></span>
+<span class='r-plt'><img src='Weibull-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>#  Fitted density curve and histogram</span></span>
+<span class='r-in'><span class='va'>den.x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>,<span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>,length<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>den.y</span> <span class='op'>&lt;-</span> <span class='fu'>dWeibull</span><span class='op'>(</span><span class='va'>den.x</span>,shape<span class='op'>=</span><span class='va'>est.par</span><span class='op'>$</span><span class='va'>shape</span>,scale<span class='op'>=</span><span class='va'>est.par</span><span class='op'>$</span><span class='va'>scale</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/hist.html'>hist</a></span><span class='op'>(</span><span class='va'>X</span>, breaks<span class='op'>=</span><span class='fl'>10</span>, col<span class='op'>=</span><span class='st'>"red"</span>, probability<span class='op'>=</span><span class='cn'>TRUE</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1.1</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>den.y</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>den.x</span>, <span class='va'>den.y</span>, col<span class='op'>=</span><span class='st'>"blue"</span>, lwd<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>   <span class='co'># Original data</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/density.html'>density</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>, lty<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>                 <span class='co'># Fitted curve</span></span>
+<span class='r-plt'><img src='Weibull-2.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Extracting shape and scale parameters</span></span>
+<span class='r-in'><span class='va'>est.par</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span><span class='op'>$</span><span class='va'>par.type</span><span class='op'>==</span><span class='st'>"shape"</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $shape</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.46013</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='va'>est.par</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span><span class='op'>$</span><span class='va'>par.type</span><span class='op'>==</span><span class='st'>"scale"</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $scale</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.4803252</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Parameter Estimation for a distribution with unknown shape parameters</span></span>
+<span class='r-in'><span class='co'># Example from: Rinne (2009) Dataset p.338 and example pp.418-419</span></span>
+<span class='r-in'><span class='co'># Parameter estimates are given as shape = 99.2079 and scale = 2.5957. The log-likelihood</span></span>
+<span class='r-in'><span class='co'># for this data and Rinne's parameter estimates is -1163.278.</span></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>35</span>,<span class='fl'>38</span>,<span class='fl'>42</span>,<span class='fl'>56</span>,<span class='fl'>58</span>,<span class='fl'>61</span>,<span class='fl'>63</span>,<span class='fl'>76</span>,<span class='fl'>81</span>,<span class='fl'>83</span>,<span class='fl'>86</span>,<span class='fl'>90</span>,<span class='fl'>99</span>,<span class='fl'>104</span>,<span class='fl'>113</span>,<span class='fl'>114</span>,<span class='fl'>117</span>,<span class='fl'>119</span>,<span class='fl'>141</span>,<span class='fl'>183</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>est.par</span> <span class='op'>&lt;-</span> <span class='fu'>eWeibull</span><span class='op'>(</span>X<span class='op'>=</span><span class='va'>data</span>, method<span class='op'>=</span><span class='st'>"numerical.MLE"</span><span class='op'>)</span>; <span class='va'>est.par</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Parameters for the Weibull distribution. </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (found using the  numerical.MLE method.)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Parameter  Type   Estimate       S.E.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      shape shape 5.82976007 1.79326460</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      scale scale 0.06628166 0.02129258</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span></span>
+<span class='r-plt'><img src='Weibull-3.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Estimates calculated by eWeibull differ from those given by Rinne(2009).</span></span>
+<span class='r-in'><span class='co'># However, eWeibull's parameter estimates appear to be an improvement, due to a larger</span></span>
+<span class='r-in'><span class='co'># log-likelihood of -99.09037 (as given by lWeibull below).</span></span>
+<span class='r-in'></span>
+<span class='r-in'> <span class='co'># log-likelihood function</span></span>
+<span class='r-in'><span class='fu'>lWeibull</span><span class='op'>(</span><span class='va'>data</span>, param <span class='op'>=</span> <span class='va'>est.par</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] -99.09037</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># evaluate the precision of estimation by Hessian matrix</span></span>
+<span class='r-in'><span class='va'>H</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span><span class='op'>$</span><span class='va'>nll.hessian</span></span>
+<span class='r-in'><span class='va'>var</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/solve.html'>solve</a></span><span class='op'>(</span><span class='va'>H</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>se</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span><span class='op'>(</span><span class='va'>var</span><span class='op'>)</span><span class='op'>)</span>;<span class='va'>se</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      shape      scale </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1.79326460 0.02129258 </span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

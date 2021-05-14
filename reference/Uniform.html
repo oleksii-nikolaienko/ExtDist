@@ -62,8 +62,6 @@ numerically." />
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -146,7 +144,7 @@ Parameter estimation can be based on an unweighted i.i.d. sample only and can be
 numerically.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dUniform</span><span class='op'>(</span><span class='va'>x</span>, a <span class='op'>=</span> <span class='fl'>0</span>, b <span class='op'>=</span> <span class='fl'>1</span>, params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>a</span>, <span class='va'>b</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>dUniform</span><span class='op'>(</span><span class='va'>x</span>, a <span class='op'>=</span> <span class='fl'>0</span>, b <span class='op'>=</span> <span class='fl'>1</span>, params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>a</span>, <span class='va'>b</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='fu'>pUniform</span><span class='op'>(</span><span class='va'>q</span>, a <span class='op'>=</span> <span class='fl'>0</span>, b <span class='op'>=</span> <span class='fl'>1</span>, params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>a</span>, <span class='va'>b</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span>
 
@@ -156,7 +154,7 @@ numerically.</p>
 
 <span class='fu'>eUniform</span><span class='op'>(</span><span class='va'>X</span>, <span class='va'>w</span>, method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"analytic.MLE"</span>, <span class='st'>"moments"</span>, <span class='st'>"numerical.MLE"</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>lUniform</span><span class='op'>(</span><span class='va'>X</span>, <span class='va'>w</span>, a <span class='op'>=</span> <span class='fl'>0</span>, b <span class='op'>=</span> <span class='fl'>1</span>, params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>a</span>, <span class='va'>b</span><span class='op'>)</span>, logL <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>lUniform</span><span class='op'>(</span><span class='va'>X</span>, <span class='va'>w</span>, a <span class='op'>=</span> <span class='fl'>0</span>, b <span class='op'>=</span> <span class='fl'>1</span>, params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>a</span>, <span class='va'>b</span><span class='op'>)</span>, logL <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -247,40 +245,45 @@ mid-range of the sample. Therefore, only unweighted samples are catered for in t
 Updates and bugfixes by Sarah Pirikahu.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Parameter estimation for a distribution with known shape parameters</span>
-<span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'>rUniform</span><span class='op'>(</span>n<span class='op'>=</span><span class='fl'>500</span>, a<span class='op'>=</span><span class='fl'>0</span>, b<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span>
-<span class='va'>est.par</span> <span class='op'>&lt;-</span> <span class='fu'>eUniform</span><span class='op'>(</span><span class='va'>X</span>, method<span class='op'>=</span><span class='st'>"analytic.MLE"</span><span class='op'>)</span>; <span class='va'>est.par</span>
-</div><div class='output co'>#&gt; 
-#&gt; Parameters for the Uniform distribution. 
-#&gt; (found using the  analytic.MLE method.)
-#&gt; 
-#&gt;  Parameter     Type     Estimate
-#&gt;          a boundary 2.558157e-05
-#&gt;          b boundary 9.978801e-01
-#&gt; 
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span>
-</div><div class='img'><img src='Uniform-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># Histogram and fitted density</span>
-<span class='va'>den.x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>,<span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>,length<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span>
-<span class='va'>den.y</span> <span class='op'>&lt;-</span> <span class='fu'>dUniform</span><span class='op'>(</span><span class='va'>den.x</span>,a<span class='op'>=</span><span class='va'>est.par</span><span class='op'>$</span><span class='va'>a</span>,b<span class='op'>=</span><span class='va'>est.par</span><span class='op'>$</span><span class='va'>b</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/hist.html'>hist</a></span><span class='op'>(</span><span class='va'>X</span>, breaks<span class='op'>=</span><span class='fl'>10</span>, probability<span class='op'>=</span><span class='cn'>TRUE</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1.2</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>den.y</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>den.x</span>, <span class='va'>den.y</span>, col<span class='op'>=</span><span class='st'>"blue"</span><span class='op'>)</span>  <span class='co'># Original data</span>
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/density.html'>density</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>, lty<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>         <span class='co'># Fitted curve</span>
-</div><div class='img'><img src='Uniform-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># Extracting boundary parameters</span>
-<span class='va'>est.par</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span><span class='op'>$</span><span class='va'>par.type</span><span class='op'>==</span><span class='st'>"boundary"</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; $a
-#&gt; [1] 2.558157e-05
-#&gt; 
-#&gt; $b
-#&gt; [1] 0.9978801
-#&gt; </div><div class='input'>
-<span class='co'># log-likelihood</span>
-<span class='fu'>lUniform</span><span class='op'>(</span><span class='va'>X</span>,param <span class='op'>=</span> <span class='va'>est.par</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 1.073885</div><div class='input'>
-<span class='co'># Example of parameter estimation for a distribution with</span>
-<span class='co'># unknown parameters currently been sought after.</span>
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='co'># Parameter estimation for a distribution with known shape parameters</span></span>
+<span class='r-in'><span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'>rUniform</span><span class='op'>(</span>n<span class='op'>=</span><span class='fl'>500</span>, a<span class='op'>=</span><span class='fl'>0</span>, b<span class='op'>=</span><span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>est.par</span> <span class='op'>&lt;-</span> <span class='fu'>eUniform</span><span class='op'>(</span><span class='va'>X</span>, method<span class='op'>=</span><span class='st'>"analytic.MLE"</span><span class='op'>)</span>; <span class='va'>est.par</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Parameters for the Uniform distribution. </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (found using the  analytic.MLE method.)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Parameter     Type     Estimate</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          a boundary 2.558157e-05</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          b boundary 9.978801e-01</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span></span>
+<span class='r-plt'><img src='Uniform-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Histogram and fitted density</span></span>
+<span class='r-in'><span class='va'>den.x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>,<span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>,length<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>den.y</span> <span class='op'>&lt;-</span> <span class='fu'>dUniform</span><span class='op'>(</span><span class='va'>den.x</span>,a<span class='op'>=</span><span class='va'>est.par</span><span class='op'>$</span><span class='va'>a</span>,b<span class='op'>=</span><span class='va'>est.par</span><span class='op'>$</span><span class='va'>b</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/hist.html'>hist</a></span><span class='op'>(</span><span class='va'>X</span>, breaks<span class='op'>=</span><span class='fl'>10</span>, probability<span class='op'>=</span><span class='cn'>TRUE</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1.2</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>den.y</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>den.x</span>, <span class='va'>den.y</span>, col<span class='op'>=</span><span class='st'>"blue"</span><span class='op'>)</span>  <span class='co'># Original data</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/density.html'>density</a></span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>, lty<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>         <span class='co'># Fitted curve</span></span>
+<span class='r-plt'><img src='Uniform-2.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Extracting boundary parameters</span></span>
+<span class='r-in'><span class='va'>est.par</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span><span class='op'>$</span><span class='va'>par.type</span><span class='op'>==</span><span class='st'>"boundary"</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2.558157e-05</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.9978801</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># log-likelihood</span></span>
+<span class='r-in'><span class='fu'>lUniform</span><span class='op'>(</span><span class='va'>X</span>,param <span class='op'>=</span> <span class='va'>est.par</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.073885</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Example of parameter estimation for a distribution with</span></span>
+<span class='r-in'><span class='co'># unknown parameters currently been sought after.</span></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

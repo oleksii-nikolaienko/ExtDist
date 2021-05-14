@@ -74,7 +74,7 @@
 
       
 
-      </header><script src="Distributions-Normal_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
+      </header><script src="Distributions-Normal_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Normal distribution</h1>
@@ -94,11 +94,11 @@
 -->
 <div id="section" class="section level1">
 <h1 class="hasAnchor">
-<a href="#section" class="anchor"></a><!--Normal Distribution-->
+<a href="#section" class="anchor" aria-hidden="true"></a><!--Normal Distribution-->
 </h1>
 <div id="probability-density-function" class="section level2">
 <h2 class="hasAnchor">
-<a href="#probability-density-function" class="anchor"></a>Probability density function:</h2>
+<a href="#probability-density-function" class="anchor" aria-hidden="true"></a>Probability density function:</h2>
 <p><span class="math display">\[f(x) = \frac 1 {\sigma\sqrt{2\pi}} e^{-\frac{(x-\mu)^2} {2\sigma^2}}\]</span> with <span class="math inline">\(\mu\)</span> the mean of the distribution and <span class="math inline">\(\sigma\)</span> the standard deviation</p>
 <!--
 ```
@@ -109,7 +109,7 @@ Mathematica Code:
 </div>
 <div id="cumulative-distribution-function" class="section level2">
 <h2 class="hasAnchor">
-<a href="#cumulative-distribution-function" class="anchor"></a>Cumulative distribution function:</h2>
+<a href="#cumulative-distribution-function" class="anchor" aria-hidden="true"></a>Cumulative distribution function:</h2>
 <p><span class="math display">\[F(x) =\int_{-\infty}^{x}\frac 1 {\sigma\sqrt{2\pi}} e^{-\frac{(y-\mu)^2} {2\sigma^2}}dy
        =\int_{-\infty}^{\frac {x-\mu}{\sigma}}\frac 1 {\sqrt{2\pi}} e^{-\frac{z^2} {2}}dz
        =\frac 1 2 \left[1+\text{erf}\left(\frac {x-\mu} {\sigma\sqrt{2}} \right)\right]\]</span> with <span class="math inline">\(\text{erf}\)</span> being the error function.</p>
@@ -122,7 +122,7 @@ Integrate[1/sqrt(2*pi)*e^(-z^2/2),{z,-Infinity,(x-mu)/sigma}]
 </div>
 <div id="log-likelihood-function" class="section level2">
 <h2 class="hasAnchor">
-<a href="#log-likelihood-function" class="anchor"></a>Log-likelihood function:</h2>
+<a href="#log-likelihood-function" class="anchor" aria-hidden="true"></a>Log-likelihood function:</h2>
 <p><span class="math display">\[L(\mu,\sigma;X)=\sum_i\left[-\frac 1 2 \ln(2\pi)-\ln(\sigma)-\frac{1}{2\sigma^2}(X_i-\mu)^2\right]\]</span></p>
 <!--
 ```
@@ -133,7 +133,7 @@ log[1/(sigma sqrt(2 pi)) e^(-(x-mu)^2/(2 sigma^2))]-(x - mu)^2/(2 sigma^2) - Log
 </div>
 <div id="score-function-vector" class="section level2">
 <h2 class="hasAnchor">
-<a href="#score-function-vector" class="anchor"></a>Score function vector:</h2>
+<a href="#score-function-vector" class="anchor" aria-hidden="true"></a>Score function vector:</h2>
 <p><span class="math display">\[V(\mu,\sigma;X)
  =\left( \begin{array}{c}
         \frac{\partial L}{\partial \mu}  \\
@@ -154,7 +154,7 @@ D[-(x - mu)^2/(2 sigma^2) - Log[2 Pi]/2 - Log[sigma],sigma]
 </div>
 <div id="observed-information-matrix" class="section level2">
 <h2 class="hasAnchor">
-<a href="#observed-information-matrix" class="anchor"></a>Observed information matrix:</h2>
+<a href="#observed-information-matrix" class="anchor" aria-hidden="true"></a>Observed information matrix:</h2>
 <p><span class="math display">\[\mathcal J (\mu,\sigma;X)=
    -\left( \begin{array}{cc}
           \frac{\partial^2 L}{\partial \mu^2} &amp; \frac{\partial^2 L}{\partial \mu \partial \sigma} \\

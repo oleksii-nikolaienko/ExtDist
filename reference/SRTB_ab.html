@@ -60,8 +60,6 @@ Parameter estimation can be based on a weighted or unweighted i.i.d. sample and 
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -142,7 +140,7 @@ generation and parameter estimation functions for the SRTB distribution.
 Parameter estimation can be based on a weighted or unweighted i.i.d. sample and can be carried out numerically.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dSRTB_ab</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>dSRTB_ab</span><span class='op'>(</span>
   <span class='va'>x</span>,
   shape1 <span class='op'>=</span> <span class='fl'>2</span>,
   shape2 <span class='op'>=</span> <span class='fl'>3</span>,
@@ -194,7 +192,7 @@ Parameter estimation can be based on a weighted or unweighted i.i.d. sample and 
   params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>shape1</span>, <span class='va'>shape2</span>, <span class='va'>a</span>, <span class='va'>b</span><span class='op'>)</span>,
   logL <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>...</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -261,28 +259,32 @@ eSRTB_ab estimates the parameters. lSRTB_ab provides the log-likelihood function
     <p>Haizhen Wu.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Parameter estimation for a distribution with known shape parameters</span>
-<span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'>rSRTB_ab</span><span class='op'>(</span>n<span class='op'>=</span><span class='fl'>500</span>, shape1<span class='op'>=</span><span class='fl'>2</span>, shape2<span class='op'>=</span><span class='fl'>10</span>, a<span class='op'>=</span><span class='fl'>1</span>, b<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>
-<span class='va'>est.par</span> <span class='op'>&lt;-</span> <span class='fu'>eSRTB_ab</span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span> 
-</div><div class='img'><img src='SRTB_ab-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># Extracting boundary and shape parameters</span>
-<span class='va'>est.par</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span><span class='op'>$</span><span class='va'>par.type</span><span class='op'>==</span><span class='st'>"boundary"</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; $a
-#&gt; [1] 1.011242
-#&gt; 
-#&gt; $b
-#&gt; [1] 1.970175
-#&gt; </div><div class='input'><span class='va'>est.par</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span><span class='op'>$</span><span class='va'>par.type</span><span class='op'>==</span><span class='st'>"shape"</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; $shape1
-#&gt; [1] 1.592234
-#&gt; 
-#&gt; $shape2
-#&gt; [1] 1.66606
-#&gt; </div><div class='input'>
-<span class='co'># log-likelihood function</span>
-<span class='fu'>lSRTB_ab</span><span class='op'>(</span><span class='va'>X</span>,param <span class='op'>=</span> <span class='va'>est.par</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 51.53022</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='co'># Parameter estimation for a distribution with known shape parameters</span></span>
+<span class='r-in'><span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'>rSRTB_ab</span><span class='op'>(</span>n<span class='op'>=</span><span class='fl'>500</span>, shape1<span class='op'>=</span><span class='fl'>2</span>, shape2<span class='op'>=</span><span class='fl'>10</span>, a<span class='op'>=</span><span class='fl'>1</span>, b<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>est.par</span> <span class='op'>&lt;-</span> <span class='fu'>eSRTB_ab</span><span class='op'>(</span><span class='va'>X</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span> </span>
+<span class='r-plt'><img src='SRTB_ab-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Extracting boundary and shape parameters</span></span>
+<span class='r-in'><span class='va'>est.par</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span><span class='op'>$</span><span class='va'>par.type</span><span class='op'>==</span><span class='st'>"boundary"</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $a</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.011242</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $b</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.970175</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='va'>est.par</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span><span class='op'>$</span><span class='va'>par.type</span><span class='op'>==</span><span class='st'>"shape"</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $shape1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.592234</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $shape2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1.66606</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># log-likelihood function</span></span>
+<span class='r-in'><span class='fu'>lSRTB_ab</span><span class='op'>(</span><span class='va'>X</span>,param <span class='op'>=</span> <span class='va'>est.par</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 51.53022</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

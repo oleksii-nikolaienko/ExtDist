@@ -74,7 +74,7 @@
 
       
 
-      </header><script src="Distributions-Beta_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
+      </header><script src="Distributions-Beta_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Beta distribution</h1>
@@ -94,11 +94,11 @@
 -->
 <div id="section" class="section level1">
 <h1 class="hasAnchor">
-<a href="#section" class="anchor"></a><!--Beta distribution-->
+<a href="#section" class="anchor" aria-hidden="true"></a><!--Beta distribution-->
 </h1>
 <div id="probability-density-function" class="section level2">
 <h2 class="hasAnchor">
-<a href="#probability-density-function" class="anchor"></a>Probability density function:</h2>
+<a href="#probability-density-function" class="anchor" aria-hidden="true"></a>Probability density function:</h2>
 <p><span class="math display">\[f(x) = \frac{x^{\alpha-1}(1-x)^{\beta-1}} {\mathcal{B}(\alpha,\beta)}\]</span> with <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> two shape parameters and <span class="math inline">\(\mathcal B\)</span> beta function.</p>
 <!--
 ```
@@ -109,7 +109,7 @@ Mathematica Code:
 </div>
 <div id="cumulative-distribution-function" class="section level2">
 <h2 class="hasAnchor">
-<a href="#cumulative-distribution-function" class="anchor"></a>Cumulative distribution function:</h2>
+<a href="#cumulative-distribution-function" class="anchor" aria-hidden="true"></a>Cumulative distribution function:</h2>
 <p><span class="math display">\[F(x) = \frac{\int_{0}^{x} y^{\alpha-1}(1-y)^{\beta-1}dy} {\mathcal{B}(\alpha,\beta)}
 =\mathcal{B}(x; \alpha,\beta)\]</span> with <span class="math inline">\(\mathcal B (x; \alpha,\beta)\)</span> incomplete beta function.</p>
 <!--
@@ -121,7 +121,7 @@ Integrate[(x^(alpha-1) (1-x)^(beta-1))/(beta(alpha, beta)),{x,0,y}]
 </div>
 <div id="log-likelihood-function" class="section level2">
 <h2 class="hasAnchor">
-<a href="#log-likelihood-function" class="anchor"></a>Log-likelihood function:</h2>
+<a href="#log-likelihood-function" class="anchor" aria-hidden="true"></a>Log-likelihood function:</h2>
 <p><span class="math display">\[L(\alpha,\beta;X)=\sum_i\left[ (\alpha-1)\ln(x)+(\beta-1)\ln(1-x)-\ln \mathcal{B}(\alpha,\beta) \right]\]</span></p>
 <!--
 ```
@@ -132,7 +132,7 @@ Mathematica Code:
 </div>
 <div id="score-function-vector" class="section level2">
 <h2 class="hasAnchor">
-<a href="#score-function-vector" class="anchor"></a>Score function vector:</h2>
+<a href="#score-function-vector" class="anchor" aria-hidden="true"></a>Score function vector:</h2>
 <p><span class="math display">\[V(\mu,\sigma;X)
     =\left( \begin{array}{c}
     \frac{\partial L}{\partial \alpha}  \\
@@ -154,7 +154,7 @@ D[(alpha-1)log(x)+(beta-1)log(1-x)-log(beta(alpha,beta)),beta]
 </div>
 <div id="observed-information-matrix" class="section level2">
 <h2 class="hasAnchor">
-<a href="#observed-information-matrix" class="anchor"></a>Observed information matrix:</h2>
+<a href="#observed-information-matrix" class="anchor" aria-hidden="true"></a>Observed information matrix:</h2>
 <p><span class="math display">\[\mathcal J (\mu,\sigma;X)=
     \left( \begin{array}{cc}
     \psi^{(1)}(\alpha)-\psi^{(1)}(\alpha+\beta) &amp; -\psi^{(1)}(\alpha+\beta) \\

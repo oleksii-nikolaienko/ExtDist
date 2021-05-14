@@ -61,8 +61,6 @@ analytically." />
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -144,7 +142,7 @@ Parameter estimation can be based on a weighted or unweighted i.i.d sample and i
 analytically.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dExp</span><span class='op'>(</span><span class='va'>x</span>, scale <span class='op'>=</span> <span class='fl'>1</span>, params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>scale <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>dExp</span><span class='op'>(</span><span class='va'>x</span>, scale <span class='op'>=</span> <span class='fl'>1</span>, params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>scale <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='fu'>pExp</span><span class='op'>(</span><span class='va'>q</span>, scale <span class='op'>=</span> <span class='fl'>1</span>, params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>scale <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span>
 
@@ -158,7 +156,7 @@ analytically.</p>
 
 <span class='fu'>sExp</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>w</span>, scale <span class='op'>=</span> <span class='fl'>1</span>, params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>scale <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>iExp</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>w</span>, scale <span class='op'>=</span> <span class='fl'>1</span>, params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>scale <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>iExp</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>w</span>, scale <span class='op'>=</span> <span class='fl'>1</span>, params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>scale <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -241,50 +239,59 @@ Chapman&amp; Hall/CRC.</p>
     <p>Jonathan R. Godfrey and Sarah Pirikahu.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Parameter estimation for a distribution with known shape parameters</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>rExp</span><span class='op'>(</span>n<span class='op'>=</span><span class='fl'>500</span>, scale<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>
-<span class='va'>est.par</span> <span class='op'>&lt;-</span> <span class='fu'>eExp</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>; <span class='va'>est.par</span>
-</div><div class='output co'>#&gt; 
-#&gt; Parameters for the Exp distribution. 
-#&gt; (found using the  analytical.MLE method.)
-#&gt; 
-#&gt;  Parameter  Type Estimate       S.E.
-#&gt;       rate scale 2.137561 0.09559464
-#&gt; 
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span>
-</div><div class='img'><img src='Exponential-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'>#  Fitted density curve and histogram</span>
-<span class='va'>den.x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,<span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,length<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span>
-<span class='va'>den.y</span> <span class='op'>&lt;-</span> <span class='fu'>dExp</span><span class='op'>(</span><span class='va'>den.x</span>,scale<span class='op'>=</span><span class='va'>est.par</span><span class='op'>$</span><span class='va'>scale</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/hist.html'>hist</a></span><span class='op'>(</span><span class='va'>x</span>, breaks<span class='op'>=</span><span class='fl'>10</span>, probability<span class='op'>=</span><span class='cn'>TRUE</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1.1</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>den.y</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>den.x</span>, <span class='va'>den.y</span>, col<span class='op'>=</span><span class='st'>"blue"</span><span class='op'>)</span>
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/density.html'>density</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, lty<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span>
-</div><div class='img'><img src='Exponential-2.png' alt='' width='700' height='433' /></div><div class='input'>  
-<span class='co'># Extracting the scale parameter</span>
-<span class='va'>est.par</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span><span class='op'>$</span><span class='va'>par.type</span><span class='op'>==</span><span class='st'>"scale"</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; $scale
-#&gt; [1] 2.137561
-#&gt; </div><div class='input'>
-<span class='co'># Parameter estimation for a distribution with unknown shape parameters</span>
-<span class='co'># Example from Kapadia et.al(2005), pp.380-381. </span>
-<span class='co'># Parameter estimate as given by Kapadia et.al is scale=0.00277</span>
-<span class='va'>cardio</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>525</span>, <span class='fl'>719</span>, <span class='fl'>2880</span>, <span class='fl'>150</span>, <span class='fl'>30</span>, <span class='fl'>251</span>, <span class='fl'>45</span>, <span class='fl'>858</span>, <span class='fl'>15</span>, 
-           <span class='fl'>47</span>, <span class='fl'>90</span>, <span class='fl'>56</span>, <span class='fl'>68</span>, <span class='fl'>6</span>, <span class='fl'>139</span>, <span class='fl'>180</span>, <span class='fl'>60</span>, <span class='fl'>60</span>, <span class='fl'>294</span>, <span class='fl'>747</span><span class='op'>)</span>
-<span class='va'>est.par</span> <span class='op'>&lt;-</span> <span class='fu'>eExp</span><span class='op'>(</span><span class='va'>cardio</span>, method<span class='op'>=</span><span class='st'>"analytical.MLE"</span><span class='op'>)</span>; <span class='va'>est.par</span>
-</div><div class='output co'>#&gt; 
-#&gt; Parameters for the Exp distribution. 
-#&gt; (found using the  analytical.MLE method.)
-#&gt; 
-#&gt;  Parameter  Type    Estimate         S.E.
-#&gt;       rate scale 0.002770083 0.0006194094
-#&gt; 
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span>
-</div><div class='img'><img src='Exponential-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># log-likelihood, score function and Fisher's information</span>
-<span class='fu'>lExp</span><span class='op'>(</span><span class='va'>cardio</span>,param <span class='op'>=</span> <span class='va'>est.par</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] -137.7776</div><div class='input'><span class='fu'>sExp</span><span class='op'>(</span><span class='va'>cardio</span>,param <span class='op'>=</span> <span class='va'>est.par</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>iExp</span><span class='op'>(</span><span class='va'>cardio</span>,param <span class='op'>=</span> <span class='va'>est.par</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 2606420</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='co'># Parameter estimation for a distribution with known shape parameters</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'>rExp</span><span class='op'>(</span>n<span class='op'>=</span><span class='fl'>500</span>, scale<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>est.par</span> <span class='op'>&lt;-</span> <span class='fu'>eExp</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>; <span class='va'>est.par</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Parameters for the Exp distribution. </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (found using the  analytical.MLE method.)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Parameter  Type Estimate       S.E.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       rate scale 2.137561 0.09559464</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span></span>
+<span class='r-plt'><img src='Exponential-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>#  Fitted density curve and histogram</span></span>
+<span class='r-in'><span class='va'>den.x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,<span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>,length<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>den.y</span> <span class='op'>&lt;-</span> <span class='fu'>dExp</span><span class='op'>(</span><span class='va'>den.x</span>,scale<span class='op'>=</span><span class='va'>est.par</span><span class='op'>$</span><span class='va'>scale</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/hist.html'>hist</a></span><span class='op'>(</span><span class='va'>x</span>, breaks<span class='op'>=</span><span class='fl'>10</span>, probability<span class='op'>=</span><span class='cn'>TRUE</span>, ylim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1.1</span><span class='op'>*</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>den.y</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>den.x</span>, <span class='va'>den.y</span>, col<span class='op'>=</span><span class='st'>"blue"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/density.html'>density</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, lty<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-plt'><img src='Exponential-2.png' alt='' width='700' height='433' /></span>
+<span class='r-in'>  </span>
+<span class='r-in'><span class='co'># Extracting the scale parameter</span></span>
+<span class='r-in'><span class='va'>est.par</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/attributes.html'>attributes</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span><span class='op'>$</span><span class='va'>par.type</span><span class='op'>==</span><span class='st'>"scale"</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> $scale</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2.137561</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Parameter estimation for a distribution with unknown shape parameters</span></span>
+<span class='r-in'><span class='co'># Example from Kapadia et.al(2005), pp.380-381. </span></span>
+<span class='r-in'><span class='co'># Parameter estimate as given by Kapadia et.al is scale=0.00277</span></span>
+<span class='r-in'><span class='va'>cardio</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>525</span>, <span class='fl'>719</span>, <span class='fl'>2880</span>, <span class='fl'>150</span>, <span class='fl'>30</span>, <span class='fl'>251</span>, <span class='fl'>45</span>, <span class='fl'>858</span>, <span class='fl'>15</span>, </span>
+<span class='r-in'>           <span class='fl'>47</span>, <span class='fl'>90</span>, <span class='fl'>56</span>, <span class='fl'>68</span>, <span class='fl'>6</span>, <span class='fl'>139</span>, <span class='fl'>180</span>, <span class='fl'>60</span>, <span class='fl'>60</span>, <span class='fl'>294</span>, <span class='fl'>747</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>est.par</span> <span class='op'>&lt;-</span> <span class='fu'>eExp</span><span class='op'>(</span><span class='va'>cardio</span>, method<span class='op'>=</span><span class='st'>"analytical.MLE"</span><span class='op'>)</span>; <span class='va'>est.par</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Parameters for the Exp distribution. </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> (found using the  analytical.MLE method.)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  Parameter  Type    Estimate         S.E.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       rate scale 0.002770083 0.0006194094</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>est.par</span><span class='op'>)</span></span>
+<span class='r-plt'><img src='Exponential-3.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># log-likelihood, score function and Fisher's information</span></span>
+<span class='r-in'><span class='fu'>lExp</span><span class='op'>(</span><span class='va'>cardio</span>,param <span class='op'>=</span> <span class='va'>est.par</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] -137.7776</span>
+<span class='r-in'><span class='fu'>sExp</span><span class='op'>(</span><span class='va'>cardio</span>,param <span class='op'>=</span> <span class='va'>est.par</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0</span>
+<span class='r-in'><span class='fu'>iExp</span><span class='op'>(</span><span class='va'>cardio</span>,param <span class='op'>=</span> <span class='va'>est.par</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2606420</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
