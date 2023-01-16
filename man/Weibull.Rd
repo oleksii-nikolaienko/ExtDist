@@ -65,8 +65,8 @@ or numerically.
 }
 \details{
 The Weibull distribution is a special case of the generalised gamma distribution. The \code{dWeibull()}, \code{pWeibull()},
-\code{qWeibull()},and \code{rWeibull()} functions serve as wrappers of the standard \code{\link[stats]{dgamma}},
-\code{\link[stats]{pgamma}}, \code{\link[stats]{qgamma}}, and \code{\link[stats]{rgamma}} functions with
+\code{qWeibull()},and \code{rWeibull()} functions serve as wrappers of the standard \code{\link[stats]{dweibull}},
+\code{\link[stats]{pweibull}}, \code{\link[stats]{qweibull}}, and \code{\link[stats]{rweibull}} functions with
 in the \pkg{\link{stats}} package. They allow for the parameters to be declared not only as
 individual numerical values, but also as a list so parameter estimation can be carried out. \cr
 \cr
@@ -98,17 +98,12 @@ est.par[attributes(est.par)$par.type=="scale"]
 
 # Parameter Estimation for a distribution with unknown shape parameters
 # Example from: Rinne (2009) Dataset p.338 and example pp.418-419
-# Parameter estimates are given as shape = 99.2079 and scale = 2.5957. The log-likelihood
-# for this data and Rinne's parameter estimates is -1163.278.
+# Parameter estimates are given as shape = 2.5957 and scale = 99.2079.
 data <- c(35,38,42,56,58,61,63,76,81,83,86,90,99,104,113,114,117,119,141,183)
 est.par <- eWeibull(X=data, method="numerical.MLE"); est.par
 plot(est.par)
 
-# Estimates calculated by eWeibull differ from those given by Rinne(2009).
-# However, eWeibull's parameter estimates appear to be an improvement, due to a larger
-# log-likelihood of -99.09037 (as given by lWeibull below).
-
- # log-likelihood function
+# log-likelihood function
 lWeibull(data, param = est.par)
 
 # evaluate the precision of estimation by Hessian matrix
@@ -129,5 +124,5 @@ Johnson, N. L., Kotz, S. and Balakrishnan, N. (1995) Continuous Univariate Distr
 }
 \author{
 Haizhen Wu and A. Jonathan R. Godfrey. \cr
-Updates and bug fixes by Sarah Pirikahu.
+Updates and bug fixes by Sarah Pirikahu, Oleksii Nikolaienko.
 }

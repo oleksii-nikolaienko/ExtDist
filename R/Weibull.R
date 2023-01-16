@@ -13,8 +13,8 @@
 #' @aliases eWeibull
 #' @aliases lWeibull
 #' @details The Weibull distribution is a special case of the generalised gamma distribution. The \code{dWeibull()}, \code{pWeibull()},
-#' \code{qWeibull()},and \code{rWeibull()} functions serve as wrappers of the standard \code{\link[stats]{dgamma}},
-#' \code{\link[stats]{pgamma}}, \code{\link[stats]{qgamma}}, and \code{\link[stats]{rgamma}} functions with
+#' \code{qWeibull()},and \code{rWeibull()} functions serve as wrappers of the standard \code{\link[stats]{dweibull}},
+#' \code{\link[stats]{pweibull}}, \code{\link[stats]{qweibull}}, and \code{\link[stats]{rweibull}} functions with
 #' in the \pkg{\link{stats}} package. They allow for the parameters to be declared not only as
 #' individual numerical values, but also as a list so parameter estimation can be carried out. \cr
 #' \cr
@@ -51,7 +51,7 @@
 #'  Winston, W.L (2003) Operations Research: Applications and algorithms, 4th Ed, Duxbury.
 #'
 #' @author Haizhen Wu and A. Jonathan R. Godfrey. \cr
-#' Updates and bug fixes by Sarah Pirikahu.
+#' Updates and bug fixes by Sarah Pirikahu, Oleksii Nikolaienko.
 #'
 #' @examples
 #' # Parameter estimation for a distribution with known shape parameters
@@ -72,17 +72,12 @@
 #'
 #' # Parameter Estimation for a distribution with unknown shape parameters
 #' # Example from: Rinne (2009) Dataset p.338 and example pp.418-419
-#' # Parameter estimates are given as shape = 99.2079 and scale = 2.5957. The log-likelihood
-#' # for this data and Rinne's parameter estimates is -1163.278.
+#' # Parameter estimates are given as shape = 2.5957 and scale = 99.2079.
 #' data <- c(35,38,42,56,58,61,63,76,81,83,86,90,99,104,113,114,117,119,141,183)
 #' est.par <- eWeibull(X=data, method="numerical.MLE"); est.par
 #' plot(est.par)
 #'
-#' # Estimates calculated by eWeibull differ from those given by Rinne(2009).
-#' # However, eWeibull's parameter estimates appear to be an improvement, due to a larger
-#' # log-likelihood of -99.09037 (as given by lWeibull below).
-#'
-#'  # log-likelihood function
+#' # log-likelihood function
 #' lWeibull(data, param = est.par)
 #'
 #' # evaluate the precision of estimation by Hessian matrix
@@ -98,7 +93,7 @@ dWeibull <-function(x, shape = 2, scale = 2, params = list(shape = 2, scale = 2)
       shape <- params$shape
       scale <- params$scale
     }
-    out = stats::dgamma(x, shape, scale)
+    out = stats::dweibull(x, shape=shape, scale=scale)
     return(out)
   }
 
@@ -110,7 +105,7 @@ pWeibull <- function(q, shape = 2, scale = 2, params = list(shape = 2, scale = 2
       shape <- params$shape
       scale <- params$scale
     }
-    out = stats::pgamma(q,shape,scale)
+    out = stats::pweibull(q, shape=shape, scale=scale)
     return(out)
   }
 
@@ -122,7 +117,7 @@ qWeibull <- function(p, shape = 2, scale = 2, params = list(shape = 2, scale = 2
       shape <- params$shape
       scale <- params$scale
     }
-    out = stats::qgamma(p,shape,scale)
+    out = stats::qweibull(p, shape=shape, scale=scale)
     return(out)
   }
 
@@ -133,7 +128,7 @@ rWeibull <- function(n, shape = 2, scale = 2, params = list(shape = 2, scale = 2
       shape <- params$shape
       scale <- params$scale
     }
-    out = stats::rgamma(n,shape,scale)
+    out = stats::rweibull(n, shape=shape, scale=scale)
     return(out)
   }
 
@@ -189,7 +184,7 @@ eWeibull <- function(X,w, method =c("numerical.MLE","moments"),...){
                   upper=list(shape = Inf, scale = Inf))
 
  est.par.se <- try(sqrt(diag(solve(attributes(est.par)$nll.hessian))),silent=TRUE)
- if(class(est.par.se) == "try-error") {
+ if(inherits(est.par.se, "try-error")) {
    est.par.se <- rep(NA, length(est.par))
  }
 }

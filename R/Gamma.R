@@ -51,7 +51,7 @@
 #'  Rice, J.A. (2007) Mathematical Statistics and Data Analysis, 3rd Ed, Brookes/Cole.
 #' @seealso \pkg{\link{ExtDist}} for other standard distributions.
 #' @author Haizhen Wu and A. Jonathan R. Godfrey. \cr
-#' Updates and bug fixes by Sarah Pirikahu.
+#' Updates and bug fixes by Sarah Pirikahu, Oleksii Nikolaienko.
 #' @examples
 #' # Parameter estimation for a distribution with known shape parameters
 #' X <- rGamma(n=500, shape=1.5, scale=0.5)
@@ -71,16 +71,11 @@
 #'
 #' # Parameter estimation for a distribution with unknown shape parameters
 #' # Example from:  Bury(1999) pp.225-226, parameter estimates as given by Bury are
-#' # shape = 6.40 and scale=2.54. The log-likelihood for this data given
-#' # Bury's parameter estimates is -656.7921.
+#' # shape = 6.40 and scale=2.54.
 #' data <- c(16, 11.6, 19.9, 18.6, 18, 13.1, 29.1, 10.3, 12.2, 15.6, 12.7, 13.1,
 #'          19.2, 19.5, 23, 6.7, 7.1, 14.3, 20.6, 25.6, 8.2, 34.4, 16.1, 10.2, 12.3)
 #' est.par <- eGamma(data, method="numerical.MLE"); est.par
 #' plot(est.par)
-#'
-#' # Estimates calculated by eGamma differ from those given by Bury(1999).
-#' # However, eGamma's parameter estimates appear to be an improvement, due to a larger
-#' # log-likelihood of -80.68186 (as given by lGamma below).
 #'
 #' # log-likelihood
 #' lGamma(data,param = est.par)
@@ -99,7 +94,7 @@ dGamma <-function(x, shape = 2, scale = 2, params = list(shape = 2, scale = 2),.
       shape <- params$shape
       scale <- params$scale
     }
-    out = stats::dgamma(x, shape, scale)
+    out = stats::dgamma(x, shape=shape, scale=scale)
     return(out)
   }
 
@@ -111,7 +106,7 @@ pGamma <- function(q, shape = 2, scale = 2, params = list(shape = 2, scale = 2),
       shape <- params$shape
       scale <- params$scale
     }
-    out = stats::pgamma(q,shape,scale)
+    out = stats::pgamma(q, shape=shape, scale=scale)
     return(out)
 }
 
@@ -123,7 +118,7 @@ qGamma <- function(p, shape = 2, scale = 2, params = list(shape = 2, scale = 2),
       shape <- params$shape
       scale <- params$scale
     }
-    out = stats::qgamma(p,shape,scale)
+    out = stats::qgamma(p, shape=shape, scale=scale)
     return(out)
 }
 
@@ -134,7 +129,7 @@ rGamma <- function(n, shape = 2, scale = 2, params = list(shape = 2, scale = 2),
       shape <- params$shape
       scale <- params$scale
     }
-    out = stats::rgamma(n,shape,scale)
+    out = stats::rgamma(n, shape=shape, scale=scale)
     return(out)
   }
 
@@ -167,12 +162,12 @@ eGamma <- function(X,w, method =c("moments","numerical.MLE"),...){
    else
 	{method <- "numerical.MLE"
       est.par <- wmle(X=X, w=w, distname = "Gamma",
-                      initial=list(shape = 1, scale = 1/mean(X) ),
+                      initial=list(shape = 1, scale = mean(X) ),
                       lower=list(shape = 0, scale = 0),
                       upper=list(shape = Inf, scale = Inf))
 
       est.par.se <- try(sqrt(diag(solve(attributes(est.par)$nll.hessian))),silent=TRUE)
-      if(class(est.par.se) == "try-error") {
+      if(inherits(est.par.se, "try-error")) {
         est.par.se <- rep(NA, length(est.par))
       }
     }

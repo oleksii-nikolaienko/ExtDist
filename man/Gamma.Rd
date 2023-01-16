@@ -98,16 +98,11 @@ est.par[attributes(est.par)$par.type=="scale"]
 
 # Parameter estimation for a distribution with unknown shape parameters
 # Example from:  Bury(1999) pp.225-226, parameter estimates as given by Bury are
-# shape = 6.40 and scale=2.54. The log-likelihood for this data given
-# Bury's parameter estimates is -656.7921.
+# shape = 6.40 and scale=2.54.
 data <- c(16, 11.6, 19.9, 18.6, 18, 13.1, 29.1, 10.3, 12.2, 15.6, 12.7, 13.1,
          19.2, 19.5, 23, 6.7, 7.1, 14.3, 20.6, 25.6, 8.2, 34.4, 16.1, 10.2, 12.3)
 est.par <- eGamma(data, method="numerical.MLE"); est.par
 plot(est.par)
-
-# Estimates calculated by eGamma differ from those given by Bury(1999).
-# However, eGamma's parameter estimates appear to be an improvement, due to a larger
-# log-likelihood of -80.68186 (as given by lGamma below).
 
 # log-likelihood
 lGamma(data,param = est.par)
@@ -131,5 +126,5 @@ Johnson, N. L., Kotz, S. and Balakrishnan, N. (1995) Continuous Univariate Distr
 }
 \author{
 Haizhen Wu and A. Jonathan R. Godfrey. \cr
-Updates and bug fixes by Sarah Pirikahu.
+Updates and bug fixes by Sarah Pirikahu, Oleksii Nikolaienko.
 }
