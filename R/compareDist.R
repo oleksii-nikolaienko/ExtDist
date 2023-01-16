@@ -14,7 +14,7 @@
 #' @export compareDist
 compareDist <- function(X, Dist1, Dist2=NULL, Dist3=NULL){
   AllowDists <- c("Normal","Beta") # add in the other distributions here, perhaps using an internal object
-  if(class(Dist1)!="eDist"){
+  if(!inherits(Dist1, "eDist")){
     if(is.element(Dist1, AllowDists)){
       # get the eNormal etc details here
       eFoo <- get(paste("e", Dist1, sep=""))
@@ -24,7 +24,7 @@ compareDist <- function(X, Dist1, Dist2=NULL, Dist3=NULL){
   }
 
   if(!is.null(Dist2)){
-    if(class(Dist2)!="eDist"){
+    if(!inherits(Dist2, "eDist")){
       if(is.element(Dist2, AllowDists)){ # add in the other distributions here
         # get the eNormal etc details here
         eFoo <- get(paste("e", Dist2, sep=""))
@@ -34,7 +34,7 @@ compareDist <- function(X, Dist1, Dist2=NULL, Dist3=NULL){
     }
   }
   if(!is.null(Dist3)){
-    if(class(Dist3)!="eDist"){
+    if(!inherits(Dist3, "eDist")){
       if(is.element(Dist3, AllowDists)){ # add in the other distributions here
         # get the eNormal etc details here
         eFoo <- get(paste("e", Dist3, sep=""))

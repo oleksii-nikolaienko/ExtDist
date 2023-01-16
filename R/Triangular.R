@@ -115,7 +115,7 @@ eTriangular <-function(X,w, method ="numerical.MLE",...){
             upper=list(a=min(X),b=Inf, theta= 1- 1e-10))
   
   est.par.se <- try(sqrt(diag(solve(attributes(est.par)$nll.hessian))),silent=TRUE)
-  if(class(est.par.se) == "try-error") {
+  if(inherits(est.par.se, "try-error")) {
     est.par.se <- rep(NA, length(est.par))
   } 
 } 

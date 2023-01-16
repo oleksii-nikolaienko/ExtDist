@@ -28,7 +28,7 @@
 #' DistSelCriteria(Ozone, candDist = c("Gamma", "Weibull", "Normal", "Exp"),
 #' criteria = c("logLik","AIC","AICc", "BIC"))
 
-#' @name DistSelCriteria
+#' @rdname DistSelCriteria
 #' @export DistSelCriteria
 DistSelCriteria <- function(X,w = rep(1,length(X))/length(X),candDist = c("Beta_ab","Laplace","Normal"), criteria = c("logLik","AIC","AICc","BIC","MDL")){
 

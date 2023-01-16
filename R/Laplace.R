@@ -172,7 +172,7 @@ eLaplace <-function(X,w, method =c("analytic.MLE","numerical.MLE"),...){
                     upper=list(mu=Inf, b=Inf))
 
     est.par.se <- try(sqrt(diag(solve(attributes(est.par)$nll.hessian))),silent=TRUE)
-    if(class(est.par.se) == "try-error") {
+    if(inherits(est.par.se, "try-error")) {
       est.par.se <- rep(NA, length(est.par))
     }
   }

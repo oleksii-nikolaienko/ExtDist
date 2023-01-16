@@ -175,7 +175,7 @@ eJohnsonSU <- function(X,w, method ="numerical.MLE",...){
  )
 
  est.par.se <- try(suppressWarnings(sqrt(diag(solve(attributes(est.par)$nll.hessian )))),silent=TRUE)
- if(class(est.par.se) == "try-error" | any(is.nan(est.par.se))) {
+ if(inherits(est.par.se, "try-error") | any(is.nan(est.par.se))) {
    est.par.se <- rep(NA, length(est.par))
  }
 }

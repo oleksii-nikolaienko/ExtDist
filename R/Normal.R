@@ -178,7 +178,7 @@ eNormal <- function(X,w, method =c("unbiased.MLE", "analytical.MLE", "numerical.
 
       # SE calculation by taking the square root of the inverted Hessian matrix.
       est.par.se <- try(sqrt(diag(solve(attributes(est.par)$nll.hessian))),silent=TRUE)
-      if(class(est.par.se) == "try-error") {
+      if(inherits(est.par.se, "try-error")) {
         est.par.se <- rep(NA, length(est.par))
       }
     }

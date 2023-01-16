@@ -173,7 +173,7 @@ eBeta <-function(X,w, method =c("MOM","numerical.MLE"),...){
                       upper=list(shape1 = Inf, shape2 = Inf))
 
       est.par.se <- try(sqrt(diag(solve(attributes(est.par)$nll.hessian))),silent=TRUE)
-      if(class(est.par.se) == "try-error") {
+      if(inherits(est.par.se, "try-error")) {
         est.par.se <- rep(NA, length(est.par))
       }
     }

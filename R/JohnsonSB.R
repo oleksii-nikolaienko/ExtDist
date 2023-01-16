@@ -211,7 +211,7 @@ eJohnsonSB <- function(X,w, method ="numerical.MLE",...){
  attributes(est.par)$nll.hessian = trans.matrix %*% attributes(out)$nll.hessian %*% t(trans.matrix)
 
  est.par.se <- try(suppressWarnings(sqrt(diag(solve(attributes(est.par)$nll.hessian )))),silent=TRUE)
- if(class(est.par.se) == "try-error" | any(is.nan(est.par.se))) {
+ if(inherits(est.par.se, "try-error") | any(is.nan(est.par.se))) {
    est.par.se <- rep(NA, length(est.par))
  }
 }
