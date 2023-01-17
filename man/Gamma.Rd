@@ -82,7 +82,7 @@ The gamma distribution with parameter \code{shape}=\eqn{\alpha} and \code{scale}
 \examples{
 # Parameter estimation for a distribution with known shape parameters
 X <- rGamma(n=500, shape=1.5, scale=0.5)
-est.par <- eGamma(X); est.par
+est.par <- eGamma(X, method="numerical.MLE"); est.par
 plot(est.par)
 
 #  Fitted density curve and histogram

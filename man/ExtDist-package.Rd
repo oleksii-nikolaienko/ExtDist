@@ -76,5 +76,5 @@ Haizhen Wu <h.wu2@massey.ac.nz>,
     Kondaswamy Govindaraju <k.govindaraju@massey.ac.nz>,
     Sarah Pirikahu <s.pirikahu@massey.ac.nz>
 
-Maintainer: Jonathan Godfrey <a.j.godfrey@massey.ac.nz>
+Maintainer: Oleksii Nikolaienko <oleksii.nikolaienko@gmail.com>
 }
