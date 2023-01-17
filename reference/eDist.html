@@ -139,30 +139,30 @@ Journal of mathematical psychology, 44(1), 190-204.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">est.par</span> <span class="op">&lt;-</span> <span class="fu"><a href="Normal.html">eNormal</a></span><span class="op">(</span><span class="va">X</span>, method <span class="op">=</span><span class="st">"numerical.MLE"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -26.03214</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -25.79359</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">AICc</span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 56.77017</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 56.29307</span>
 <span class="r-in"><span><span class="fu">BIC</span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 58.05575</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 57.57865</span>
 <span class="r-in"><span><span class="fu">MDL</span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 29.60911</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 29.39439</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov</a></span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              mean           sd</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> mean 3.954187e-02 8.877119e-10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> sd   8.877119e-10 1.977093e-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               mean            sd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> mean  3.861027e-02 -1.040641e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> sd   -1.040641e-08  1.930552e-02</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov</a></span><span class="op">(</span><span class="va">est.par</span>,corr<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              mean           sd</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> mean 1.000000e+00 3.174899e-08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> sd   3.174899e-08 1.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               mean            sd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> mean  1.000000e+00 -3.811612e-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> sd   -3.811612e-07  1.000000e+00</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parameters for the Normal distribution. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (found using the  numerical.MLE method.)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Parameter     Type  Estimate      S.E.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       mean location 0.1803356 0.1988514</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         sd    scale 0.8892904 0.1406091</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Parameter     Type    Estimate      S.E.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       mean location -0.08659578 0.1964950</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         sd    scale  0.87875219 0.1389443</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span></span></span>
