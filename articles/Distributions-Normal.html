@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ExtDist</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6-5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7-1</span>
       </span>
     </div>
 
@@ -43,7 +43,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -74,7 +74,7 @@
 
       
 
-      </header><script src="Distributions-Normal_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Normal distribution</h1>
@@ -92,14 +92,16 @@
 %\VignetteIndexEntry{Distributions-Normal}
 \usepackage{amsmath,amssymb}
 -->
-<div id="section" class="section level1">
-<h1 class="hasAnchor">
-<a href="#section" class="anchor" aria-hidden="true"></a><!--Normal Distribution-->
-</h1>
-<div id="probability-density-function" class="section level2">
-<h2 class="hasAnchor">
-<a href="#probability-density-function" class="anchor" aria-hidden="true"></a>Probability density function:</h2>
-<p><span class="math display">\[f(x) = \frac 1 {\sigma\sqrt{2\pi}} e^{-\frac{(x-\mu)^2} {2\sigma^2}}\]</span> with <span class="math inline">\(\mu\)</span> the mean of the distribution and <span class="math inline">\(\sigma\)</span> the standard deviation</p>
+<div class="section level2">
+<h2 id="section">
+<!--Normal Distribution--><a class="anchor" aria-label="anchor" href="#section"></a>
+</h2>
+<div class="section level3">
+<h3 id="probability-density-function">Probability density function:<a class="anchor" aria-label="anchor" href="#probability-density-function"></a>
+</h3>
+<p><span class="math display">\[f(x) = \frac 1 {\sigma\sqrt{2\pi}}
+e^{-\frac{(x-\mu)^2} {2\sigma^2}}\]</span> with <span class="math inline">\(\mu\)</span> the mean of the distribution and
+<span class="math inline">\(\sigma\)</span> the standard deviation</p>
 <!--
 ```
 Mathematica Code: 
@@ -107,12 +109,15 @@ Mathematica Code:
 ```
 -->
 </div>
-<div id="cumulative-distribution-function" class="section level2">
-<h2 class="hasAnchor">
-<a href="#cumulative-distribution-function" class="anchor" aria-hidden="true"></a>Cumulative distribution function:</h2>
-<p><span class="math display">\[F(x) =\int_{-\infty}^{x}\frac 1 {\sigma\sqrt{2\pi}} e^{-\frac{(y-\mu)^2} {2\sigma^2}}dy
-       =\int_{-\infty}^{\frac {x-\mu}{\sigma}}\frac 1 {\sqrt{2\pi}} e^{-\frac{z^2} {2}}dz
-       =\frac 1 2 \left[1+\text{erf}\left(\frac {x-\mu} {\sigma\sqrt{2}} \right)\right]\]</span> with <span class="math inline">\(\text{erf}\)</span> being the error function.</p>
+<div class="section level3">
+<h3 id="cumulative-distribution-function">Cumulative distribution function:<a class="anchor" aria-label="anchor" href="#cumulative-distribution-function"></a>
+</h3>
+<p><span class="math display">\[F(x) =\int_{-\infty}^{x}\frac 1
+{\sigma\sqrt{2\pi}} e^{-\frac{(y-\mu)^2} {2\sigma^2}}dy
+       =\int_{-\infty}^{\frac {x-\mu}{\sigma}}\frac 1 {\sqrt{2\pi}}
+e^{-\frac{z^2} {2}}dz
+       =\frac 1 2 \left[1+\text{erf}\left(\frac {x-\mu} {\sigma\sqrt{2}}
+\right)\right]\]</span> with <span class="math inline">\(\text{erf}\)</span> being the error function.</p>
 <!--
 ```
 Mathematica Code: 
@@ -120,10 +125,11 @@ Integrate[1/sqrt(2*pi)*e^(-z^2/2),{z,-Infinity,(x-mu)/sigma}]
 ```
 -->
 </div>
-<div id="log-likelihood-function" class="section level2">
-<h2 class="hasAnchor">
-<a href="#log-likelihood-function" class="anchor" aria-hidden="true"></a>Log-likelihood function:</h2>
-<p><span class="math display">\[L(\mu,\sigma;X)=\sum_i\left[-\frac 1 2 \ln(2\pi)-\ln(\sigma)-\frac{1}{2\sigma^2}(X_i-\mu)^2\right]\]</span></p>
+<div class="section level3">
+<h3 id="log-likelihood-function">Log-likelihood function:<a class="anchor" aria-label="anchor" href="#log-likelihood-function"></a>
+</h3>
+<p><span class="math display">\[L(\mu,\sigma;X)=\sum_i\left[-\frac 1 2
+\ln(2\pi)-\ln(\sigma)-\frac{1}{2\sigma^2}(X_i-\mu)^2\right]\]</span></p>
 <!--
 ```
 Mathematica Code: 
@@ -131,17 +137,17 @@ log[1/(sigma sqrt(2 pi)) e^(-(x-mu)^2/(2 sigma^2))]-(x - mu)^2/(2 sigma^2) - Log
 ```
 -->
 </div>
-<div id="score-function-vector" class="section level2">
-<h2 class="hasAnchor">
-<a href="#score-function-vector" class="anchor" aria-hidden="true"></a>Score function vector:</h2>
+<div class="section level3">
+<h3 id="score-function-vector">Score function vector:<a class="anchor" aria-label="anchor" href="#score-function-vector"></a>
+</h3>
 <p><span class="math display">\[V(\mu,\sigma;X)
- =\left( \begin{array}{c}
+=\left( \begin{array}{c}
         \frac{\partial L}{\partial \mu}  \\
         \frac{\partial L}{\partial \sigma}
         \end{array} \right)
- =\sum_i\left( \begin{array}{c}
+=\sum_i\left( \begin{array}{c}
               \frac {X_i-\mu}{\sigma^2} \\
-              \frac {(X_i-\mu)^2-\sigma^2}{\sigma^3} 
+              \frac {(X_i-\mu)^2-\sigma^2}{\sigma^3}
               \end{array} \right)
 \]</span></p>
 <!--
@@ -152,18 +158,21 @@ D[-(x - mu)^2/(2 sigma^2) - Log[2 Pi]/2 - Log[sigma],sigma]
 ```
 -->
 </div>
-<div id="observed-information-matrix" class="section level2">
-<h2 class="hasAnchor">
-<a href="#observed-information-matrix" class="anchor" aria-hidden="true"></a>Observed information matrix:</h2>
+<div class="section level3">
+<h3 id="observed-information-matrix">Observed information matrix:<a class="anchor" aria-label="anchor" href="#observed-information-matrix"></a>
+</h3>
 <p><span class="math display">\[\mathcal J (\mu,\sigma;X)=
    -\left( \begin{array}{cc}
-          \frac{\partial^2 L}{\partial \mu^2} &amp; \frac{\partial^2 L}{\partial \mu \partial \sigma} \\
-          \frac{\partial^2 L}{\partial \sigma \partial \mu} &amp; \frac{\partial^2 L}{\partial \sigma^2} \end{array} \right)
- =\sum_i
- \left( \begin{array}{cc}
+          \frac{\partial^2 L}{\partial \mu^2} &amp; \frac{\partial^2
+L}{\partial \mu \partial \sigma} \\
+          \frac{\partial^2 L}{\partial \sigma \partial \mu} &amp;
+\frac{\partial^2 L}{\partial \sigma^2} \end{array} \right)
+=\sum_i
+\left( \begin{array}{cc}
        \frac{1}{\sigma^2} &amp; \frac{2(X_i-\mu)}{\sigma^3} \\
-       \frac{2(X_i-\mu)}{\sigma^3} &amp; \frac{3(X_i-\mu)^2-\sigma^2}{\sigma^4} \end{array} \right)
- \]</span></p>
+       \frac{2(X_i-\mu)}{\sigma^3} &amp;
+\frac{3(X_i-\mu)^2-\sigma^2}{\sigma^4} \end{array} \right)
+\]</span></p>
 <!--
 ```
 Mathematica Code: 
@@ -193,7 +202,7 @@ Mathematica Code:
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
