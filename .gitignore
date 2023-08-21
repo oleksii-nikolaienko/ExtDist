@@ -1,3 +1,4 @@
 ExtDist.Rcheck/
 ExtDist*.tar.gz
 .Rhistory
+.DS_Store

@@ -12,25 +12,6 @@ The package provides a consistent, unified and extensible
     extends the gallery of available distributions.
 }
 \details{
-\tabular{ll}{
-Package: \tab ExtDist\cr
-Version: \tab 0.6\cr
-License: \tab GPL (>= 2)\cr
-Imports: \tab 
-numDeriv,
-optimx,
-VGAM,
-SuppDists,
-truncdist\cr
-Suggests: \tab 
-knitr,
-ggplot2,
-xtable,
-PerformanceAnalytics\cr
-Roxygen: \tab list(wrap = FALSE)\cr
-VignetteBuilder: \tab knitr\cr
-Built: \tab R 3.1.1; ; 2015-03-31 03:52:27 UTC; unix\cr
-}
 
 Index:
 \preformatted{
