@@ -19,7 +19,7 @@ Parameter estimation can be based on a weighted or unweighted i.i.d. sample and 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ExtDist</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7-1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7-2</span>
       </span>
     </div>
 
@@ -231,10 +231,10 @@ Updates and bug fixes by Sarah Pirikahu.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (found using the  numerical.MLE method.)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Parameter     Type   Estimate      S.E.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      gamma    shape -0.7850353 0.7820982</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      delta    shape  2.6230251 1.0015912</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         xi location -0.9029043 0.9859346</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     lambda    scale  2.6500097 0.3545306</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      gamma    shape -0.2963762 0.2854807</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      delta    shape  1.9778147 0.4595183</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         xi location -0.4210123 0.3932325</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     lambda    scale  1.9340730 0.1859543</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span></span></span>
@@ -251,18 +251,18 @@ Updates and bug fixes by Sarah Pirikahu.</p>
 <span class="r-in"><span><span class="co"># Extracting location, scale and shape parameters</span></span></span>
 <span class="r-in"><span><span class="va">est.par</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span><span class="op">$</span><span class="va">par.type</span><span class="op">==</span><span class="st">"location"</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $xi</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.9029043</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.4210123</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">est.par</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span><span class="op">$</span><span class="va">par.type</span><span class="op">==</span><span class="st">"scale"</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $lambda</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.65001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.934073</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">est.par</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span><span class="op">$</span><span class="va">par.type</span><span class="op">==</span><span class="st">"shape"</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $gamma</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.7850353</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.2963762</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $delta</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.623025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.977815</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Parameter Estimation for a distribution with unknown shape parameters</span></span></span>
