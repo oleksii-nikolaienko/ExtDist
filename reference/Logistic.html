@@ -209,9 +209,9 @@ Updates and bug fixes by Sarah Pirikahu.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parameters for the Logistic distribution. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (found using the  numerical.MLE method.)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Parameter     Type Estimate       S.E.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   location location 1.482591 0.03822051</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      scale    scale 0.490397 0.01821733</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Parameter     Type  Estimate       S.E.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   location location 1.5224838 0.04039734</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      scale    scale 0.5215655 0.01949557</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span></span></span>
@@ -227,23 +227,23 @@ Updates and bug fixes by Sarah Pirikahu.</p>
 <span class="r-in"><span><span class="co"># Extracting location or scale parameters</span></span></span>
 <span class="r-in"><span><span class="va">est.par</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span><span class="op">$</span><span class="va">par.type</span><span class="op">==</span><span class="st">"location"</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $location</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.482591</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.522484</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">est.par</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span><span class="op">$</span><span class="va">par.type</span><span class="op">==</span><span class="st">"scale"</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $scale</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.490397</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.5215655</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># log-likelihood function</span></span></span>
 <span class="r-in"><span><span class="fu">lLogistic</span><span class="op">(</span><span class="va">X</span>,param <span class="op">=</span> <span class="va">est.par</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -639.9178</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -674.8085</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Evaluation of the precision of the parameter estimates by the Hessian matrix</span></span></span>
 <span class="r-in"><span><span class="va">H</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span><span class="op">$</span><span class="va">nll.hessian</span></span></span>
 <span class="r-in"><span><span class="va">fisher_info</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/solve.html" class="external-link">solve</a></span><span class="op">(</span><span class="va">H</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">fisher_info</span><span class="op">)</span><span class="op">)</span>;<span class="va">var</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   location      scale </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.03822051 0.01821733 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.04039734 0.01949557 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example of parameter estimation for a distribution with</span></span></span>
 <span class="r-in"><span><span class="co"># unknown parameters currently been sought after.</span></span></span>
