@@ -1,20 +1,48 @@
 Package: ExtDist
-Version: 0.7-2
+Version: 0.7-3
 License: GPL (>= 2)
 Title: Extending the Range of Functions for Probability Distributions
 Description: A consistent, unified and extensible
-    framework for estimation of parameters for probability distributions, including 
-    parameter estimation procedures that allow for weighted samples; the current set of distributions included are: the standard beta, The four-parameter beta, Burr, gamma, Gumbel, Johnson SB and SU, Laplace, logistic, normal, symmetric truncated normal, truncated normal, symmetric-reflected truncated beta, standard symmetric-reflected truncated beta, triangular, uniform, and Weibull distributions; decision criteria and selections based on these decision criteria.
+    framework for estimation of parameters for probability distributions,
+    including parameter estimation procedures that allow for weighted samples;
+    the current set of distributions included are: the standard beta,
+    The four-parameter beta, Burr, gamma, Gumbel, Johnson SB and SU, Laplace,
+    logistic, normal, symmetric truncated normal, truncated normal,
+    symmetric-reflected truncated beta, standard symmetric-reflected truncated
+    beta, triangular, uniform, and Weibull distributions; decision criteria
+    and selections based on these decision criteria.
 Repository: CRAN
 Author: Haizhen Wu <h.wu2@massey.ac.nz>,
     A. Jonathan R. Godfrey <A.J.Godfrey@massey.ac.nz>,
     Kondaswamy Govindaraju <k.govindaraju@massey.ac.nz>,
     Sarah Pirikahu <s.pirikahu@massey.ac.nz>
+Authors@R: c(person(given = "Haizhen",
+                    family = "Wu",
+                    role = "aut",
+                    email = "h.wu2@massey.ac.nz"),
+             person(given = c("A.", "Jonathan", "R."),
+                    family = "Godfrey",
+                    role = "aut",
+                    email = "A.J.Godfrey@massey.ac.nz"),
+             person(given = "Kondaswamy",
+                    family = "Govindaraju",
+                    role = "aut",
+                    email = "k.govindaraju@massey.ac.nz"),
+             person(given = "Sarah",
+                    family = "Pirikahu",
+                    role = "aut",
+                    email = "s.pirikahu@massey.ac.nz"),
+             person(given = "Oleksii",
+                    family = "Nikolaienko",
+                    role = c("cre", "ctb"),
+                    email = "oleksii.nikolaienko@gmail.com"))
 Maintainer: Oleksii Nikolaienko <oleksii.nikolaienko@gmail.com>
+URL: https://github.com/oleksii-nikolaienko/ExtDist
+BugReports: https://github.com/oleksii-nikolaienko/ExtDist/issues
 Imports: numDeriv, optimx
 Suggests: ggplot2, knitr, PerformanceAnalytics, stats, SuppDists,
         truncdist, VGAM, xtable, graphics, utils, rmarkdown
 VignetteBuilder: knitr
 NeedsCompilation: no
 Encoding: UTF-8
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
