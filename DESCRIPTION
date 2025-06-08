@@ -12,10 +12,6 @@ Description: A consistent, unified and extensible
     beta, triangular, uniform, and Weibull distributions; decision criteria
     and selections based on these decision criteria.
 Repository: CRAN
-Author: Haizhen Wu <h.wu2@massey.ac.nz>,
-    A. Jonathan R. Godfrey <A.J.Godfrey@massey.ac.nz>,
-    Kondaswamy Govindaraju <k.govindaraju@massey.ac.nz>,
-    Sarah Pirikahu <s.pirikahu@massey.ac.nz>
 Authors@R: c(person(given = "Haizhen",
                     family = "Wu",
                     role = "aut",
@@ -36,7 +32,6 @@ Authors@R: c(person(given = "Haizhen",
                     family = "Nikolaienko",
                     role = c("cre", "ctb"),
                     email = "oleksii.nikolaienko@gmail.com"))
-Maintainer: Oleksii Nikolaienko <oleksii.nikolaienko@gmail.com>
 URL: https://github.com/oleksii-nikolaienko/ExtDist
 BugReports: https://github.com/oleksii-nikolaienko/ExtDist/issues
 Imports: numDeriv, optimx
