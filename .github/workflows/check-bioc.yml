@@ -167,7 +167,7 @@ jobs:
       - name: Install Linux system dependencies
         if: runner.os == 'Linux'
         run: |
-          sysreqs=$(Rscript -e 'cat("apt-get update -y && apt-get install -y", "texlive-latex-base")')
+          sysreqs=$(Rscript -e 'cat("apt-get update -y && apt-get install -y", "texlive-base", "texlive-latex-base", "texlive-latex-recommended", "texlive-latex-extra", "texlive-fonts-recommended", "texlive-fonts-extra")')
           echo $sysreqs
           sudo -s eval "$sysreqs"
 
