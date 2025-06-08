@@ -1,7 +1,7 @@
 # ExtDist: Extending the Range of Functions for Probability Distributions
 
 [![](https://www.r-pkg.org/badges/version/ExtDist)](https://cran.r-project.org/package=ExtDist)
-[![](https://github.com/oleksii-nikolaienko/ExtDist/workflows/R-CMD-check/badge.svg)](https://github.com/oleksii-nikolaienko/ExtDist/actions)
+[![](https://github.com/oleksii-nikolaienko/ExtDist/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/oleksii-nikolaienko/ExtDist/actions)
 [![](https://badges.cranchecks.info/summary/ExtDist.svg)](https://cran.r-project.org/web/checks/check_results_ExtDist.html)
 [![](https://cranlogs.r-pkg.org/badges/ExtDist?color=blue)](https://cran.r-project.org/package=ExtDist)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/ExtDist?color=blue)](https://cran.r-project.org/package=ExtDist)
