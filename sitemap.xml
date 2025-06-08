@@ -1,105 +1,37 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/articles/Distributions-Beta.html</loc>
-  </url>
-  <url>
-    <loc>/articles/Distributions-Normal.html</loc>
-  </url>
-  <url>
-    <loc>/articles/Distributions.html</loc>
-  </url>
-  <url>
-    <loc>/articles/ParaEst-and-DistSel-by-ExtDist.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Beta.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Beta_ab.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Burr.html</loc>
-  </url>
-  <url>
-    <loc>/reference/DistSelCriteria.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Exponential.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ExtDist-package.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Gamma.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Gumbel.html</loc>
-  </url>
-  <url>
-    <loc>/reference/JohnsonSB.html</loc>
-  </url>
-  <url>
-    <loc>/reference/JohnsonSU.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Laplace.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Logistic.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Normal.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Normal_sym_trunc_ab.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Normal_trunc_ab.html</loc>
-  </url>
-  <url>
-    <loc>/reference/SRTB_ab.html</loc>
-  </url>
-  <url>
-    <loc>/reference/SSRTB.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Triangular.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Uniform.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Weibull.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bestDist.html</loc>
-  </url>
-  <url>
-    <loc>/reference/compareDist.html</loc>
-  </url>
-  <url>
-    <loc>/reference/eDist.html</loc>
-  </url>
-  <url>
-    <loc>/reference/eval.estimation.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/wmle.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/articles/Distributions-Beta.html</loc></url>
+<url><loc>/articles/Distributions-Normal.html</loc></url>
+<url><loc>/articles/Distributions.html</loc></url>
+<url><loc>/articles/ParaEst-and-DistSel-by-ExtDist.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/reference/Beta.html</loc></url>
+<url><loc>/reference/Beta_ab.html</loc></url>
+<url><loc>/reference/Burr.html</loc></url>
+<url><loc>/reference/DistSelCriteria.html</loc></url>
+<url><loc>/reference/Exponential.html</loc></url>
+<url><loc>/reference/ExtDist-package.html</loc></url>
+<url><loc>/reference/Gamma.html</loc></url>
+<url><loc>/reference/Gumbel.html</loc></url>
+<url><loc>/reference/JohnsonSB.html</loc></url>
+<url><loc>/reference/JohnsonSU.html</loc></url>
+<url><loc>/reference/Laplace.html</loc></url>
+<url><loc>/reference/Logistic.html</loc></url>
+<url><loc>/reference/Normal.html</loc></url>
+<url><loc>/reference/Normal_sym_trunc_ab.html</loc></url>
+<url><loc>/reference/Normal_trunc_ab.html</loc></url>
+<url><loc>/reference/SRTB_ab.html</loc></url>
+<url><loc>/reference/SSRTB.html</loc></url>
+<url><loc>/reference/Triangular.html</loc></url>
+<url><loc>/reference/Uniform.html</loc></url>
+<url><loc>/reference/Weibull.html</loc></url>
+<url><loc>/reference/bestDist.html</loc></url>
+<url><loc>/reference/compareDist.html</loc></url>
+<url><loc>/reference/eDist.html</loc></url>
+<url><loc>/reference/eval.estimation.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/wmle.html</loc></url>
 </urlset>
+
