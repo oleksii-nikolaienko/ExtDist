@@ -20,7 +20,7 @@ Parameter estimation can be based on a weighted or unweighted i.i.d. sample and 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ExtDist</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7-3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7-4</span>
       </span>
     </div>
 
@@ -91,7 +91,7 @@ Parameter estimation can be based on a weighted or unweighted i.i.d. sample and 
 <span>  sigma <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  a <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  b <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>mu <span class="op">=</span> <span class="fl">2</span>, sigma <span class="op">=</span> <span class="fl">5</span>, a <span class="op">=</span> <span class="fl">0</span>, b <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">mu</span>, <span class="va">sigma</span>, <span class="va">a</span>, <span class="va">b</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -101,7 +101,7 @@ Parameter estimation can be based on a weighted or unweighted i.i.d. sample and 
 <span>  sigma <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  a <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  b <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>mu <span class="op">=</span> <span class="fl">2</span>, sigma <span class="op">=</span> <span class="fl">5</span>, a <span class="op">=</span> <span class="fl">0</span>, b <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">mu</span>, <span class="va">sigma</span>, <span class="va">a</span>, <span class="va">b</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -219,17 +219,17 @@ Updates and bug fixes by Sarah Pirikahu.</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Parameter estimation for a distribution with known shape parameters</span></span></span>
-<span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu">rNormal_trunc_ab</span><span class="op">(</span>n<span class="op">=</span> <span class="fl">500</span>, mu<span class="op">=</span> <span class="fl">2</span>, sigma <span class="op">=</span> <span class="fl">5</span>, a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu">rNormal_trunc_ab</span><span class="op">(</span>n<span class="op">=</span><span class="fl">500</span>, mu<span class="op">=</span><span class="fl">2</span>, sigma<span class="op">=</span><span class="fl">5</span>, a<span class="op">=</span><span class="op">-</span><span class="fl">5</span>, b<span class="op">=</span><span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">est.par</span> <span class="op">&lt;-</span> <span class="fu">eNormal_trunc_ab</span><span class="op">(</span><span class="va">X</span><span class="op">)</span>; <span class="va">est.par</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Parameters for the Normal_trunc_ab distribution. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (found using the  numerical.MLE method.)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Parameter     Type  Estimate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         mu    shape 1.6464791</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      sigma    shape 0.9807912</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          a boundary 1.0008011</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          b boundary 1.9982426</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         mu    shape  1.853114</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      sigma    shape  4.299847</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          a boundary -4.983015</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          b boundary  4.982896</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span></span></span>
@@ -237,31 +237,31 @@ Updates and bug fixes by Sarah Pirikahu.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#  Fitted density curve and histogram</span></span></span>
 <span class="r-in"><span><span class="va">den.x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>,length<span class="op">=</span><span class="fl">100</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">den.y</span> <span class="op">&lt;-</span> <span class="fu">dNormal_trunc_ab</span><span class="op">(</span><span class="va">den.x</span>,params <span class="op">=</span> <span class="va">est.par</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">X</span>, breaks<span class="op">=</span><span class="fl">10</span>, probability<span class="op">=</span><span class="cn">TRUE</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1.2</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">den.y</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">den.y</span> <span class="op">&lt;-</span> <span class="fu">dNormal_trunc_ab</span><span class="op">(</span><span class="va">den.x</span>,params<span class="op">=</span><span class="va">est.par</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">X</span>, breaks<span class="op">=</span><span class="fl">10</span>, probability<span class="op">=</span><span class="cn">TRUE</span>, ylim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1.2</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">den.y</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">den.x</span>, <span class="va">den.y</span>, col<span class="op">=</span><span class="st">"blue"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html" class="external-link">density</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/density.html" class="external-link">density</a></span><span class="op">(</span><span class="va">X</span><span class="op">)</span>, lty<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="Normal_trunc_ab-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Extracting boundary and shape parameters</span></span></span>
 <span class="r-in"><span><span class="va">est.par</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span><span class="op">$</span><span class="va">par.type</span><span class="op">==</span><span class="st">"boundary"</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.000801</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -4.983015</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.998243</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.982896</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">est.par</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span><span class="op">$</span><span class="va">par.type</span><span class="op">==</span><span class="st">"shape"</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mu</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.646479</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.853114</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sigma</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.9807912</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.299847</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># log-likelihood function</span></span></span>
-<span class="r-in"><span><span class="fu">lNormal_trunc_ab</span><span class="op">(</span><span class="va">X</span>,param <span class="op">=</span> <span class="va">est.par</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.096838</span>
+<span class="r-in"><span><span class="fu">lNormal_trunc_ab</span><span class="op">(</span><span class="va">X</span>,param<span class="op">=</span><span class="va">est.par</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -1126.607</span>
 </code></pre></div>
     </div>
   </div>

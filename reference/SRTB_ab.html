@@ -19,7 +19,7 @@ Parameter estimation can be based on a weighted or unweighted i.i.d. sample and 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ExtDist</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7-3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7-4</span>
       </span>
     </div>
 
@@ -206,22 +206,22 @@ eSRTB_ab estimates the parameters. lSRTB_ab provides the log-likelihood function
 <span class="r-in"><span><span class="co"># Extracting boundary and shape parameters</span></span></span>
 <span class="r-in"><span><span class="va">est.par</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span><span class="op">$</span><span class="va">par.type</span><span class="op">==</span><span class="st">"boundary"</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.011242</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.010789</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.970175</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.972847</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">est.par</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">est.par</span><span class="op">)</span><span class="op">$</span><span class="va">par.type</span><span class="op">==</span><span class="st">"shape"</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $shape1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.592235</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.673389</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $shape2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.666075</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.049293</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># log-likelihood function</span></span></span>
 <span class="r-in"><span><span class="fu">lSRTB_ab</span><span class="op">(</span><span class="va">X</span>,param <span class="op">=</span> <span class="va">est.par</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51.53022</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51.49402</span>
 </code></pre></div>
     </div>
   </div>
