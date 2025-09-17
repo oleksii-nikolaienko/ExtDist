@@ -12,6 +12,10 @@ Online version of documentation is available at [GitHub Pages](https://oleksii-n
 
 ### Notable updates
 
+##### 0.7-4 (2025-09-17)
+
+Fixed a couple of errors in "Normal_trunc_ab" parameter estimation
+
 ##### 0.7-1 (2023-01-16)
 
 Long-standing [bug](https://stackoverflow.com/questions/45208176/the-weibull-distribution-in-r-extdist) in Weibull and gamma distributions was fixed:
