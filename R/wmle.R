@@ -241,7 +241,7 @@ wmle <-
     }
 
     if(!convergence) {
-      rst <- approx.rst.list[with(approx.rst.list, value==min(value, NA.rm=T)),]
+      rst <- approx.rst.list[with(approx.rst.list, value==min(value, na.rm=T)),]
 
       trans.est.par <- stats::coef(rst)
       est.par <- as.vector(by(1:num.par, 1:num.par,FUN= function(k){inv.trans.fn[[k]](trans.est.par[[k]])}))

@@ -26,7 +26,7 @@ pNormal_trunc_ab(
   sigma = 1,
   a = 0,
   b = 1,
-  params = list(mu = 2, sigma = 5, a = 0, b = 1),
+  params = list(mu, sigma, a, b),
   ...
 )
 
@@ -36,7 +36,7 @@ qNormal_trunc_ab(
   sigma = 1,
   a = 0,
   b = 1,
-  params = list(mu = 2, sigma = 5, a = 0, b = 1),
+  params = list(mu, sigma, a, b),
   ...
 )
 
@@ -117,23 +117,23 @@ distribution and the method of numerical maximum likelihood estimation is used f
 }
 \examples{
 # Parameter estimation for a distribution with known shape parameters
-X <- rNormal_trunc_ab(n= 500, mu= 2, sigma = 5, a = 1, b = 2)
+X <- rNormal_trunc_ab(n=500, mu=2, sigma=5, a=-5, b=5)
 est.par <- eNormal_trunc_ab(X); est.par
 plot(est.par)
 
 #  Fitted density curve and histogram
 den.x <- seq(min(X),max(X),length=100)
-den.y <- dNormal_trunc_ab(den.x,params = est.par)
-hist(X, breaks=10, probability=TRUE, ylim = c(0,1.2*max(den.y)))
+den.y <- dNormal_trunc_ab(den.x,params=est.par)
+hist(X, breaks=10, probability=TRUE, ylim=c(0,1.2*max(den.y)))
 lines(den.x, den.y, col="blue")
-lines(density(X), lty = 2)
+lines(density(X), lty=2)
 
 # Extracting boundary and shape parameters
 est.par[attributes(est.par)$par.type=="boundary"]
 est.par[attributes(est.par)$par.type=="shape"]
 
 # log-likelihood function
-lNormal_trunc_ab(X,param = est.par)
+lNormal_trunc_ab(X,param=est.par)
 }
 \references{
 Johnson, N. L., Kotz, S. and Balakrishnan, N. (1994) Continuous Univariate Distributions,
