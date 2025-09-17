@@ -56,68 +56,68 @@
 
 #' @examples
 #' # Parameter estimation for a distribution with known shape parameters
-#' X <- rNormal_trunc_ab(n= 500, mu= 2, sigma = 5, a = 1, b = 2)
+#' X <- rNormal_trunc_ab(n=500, mu=2, sigma=5, a=1, b=2)
 #' est.par <- eNormal_trunc_ab(X); est.par
 #' plot(est.par)
 #' 
 #' #  Fitted density curve and histogram
 #' den.x <- seq(min(X),max(X),length=100)
-#' den.y <- dNormal_trunc_ab(den.x,params = est.par)
-#' hist(X, breaks=10, probability=TRUE, ylim = c(0,1.2*max(den.y)))
+#' den.y <- dNormal_trunc_ab(den.x,params=est.par)
+#' hist(X, breaks=10, probability=TRUE, ylim=c(0,1.2*max(den.y)))
 #' lines(den.x, den.y, col="blue")
-#' lines(density(X), lty = 2)
+#' lines(density(X), lty=2)
 #' 
 #' # Extracting boundary and shape parameters
 #' est.par[attributes(est.par)$par.type=="boundary"]
 #' est.par[attributes(est.par)$par.type=="shape"]
 #' 
 #' # log-likelihood function
-#' lNormal_trunc_ab(X,param = est.par)
+#' lNormal_trunc_ab(X,param=est.par)
 
 
 #' @rdname Normal_trunc_ab
 #' @export dNormal_trunc_ab
-dNormal_trunc_ab <-function(x, mu=0, sigma=1, a = 0, b=1, params = list(mu, sigma, a, b),...){
+dNormal_trunc_ab <-function(x, mu=0, sigma=1, a=0, b=1, params=list(mu, sigma, a, b),...){
     if(!missing(params)){
       mu <- params$mu; sigma <- params$sigma; a <- params$a; b <- params$b
     }
-    out <- truncdist::dtrunc( x, spec="norm", a=a, b=b, mean = mu, sd = sigma)
+    out <- truncdist::dtrunc( x, spec="norm", a=a, b=b, mean=mu, sd=sigma)
     return(out)
   }
 
 #' @rdname Normal_trunc_ab
 #' @export pNormal_trunc_ab
-pNormal_trunc_ab <- function(q, mu=0, sigma=1, a = 0, b=1, params = list(mu=2, sigma = 5, a = 0, b = 1),...){
+pNormal_trunc_ab <- function(q, mu=0, sigma=1, a=0, b=1, params=list(mu, sigma, a, b),...){
     if(!missing(params)){
       mu <- params$mu; sigma <- params$sigma; a <- params$a; b <- params$b
     }
-    out <- truncdist::ptrunc( q, spec="norm", a=a, b=b, mean = mu, sd = sigma)
+    out <- truncdist::ptrunc( q, spec="norm", a=a, b=b, mean=mu, sd=sigma)
     return(out)
   }
 
 #' @rdname Normal_trunc_ab
 #' @export qNormal_trunc_ab
-qNormal_trunc_ab <- function(p, mu=0, sigma=1, a = 0, b=1, params = list(mu=2, sigma = 5, a = 0, b = 1),...){
+qNormal_trunc_ab <- function(p, mu=0, sigma=1, a=0, b=1, params=list(mu, sigma, a, b),...){
     if(!missing(params)){
       mu <- params$mu; sigma <- params$sigma; a <- params$a; b <- params$b
     }
-    out <- truncdist::qtrunc( p, spec="norm", a=a, b=b, mean = mu, sd = sigma)
+    out <- truncdist::qtrunc( p, spec="norm", a=a, b=b, mean=mu, sd=sigma)
     return(out)
   }
 
 #' @rdname Normal_trunc_ab
 #' @export rNormal_trunc_ab
-rNormal_trunc_ab <- function(n, mu=0, sigma=1, a = 0, b = 1, params = list(mu, sigma, a, b),...){
+rNormal_trunc_ab <- function(n, mu=0, sigma=1, a=0, b=1, params=list(mu, sigma, a, b),...){
     if(!missing(params)){
       mu <- params$mu; sigma <- params$sigma; a <- params$a; b <- params$b
     }
-    out <- truncdist::rtrunc(n, spec="norm", a=a, b=b, mean = mu, sd = sigma)
+    out <- truncdist::rtrunc(n, spec="norm", a=a, b=b, mean=mu, sd=sigma)
     return(out)
   }
 
 #' @rdname Normal_trunc_ab
 #' @export eNormal_trunc_ab
-eNormal_trunc_ab <- function(X,w, method ="numerical.MLE",...){
+eNormal_trunc_ab <- function(X,w, method="numerical.MLE",...){
     n <- length(X)
     if(missing(w)){
       w <- rep(1,n)
@@ -127,11 +127,11 @@ eNormal_trunc_ab <- function(X,w, method ="numerical.MLE",...){
     
 {
   if(method != "numerical.MLE") warning(paste("method ", method, " is not avaliable, use numerial.MLE instead."))  
-  method = "numerical.MLE"  
+  method="numerical.MLE"  
   
   d <- max(X)-min(X)
-  est.par <- wmle(X=X, w=w, distname = "Normal_trunc_ab",
-                  initial=list(mu=mean(min(X),max(X)),sigma=1,a=min(X)-0.1*d,b=max(X)+0.1*d),
+  est.par <- wmle(X=X, w=w, distname="Normal_trunc_ab",
+                  initial=list(mu=mean(c(min(X),max(X))),sigma=1,a=min(X)-0.1*d,b=max(X)+0.1*d),
                   lower=list(mu=-Inf,sigma=0,a=-Inf,b=max(X)),
                   upper=list(mu=Inf,sigma=Inf,a=min(X),b=Inf)
 				  )
@@ -159,7 +159,7 @@ return(est.par)
 #' @rdname Normal_trunc_ab
 #' @export lNormal_trunc_ab
 ## (weighted) (log) likelihood function
-lNormal_trunc_ab <- function(X, w, mu=0, sigma =1, a = 0, b = 1,  params = list(mu, sigma, a, b), logL = TRUE,...){
+lNormal_trunc_ab <- function(X, w, mu=0, sigma=1, a=0, b=1,  params=list(mu, sigma, a, b), logL=TRUE,...){
     if(!missing(params)){
       mu <- params$mu; sigma <- params$sigma; a <- params$a; b <- params$b
     }
@@ -171,7 +171,7 @@ lNormal_trunc_ab <- function(X, w, mu=0, sigma =1, a = 0, b = 1,  params = list(
       w <- n*w/sum(w)
     }
     
-    ll <- sum(w*log(dNormal_trunc_ab(x=X,params = params)))
+    ll <- sum(w*log(dNormal_trunc_ab(x=X,params=params)))
     l <- exp(ll)
     
     if(logL) {return(ll)} else{return(l)}
