@@ -56,7 +56,7 @@
 
 #' @examples
 #' # Parameter estimation for a distribution with known shape parameters
-#' X <- rNormal_trunc_ab(n=500, mu=2, sigma=5, a=1, b=2)
+#' X <- rNormal_trunc_ab(n=500, mu=2, sigma=5, a=-5, b=5)
 #' est.par <- eNormal_trunc_ab(X); est.par
 #' plot(est.par)
 #' 
